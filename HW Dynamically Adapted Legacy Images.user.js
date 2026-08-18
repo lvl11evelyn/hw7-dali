@@ -431,7 +431,7 @@
     // King's Kiddie Cup+
     // ------------------------------------------------------------
 
-        if (hash === '69db8c2a') {
+        if (hash === '43f62fec') {
             return "King's Kiddie Cup+";
         }
 

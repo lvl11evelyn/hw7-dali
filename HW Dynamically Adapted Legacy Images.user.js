@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      0.6
+// @version      1.0
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
 // @match        *://*.hobowars.com/*
-// @run-at       document-end
+// @run-at       document-start
 // @updateURL    https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
 // @downloadURL  https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
 // @grant        GM_xmlhttpRequest
@@ -22,7 +22,7 @@
 
 
 // ------------------------------------------------------------------------
-// REMOTE ASSET MAP
+// REMOTE ASSET MAP / AUTHORITATIVE CATALOG
 // ------------------------------------------------------------------------
 
     const ASSET_MAP_URL =
@@ -32,42 +32,64 @@
         'hw-dali-asset-map-cache-v1';
 
     let REPLACEMENTS = null;
+    let ASSET_MAP_SIGNATURE = '';
+    let CATALOG_GENERATION = 0;
 
     let EQUIPMENT_NAMES = [];
     let NORMALIZED_EQUIPMENT_NAMES = new Map();
 
-    loadAssetMap()
-        .then(assetMap => {
-            REPLACEMENTS = assetMap;
-            buildLookupTables();
-            initializeDali();
-        })
-        .catch(error => {
+    /*
+     * The authoritative identity index contains every named leaf in the
+     * external asset map, including entries whose replacement URL is null.
+     *
+     * DALI is deliberately fail-closed: an image must resolve to exactly one
+     * known catalog identity before ordinary catalog replacement is allowed.
+     * Unknown or ambiguous imagery is left untouched.
+     */
+    let CATALOG_IDENTITY_INDEX = new Map();
+
+    const cachedAssetMap = readCachedAssetMap();
+
+    if (cachedAssetMap) {
+        applyAssetMap(cachedAssetMap);
+    }
+
+    /*
+     * DALI starts immediately. The network is never on the critical path.
+     * A cached catalog is usable synchronously; a first-run install can still
+     * process self-contained SVG families while the remote map is arriving.
+     */
+    initializeDali();
+    refreshRemoteAssetMap();
+
+    async function refreshRemoteAssetMap() {
+        try {
+            const assetMap = await fetchRemoteAssetMap();
+
+            cacheAssetMap(assetMap);
+
+            if (applyAssetMap(assetMap)) {
+                /*
+                 * Only unresolved / known-unmapped / ambiguous images from an
+                 * older catalog generation are reconsidered. Replaced images
+                 * remain final and are not churned through the resolver again.
+                 */
+                scan(document);
+            }
+        } catch (error) {
+            if (REPLACEMENTS) {
+                console.warn(
+                    '[DALI] Remote asset map unavailable; continuing with cached copy.',
+                    error
+                );
+                return;
+            }
+
             console.error(
-                '[DALI] Unable to initialize asset map:',
+                '[DALI] Remote asset map unavailable and no cached copy exists.',
                 error
             );
-        });
-
-    function loadAssetMap() {
-        return fetchRemoteAssetMap()
-            .then(assetMap => {
-                cacheAssetMap(assetMap);
-                return assetMap;
-            })
-            .catch(error => {
-                const cached = readCachedAssetMap();
-
-                if (cached) {
-                    console.warn(
-                        '[DALI] Remote asset map unavailable; using cached copy.',
-                        error
-                    );
-                    return cached;
-                }
-
-                throw error;
-            });
+        }
     }
 
     function fetchRemoteAssetMap() {
@@ -133,6 +155,23 @@
         return assetMap;
     }
 
+    function applyAssetMap(assetMap) {
+        validateAssetMap(assetMap);
+
+        const signature = JSON.stringify(assetMap);
+
+        if (signature === ASSET_MAP_SIGNATURE) {
+            return false;
+        }
+
+        REPLACEMENTS = assetMap;
+        ASSET_MAP_SIGNATURE = signature;
+        CATALOG_GENERATION += 1;
+
+        buildLookupTables();
+        return true;
+    }
+
     function cacheAssetMap(assetMap) {
         try {
             localStorage.setItem(
@@ -162,17 +201,82 @@
     }
 
     function buildLookupTables() {
-        EQUIPMENT_NAMES = Object.keys(REPLACEMENTS.equipment);
+        const equipment = REPLACEMENTS?.equipment || {};
+
+        EQUIPMENT_NAMES = Object.keys(equipment);
 
         NORMALIZED_EQUIPMENT_NAMES = new Map(
             EQUIPMENT_NAMES.map(name => [
-                normalizeEquipmentName(name),
+                normalizeEquipmentName(name).toLowerCase(),
                 name
             ])
         );
 
+        CATALOG_IDENTITY_INDEX = buildCatalogIdentityIndex(REPLACEMENTS);
     }
 
+    function buildCatalogIdentityIndex(assetMap) {
+        const index = new Map();
+
+        for (const [catalogName, catalog] of Object.entries(assetMap || {})) {
+            if (!catalog || typeof catalog !== 'object' || Array.isArray(catalog)) {
+                continue;
+            }
+
+            walkCatalogLeaves(
+                catalogName,
+                catalog,
+                [],
+                (name, url, path) => {
+                    const key = normalizeIdentityKey(name);
+
+                    if (!key) {
+                        return;
+                    }
+
+                    const entry = {
+                        name,
+                        catalog: catalogName,
+                        path: [catalogName, ...path, name],
+                        url: typeof url === 'string' && url.trim()
+                            ? url.trim()
+                            : null
+                    };
+
+                    const bucket = index.get(key) || [];
+                    bucket.push(entry);
+                    index.set(key, bucket);
+                }
+            );
+        }
+
+        return index;
+    }
+
+    function walkCatalogLeaves(catalogName, node, path, visit) {
+        for (const [key, value] of Object.entries(node || {})) {
+            if (
+                value === null ||
+                typeof value === 'string'
+            ) {
+                visit(key, value, path);
+                continue;
+            }
+
+            if (
+                value &&
+                typeof value === 'object' &&
+                !Array.isArray(value)
+            ) {
+                walkCatalogLeaves(
+                    catalogName,
+                    value,
+                    [...path, key],
+                    visit
+                );
+            }
+        }
+    }
 
     /*
      * Currency aliases normalize native HoboWars terminology back to the
@@ -205,56 +309,311 @@
 
         let text = String(value).trim();
 
-        // If it's a URL/path, keep only the last path segment.
         if (text.includes('/')) {
             text = text.split('/').pop() || text;
         }
 
-        // Decode things like %20.
         try {
             text = decodeURIComponent(text);
         } catch (err) {
             // Ignore malformed escape sequences and keep raw text.
         }
 
-        // Strip query/hash if they ever appear.
         text = text.split('?')[0].split('#')[0];
 
-        // Strip extension.
+        /*
+         * Strip a PageSpeed rewrite tail before stripping the underlying
+         * native image extension.
+         */
+        text = text.replace(
+            /\.pagespeed\.[^.?#]+(?:\.[^?#]+)*$/i,
+            ''
+        );
+
         text = text.replace(/\.(gif|png|jpe?g|webp)$/i, '');
-
-        // Normalize separators.
         text = text.replace(/[_-]+/g, ' ');
-
-        // Collapse whitespace.
         text = text.replace(/\s+/g, ' ').trim();
 
         return text;
     }
 
-    function findCatalogMatch(rawValue, catalog) {
-        const normalizedNeedle = normalizeAssetName(rawValue);
+    function normalizeIdentityKey(value) {
+        return normalizeAssetName(value).toLowerCase();
+    }
 
-        if (!normalizedNeedle) {
+    function findCatalogMatch(rawValue, catalog) {
+        const normalizedNeedle = normalizeIdentityKey(rawValue);
+
+        if (!normalizedNeedle || !catalog) {
             return null;
         }
 
         for (const key of Object.keys(catalog)) {
-            if (normalizeAssetName(key) === normalizedNeedle) {
+            if (normalizeIdentityKey(key) === normalizedNeedle) {
                 return key;
             }
         }
 
         return null;
     }
+
+    function getCatalogEntry(catalogName, identity) {
+        const catalog = REPLACEMENTS?.[catalogName];
+
+        if (!catalog || !Object.prototype.hasOwnProperty.call(catalog, identity)) {
+            return null;
+        }
+
+        const value = catalog[identity];
+
+        if (
+            value !== null &&
+            typeof value !== 'string'
+        ) {
+            return null;
+        }
+
+        return {
+            name: identity,
+            catalog: catalogName,
+            path: [catalogName, identity],
+            url: typeof value === 'string' && value.trim()
+                ? value.trim()
+                : null
+        };
+    }
+
+    function lookupCatalogIdentity(rawValue) {
+        const key = normalizeIdentityKey(rawValue);
+
+        if (!key) {
+            return { status: 'none', entries: [] };
+        }
+
+        const entries = CATALOG_IDENTITY_INDEX.get(key) || [];
+
+        if (entries.length === 0) {
+            return { status: 'none', entries: [] };
+        }
+
+        if (entries.length > 1) {
+            return { status: 'ambiguous', entries };
+        }
+
+        return {
+            status: 'resolved',
+            entry: entries[0],
+            entries
+        };
+    }
+
+    function getSourceIdentityCandidates(src) {
+        if (!src || src.startsWith('data:')) {
+            return [];
+        }
+
+        let filename = String(src)
+            .split(/[?#]/)[0]
+            .split('/')
+            .pop() || '';
+
+        try {
+            filename = decodeURIComponent(filename);
+        } catch (error) {
+            // Keep raw filename.
+        }
+
+        const out = [filename];
+
+        if (/\.pagespeed\./i.test(filename)) {
+            let nativeFilename = filename.replace(
+                /\.pagespeed\..*$/i,
+                ''
+            );
+
+            out.push(nativeFilename);
+
+            /*
+             * PageSpeed commonly prefixes rewritten native item filenames
+             * with "x". Try the unprefixed native identity as an additional
+             * exact catalog candidate; special xmove/xslot families are
+             * intercepted before ordinary catalog resolution.
+             */
+            if (/^x/i.test(nativeFilename)) {
+                out.push(nativeFilename.slice(1));
+            }
+        }
+
+        return out;
+    }
+
+    function resolveDirectCatalogImage(image) {
+        const rawCandidates = [
+            image.getAttribute('alt'),
+            image.getAttribute('title'),
+            image.getAttribute('aria-label'),
+            ...getSourceIdentityCandidates(
+                image.getAttribute('src') || ''
+            )
+        ];
+
+        const tattooAlt = image.getAttribute('alt') || '';
+        const tattooCandidate = tattooAlt.replace(
+            /-(1|2|3)(?:\.(?:gif|png|jpe?g|webp))?$/i,
+            ''
+        );
+
+        if (tattooCandidate !== tattooAlt) {
+            rawCandidates.push(tattooCandidate);
+        }
+
+        const currencyCandidates = [
+            image.getAttribute('alt'),
+            image.getAttribute('title')
+        ];
+
+        for (const raw of currencyCandidates) {
+            const currencyIdentity = findCurrencyMatch(raw);
+
+            if (currencyIdentity) {
+                rawCandidates.push(currencyIdentity);
+            }
+        }
+
+        const resolved = new Map();
+        const ambiguous = [];
+
+        for (const raw of rawCandidates) {
+            const result = lookupCatalogIdentity(raw);
+
+            if (result.status === 'ambiguous') {
+                ambiguous.push(...result.entries);
+                continue;
+            }
+
+            if (result.status !== 'resolved') {
+                continue;
+            }
+
+            const entry = result.entry;
+            const key = `${entry.catalog}\u0000${entry.path.join('\u0000')}`;
+            resolved.set(key, entry);
+        }
+
+        if (ambiguous.length > 0) {
+            return {
+                status: 'ambiguous',
+                entries: ambiguous
+            };
+        }
+
+        const entries = [...resolved.values()];
+
+        if (entries.length === 0) {
+            return { status: 'none' };
+        }
+
+        if (entries.length > 1) {
+            return {
+                status: 'ambiguous',
+                entries
+            };
+        }
+
+        return {
+            status: 'resolved',
+            entry: entries[0]
+        };
+    }
+
+    function applyResolvedCatalogEntry(image, entry) {
+        if (!entry) {
+            return false;
+        }
+
+        if (!entry.url) {
+            markKnownUnmapped(
+                image,
+                entry.name,
+                entry.catalog,
+                entry.path
+            );
+            return true;
+        }
+
+        const fade = entry.catalog === 'tattoos'
+            ? getTattooFade(image)
+            : null;
+
+        replaceImage(
+            image,
+            entry.name,
+            entry.url,
+            catalogCategoryLabel(entry.catalog),
+            entry.path
+        );
+
+        if (fade !== null) {
+            image.style.opacity = String(
+                TATTOO_OPACITY[fade]
+            );
+        }
+
+        return true;
+    }
+
+    function catalogCategoryLabel(catalogName) {
+        const aliases = {
+            tattoos: 'tattoo',
+            bernardsSpecialItems: 'bernards-special-item',
+            backpackItems: 'backpack-item',
+            currencies: 'currency',
+            foodItems: 'food-item',
+            foodStorageItems: 'food-storage-item',
+            statusEffects: 'status-effect'
+        };
+
+        return aliases[catalogName] ||
+            String(catalogName || 'catalog-item')
+                .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+                .toLowerCase();
+    }
+
+    function markKnownUnmapped(image, name, catalog, path = null) {
+        image.dataset.daliState = 'known-unmapped';
+        image.dataset.daliGeneration = String(CATALOG_GENERATION);
+        image.dataset.daliName = name;
+        image.dataset.daliCategory = catalogCategoryLabel(catalog);
+
+        if (Array.isArray(path)) {
+            image.dataset.daliPath = path.join('/');
+        }
+    }
+
+    function markAmbiguous(image) {
+        image.dataset.daliState = 'ambiguous';
+        image.dataset.daliGeneration = String(CATALOG_GENERATION);
+    }
+
+    function markUnresolved(image) {
+        image.dataset.daliState = 'unresolved';
+        image.dataset.daliGeneration = String(CATALOG_GENERATION);
+    }
+
 // ------------------------------------------------------------------------
 // INITIALIZATION / DYNAMIC CONTENT
 // ------------------------------------------------------------------------
 
+    let DALI_OBSERVER = null;
+
     function initializeDali() {
+        if (DALI_OBSERVER) {
+            return;
+        }
+
         scan(document);
 
-        const observer = new MutationObserver(mutations => {
+        DALI_OBSERVER = new MutationObserver(mutations => {
             for (const mutation of mutations) {
                 for (const node of mutation.addedNodes) {
                     if (node.nodeType !== Node.ELEMENT_NODE) {
@@ -270,8 +629,12 @@
             }
         });
 
-        if (document.body) {
-            observer.observe(document.body, {
+        const observeRoot =
+            document.documentElement ||
+            document.body;
+
+        if (observeRoot) {
+            DALI_OBSERVER.observe(observeRoot, {
                 childList: true,
                 subtree: true
             });
@@ -295,6 +658,10 @@
     }
 
     function replaceBmenuIcons(root) {
+        if (!REPLACEMENTS) {
+            return;
+        }
+
         const menuAssets = {
             home: ['backpackItems', 'Cardboard Box'],
             backpack: ['backpackItems', 'Unusually Large Backpack'],
@@ -343,27 +710,78 @@
             return;
         }
 
-        if (image.dataset.daliName) {
+        const state = image.dataset.daliState || '';
+        const generation = Number.parseInt(
+            image.dataset.daliGeneration || '-1',
+            10
+        );
+
+        if (state === 'replaced') {
             return;
         }
 
-        // Navigation arrows are anonymous legacy raster assets. Identify
-        // them from the native payload/filename before semantic item matching.
+        if (
+            generation === CATALOG_GENERATION &&
+            (
+                state === 'known-unmapped' ||
+                state === 'ambiguous' ||
+                state === 'unresolved'
+            )
+        ) {
+            return;
+        }
+
+        /*
+         * Self-contained legacy families with authoritative native identity
+         * run even on a first install before the remote catalog has arrived.
+         */
         if (processNavigationArrow(image)) {
             return;
         }
 
-        // Tattoos have the strongest native semantic identifier:
-        // the exact tattoo name in the alt attribute.
-        if (processTattoo(image)) {
+        if (processSlotSymbol(image)) {
             return;
         }
 
+        if (!REPLACEMENTS) {
+            markUnresolved(image);
+            return;
+        }
+
+        /*
+         * KKC+/Grail variants need payload/state logic that is stronger than
+         * their ordinary displayed name. Resolve these before the global
+         * catalog index so a KKC+ cannot be downgraded to the base cup by alt.
+         */
         if (processSpecialItem(image)) {
             return;
         }
 
-        if (processSlotSymbol(image)) {
+        /*
+         * Primary v1 resolver: exact, allowlisted identity across the complete
+         * catalog. Unknown imagery is not guessed at.
+         */
+        const direct = resolveDirectCatalogImage(image);
+
+        if (direct.status === 'ambiguous') {
+            markAmbiguous(image);
+            return;
+        }
+
+        if (
+            direct.status === 'resolved' &&
+            applyResolvedCatalogEntry(image, direct.entry)
+        ) {
+            return;
+        }
+
+        /*
+         * Scoped semantic fallbacks are retained only where HoboWars itself
+         * withholds usable image identity (base64 item art, record tables,
+         * currency counters). Each fallback is confined to its own known
+         * catalog and requires one unambiguous catalog result.
+         */
+        if (processTattoo(image)) {
             return;
         }
 
@@ -379,7 +797,11 @@
             return;
         }
 
-        processEquipment(image);
+        if (processEquipment(image)) {
+            return;
+        }
+
+        markUnresolved(image);
     }
 
     function processSpecialItem(image) {
@@ -389,21 +811,19 @@
             return false;
         }
 
-        const replacementUrl =
-            REPLACEMENTS.backpackItems[identity];
+        const entry = getCatalogEntry(
+            'backpackItems',
+            identity
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            identity,
-            replacementUrl,
-            'backpack-item'
+            entry
         );
-
-        return true;
     }
 
     function identifySpecialItem(image) {
@@ -511,10 +931,7 @@ function svgDataUrl(svg) {
 // ------------------------------------------------------------------------
 
 const NAV_ARROW_HASHES = new Map([
-    // Cardinal north base64 payload observed in the Mines/explore UI.
-    ['069aac95', 'N'],
-
-    // Authoritatively mapped diagonal base64 payloads.
+    /* Authoritatively mapped diagonal base64 payloads. */
     ['1563e943', 'NE'],
     ['ebe24f2e', 'SE'],
     ['fa4475fa', 'SW'],
@@ -553,7 +970,8 @@ function processNavigationArrow(image) {
     const dimensions = getRenderedDimensions(image);
 
     if (!dimensions) {
-        return false;
+        queueImageRetry(image);
+        return true;
     }
 
     const svg = makeNavigationArrowSvg(
@@ -568,6 +986,8 @@ function processNavigationArrow(image) {
     image.dataset.daliCategory = 'navigation';
     image.dataset.daliOriginalSrc = originalSrc;
     image.dataset.daliDirection = direction;
+    image.dataset.daliState = 'replaced';
+    image.dataset.daliGeneration = String(CATALOG_GENERATION);
 
     image.style.width = `${dimensions.width}px`;
     image.style.height = `${dimensions.height}px`;
@@ -591,11 +1011,6 @@ function identifyNavigationArrow(image) {
         return NAV_ARROW_HASHES.get(hash);
     }
 
-    /*
-     * Native/page-speed filename fallback. xmove_1 through xmove_8 form the
-     * eight-direction compass set; the URL suffix after the GIF is allowed
-     * to vary because PageSpeed rewrites are deployment details.
-     */
     const filenameMatch = src.match(
         /\/images\/xmove_([1-8])\.gif(?:\.pagespeed\.[^?#]+)?/i
     );
@@ -614,11 +1029,6 @@ function makeNavigationArrowSvg(direction, width, height) {
     const cy = h / 2;
     const rotation = NAV_ARROW_ROTATIONS[direction] || 0;
 
-    /*
-     * One north-facing primitive is rotated into all eight directions.
-     * The canvas remains completely transparent; only the red arrow body
-     * and its deliberately broad black outline produce opaque pixels.
-     */
     const margin = Math.max(2, Math.min(w, h) * 0.08);
     const headY = margin;
     const shoulderY = h * 0.46;
@@ -1084,28 +1494,19 @@ function barSvg(x, y, scale = 1) {
             return false;
         }
 
-        const replacementUrl = REPLACEMENTS.tattoos[name];
+        const entry = getCatalogEntry(
+            'tattoos',
+            name
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        const fade = getTattooFade(image);
-
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            name,
-            replacementUrl,
-            'tattoo'
+            entry
         );
-
-        if (fade !== null) {
-            image.style.opacity = String(
-                TATTOO_OPACITY[fade]
-            );
-        }
-
-        return true;
     }
 
     function canonicalizeTattooName(value) {
@@ -1198,21 +1599,19 @@ function barSvg(x, y, scale = 1) {
             return false;
         }
 
-        const replacementUrl =
-            REPLACEMENTS.bernardsSpecialItems[identity];
+        const entry = getCatalogEntry(
+            'bernardsSpecialItems',
+            identity
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            identity,
-            replacementUrl,
-            'bernards-special-item'
+            entry
         );
-
-        return true;
     }
 
     function identifyBernardsSpecialItem(image) {
@@ -1248,11 +1647,17 @@ function barSvg(x, y, scale = 1) {
                 const name of
                 Object.keys(REPLACEMENTS.bernardsSpecialItems)
             ) {
+                const normalizedContainer =
+                    normalizeAssetName(containerText);
+
+                const normalizedName =
+                    normalizeAssetName(name);
+
                 if (
-                    normalizeAssetName(containerText)
-                        .includes(
-                            normalizeAssetName(name)
-                        )
+                    normalizedContainer === normalizedName ||
+                    normalizedContainer.startsWith(
+                        `${normalizedName} `
+                    )
                 ) {
                     return name;
                 }
@@ -1273,21 +1678,19 @@ function barSvg(x, y, scale = 1) {
             return false;
         }
 
-        const replacementUrl =
-            REPLACEMENTS.backpackItems[identity];
+        const entry = getCatalogEntry(
+            'backpackItems',
+            identity
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            identity,
-            replacementUrl,
-            'backpack-item'
+            entry
         );
-
-        return true;
     }
 
     function identifyBackpackItem(image) {
@@ -1365,20 +1768,19 @@ function barSvg(x, y, scale = 1) {
             return false;
         }
 
-        const replacementUrl = REPLACEMENTS.currencies[identity];
+        const entry = getCatalogEntry(
+            'currencies',
+            identity
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            identity,
-            replacementUrl,
-            'currency'
+            entry
         );
-
-        return true;
     }
 
     function findCurrencyMatch(rawValue) {
@@ -1572,21 +1974,19 @@ function barSvg(x, y, scale = 1) {
             return false;
         }
 
-        const replacementUrl =
-            REPLACEMENTS.equipment[itemName];
+        const entry = getCatalogEntry(
+            'equipment',
+            itemName
+        );
 
-        if (!replacementUrl) {
+        if (!entry) {
             return false;
         }
 
-        replaceImage(
+        return applyResolvedCatalogEntry(
             image,
-            itemName,
-            replacementUrl,
-            'equipment'
+            entry
         );
-
-        return true;
     }
 
     /*
@@ -1714,30 +2114,15 @@ function barSvg(x, y, scale = 1) {
         image,
         name,
         replacementUrl,
-        category
+        category,
+        path = null
     ) {
         const dimensions =
             getRenderedDimensions(image);
 
         if (!dimensions) {
-            /*
-             * If the native image genuinely has not established dimensions
-             * yet, retry once it loads.
-             */
-            if (!image.dataset.daliPending) {
-                image.dataset.daliPending = 'true';
-
-                image.addEventListener(
-                    'load',
-                    () => {
-                        delete image.dataset.daliPending;
-                        processImage(image);
-                    },
-                    { once: true }
-                );
-            }
-
-            return;
+            queueImageRetry(image);
+            return false;
         }
 
         const originalSrc =
@@ -1746,11 +2131,13 @@ function barSvg(x, y, scale = 1) {
         image.dataset.daliName = name;
         image.dataset.daliCategory = category;
         image.dataset.daliOriginalSrc = originalSrc;
+        image.dataset.daliState = 'replaced';
+        image.dataset.daliGeneration = String(CATALOG_GENERATION);
 
-        /*
-         * The native occurrence owns its geometry.
-         * DALI changes the artwork, not the layout.
-         */
+        if (Array.isArray(path)) {
+            image.dataset.daliPath = path.join('/');
+        }
+
         image.style.width =
             `${dimensions.width}px`;
 
@@ -1758,17 +2145,32 @@ function barSvg(x, y, scale = 1) {
             `${dimensions.height}px`;
 
         image.style.objectFit = 'cover';
-
         image.style.objectPosition = 'center';
 
-        /*
-         * Prevent native responsive-image metadata from overriding the
-         * replacement source.
-         */
         image.removeAttribute('srcset');
         image.removeAttribute('sizes');
 
         image.src = replacementUrl;
+        return true;
+    }
+
+    function queueImageRetry(image) {
+        if (image.dataset.daliPending) {
+            return;
+        }
+
+        image.dataset.daliPending = 'true';
+
+        image.addEventListener(
+            'load',
+            () => {
+                delete image.dataset.daliPending;
+                delete image.dataset.daliState;
+                delete image.dataset.daliGeneration;
+                processImage(image);
+            },
+            { once: true }
+        );
     }
 
     function getRenderedDimensions(image) {
@@ -1825,7 +2227,7 @@ function barSvg(x, y, scale = 1) {
         );
 
         return NORMALIZED_EQUIPMENT_NAMES.get(
-            normalized
+            normalized.toLowerCase()
         ) || null;
     }
 

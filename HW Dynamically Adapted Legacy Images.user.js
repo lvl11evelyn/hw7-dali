@@ -1,13 +1,16 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      0.51
+// @version      0.52
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
 // @match        *://*.hobowars.com/*
 // @run-at       document-end
-// @grant        none
+// @updateURL    https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
+// @downloadURL  https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
+// @grant        GM_xmlhttpRequest
+// @connect      raw.githubusercontent.com
 // ==/UserScript==
 
 // ============================================================================
@@ -19,86 +22,156 @@
 
 
 // ------------------------------------------------------------------------
-// REPLACEMENT REGISTRY
+// REMOTE ASSET MAP
 // ------------------------------------------------------------------------
 
-    const REPLACEMENTS = {
-        equipment: {
-            'Hattori-Hanzo Sword': 'https://i.imgur.com/7vFKfMP.png',
-            'Full-Body Trap': 'https://i.imgur.com/04oFlmN.png',
-            'Filthy Socks': 'https://i.imgur.com/joZaAy4.png',
-            'Cricket Bat': 'https://i.imgur.com/NN5yJ3P.png',
-            'Balltop Cane': 'https://i.imgur.com/QOxlr1N.png',
-            'MHGA Sign': 'https://i.imgur.com/ZPrZ60z.png',
-            'Valyrian Steel Blade': 'https://i.imgur.com/virWHrL.png',
-            'Coffee-Soaked Mop': 'https://i.imgur.com/hSc5B3K.png',
-            'Sting': 'https://i.imgur.com/XPbif72.png',
-            'Can Cannon': 'https://i.imgur.com/uUMtVug.png',
-            'Hacksaw': 'https://i.imgur.com/1QmvhdZ.png',
-            "Beggar's Bludgeon":'https://i.imgur.com/1hNW2nX.png',
-            'Gold Pickaxe': 'https://i.imgur.com/koYGGaF.png',
-            'Hackeysack': 'https://i.imgur.com/NU1Hm1c.png',
-            'Ratarang': 'https://i.imgur.com/jvdD0yS.png',
-            'Weaponized Bindle': 'https://i.imgur.com/7qFqBmt.png',
-            'Water Cannon': 'https://i.imgur.com/waXHq3q.png',
-            'Championship Belt': 'https://i.imgur.com/tFUAP92.png',
-            'Gold Folding Chair': 'https://i.imgur.com/gC8yOxg.png',
-            'Golden Rod': 'https://i.imgur.com/SHHnw5S.png',
+    const ASSET_MAP_URL =
+        'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-assets.json';
 
-            'Wonka Ring': 'https://i.imgur.com/I503bqk.png',
-            'Rodent Ring': 'https://i.imgur.com/ldE9Adi.png',
-            'Onion Ring': 'https://i.imgur.com/NFzQitY.png',
-            'Chewing Gum Ring': 'https://i.imgur.com/ptqgOT7.png',
-            'Engagement Ring': 'https://i.imgur.com/AHbTxT9.png',
-            'Respect Ring': 'https://i.imgur.com/mBvsJ6d.png',
+    const ASSET_MAP_CACHE_KEY =
+        'hw-dali-asset-map-cache-v1';
 
-            'Kobayashi Ring': 'https://i.imgur.com/t8x3Kce.png',
-            'Toothpuff Ring': 'https://i.imgur.com/8Mjwx7g.png',
-            'Ring Pop': 'https://i.imgur.com/2YGfOJF.png',
-            'Green Lantern Ring': 'https://i.imgur.com/Edy751T.png',
-            'Beggar Ring': 'https://i.imgur.com/hGuIhLM.png'
-        },
+    let REPLACEMENTS = null;
 
-        tattoos: {
-            'Boozaholic': 'https://i.imgur.com/2FnyyLv.png',
-            'Rattoo': 'https://i.imgur.com/BG2Jbpw.png',
-            'Skull-Pot': 'https://i.imgur.com/vkuyUaY.png',
-            'Cantastic': 'https://i.imgur.com/bueFImn.png',
-            'Liberty Cycle': 'https://i.imgur.com/91JlOwh.png',
-            'Middle Earth Rock': 'https://i.imgur.com/O6Crd8S.png',
-            'Packin Sasquatch': 'https://i.imgur.com/gwscPXL.png',
-            'Beggars Paradise': 'https://i.imgur.com/Gmxgh3B.png',
-            'Arena Badass': 'https://i.imgur.com/NejOXS6.png'
-        },
-        specialItems: {
-            'Hobo Grail (Depleted)': 'https://i.imgur.com/BEX1ls6.png',
-            'Hobo Grail (Full)': 'https://i.imgur.com/2Lz5HCc.png',
-            "King's Kiddie Cup+": 'https://i.imgur.com/qCxDIVc.png'
-        },
-        bernardsSpecialItems: {
-            'Cabana Club Card': 'https://i.imgur.com/v5SWazu.png',
-            'Library Card': 'https://i.imgur.com/BFDRT2u.png',
-            'Training Shoes': 'https://i.imgur.com/uuR89Yp.png',
-            'Professional Beggar Outfit': 'https://i.imgur.com/aoBxfy0.png',
-            'Green Card': 'https://i.imgur.com/0YMvHvr.png',
-            'Debit Card': 'https://i.imgur.com/xkwoVRi.png',
-            'Special Sunglasses': 'https://i.imgur.com/V54X14b.png'
-        },
+    let EQUIPMENT_NAMES = [];
+    let NORMALIZED_EQUIPMENT_NAMES = new Map();
 
-        backpackItems: {
-            'Care Package': 'https://i.imgur.com/2JKw0ca.png',
-            'Cardboard Box': 'https://i.imgur.com/DQPaaTa.png'
-        },
+    loadAssetMap()
+        .then(assetMap => {
+            REPLACEMENTS = assetMap;
+            buildLookupTables();
+            initializeDali();
+        })
+        .catch(error => {
+            console.error(
+                '[DALI] Unable to initialize asset map:',
+                error
+            );
+        });
 
-        currencies: {
-            'Money': 'https://i.imgur.com/AzNtUzE.png',
-            'Cans': 'https://i.imgur.com/VxnDASV.png',
-            'Tokens': 'https://i.imgur.com/1jMG4iN.png',
-            'Food Stamps': 'https://i.imgur.com/A6sf6dd.png',
-            'Points': 'https://i.imgur.com/CxlQGI2.png',
-            'Donator Packs': 'https://i.imgur.com/eHSCpsk.png'
+    function loadAssetMap() {
+        return fetchRemoteAssetMap()
+            .then(assetMap => {
+                cacheAssetMap(assetMap);
+                return assetMap;
+            })
+            .catch(error => {
+                const cached = readCachedAssetMap();
+
+                if (cached) {
+                    console.warn(
+                        '[DALI] Remote asset map unavailable; using cached copy.',
+                        error
+                    );
+                    return cached;
+                }
+
+                throw error;
+            });
+    }
+
+    function fetchRemoteAssetMap() {
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: `${ASSET_MAP_URL}?dali=${Date.now()}`,
+                timeout: 10000,
+
+                onload(response) {
+                    if (response.status < 200 || response.status >= 300) {
+                        reject(
+                            new Error(
+                                `Asset map request returned HTTP ${response.status}.`
+                            )
+                        );
+                        return;
+                    }
+
+                    try {
+                        const assetMap = JSON.parse(response.responseText);
+                        validateAssetMap(assetMap);
+                        resolve(assetMap);
+                    } catch (error) {
+                        reject(error);
+                    }
+                },
+
+                onerror() {
+                    reject(new Error('Asset map network request failed.'));
+                },
+
+                ontimeout() {
+                    reject(new Error('Asset map network request timed out.'));
+                }
+            });
+        });
+    }
+
+    function validateAssetMap(assetMap) {
+        if (!assetMap || typeof assetMap !== 'object' || Array.isArray(assetMap)) {
+            throw new Error('Asset map root is not a JSON object.');
         }
-    };
+
+        const requiredCatalogs = [
+            'equipment',
+            'tattoos',
+            'bernardsSpecialItems',
+            'backpackItems',
+            'currencies'
+        ];
+
+        for (const catalogName of requiredCatalogs) {
+            const catalog = assetMap[catalogName];
+
+            if (!catalog || typeof catalog !== 'object' || Array.isArray(catalog)) {
+                throw new Error(
+                    `Asset map is missing the "${catalogName}" catalog.`
+                );
+            }
+        }
+
+        return assetMap;
+    }
+
+    function cacheAssetMap(assetMap) {
+        try {
+            localStorage.setItem(
+                ASSET_MAP_CACHE_KEY,
+                JSON.stringify(assetMap)
+            );
+        } catch (error) {
+            console.warn('[DALI] Unable to cache asset map.', error);
+        }
+    }
+
+    function readCachedAssetMap() {
+        try {
+            const raw = localStorage.getItem(ASSET_MAP_CACHE_KEY);
+
+            if (!raw) {
+                return null;
+            }
+
+            const assetMap = JSON.parse(raw);
+            validateAssetMap(assetMap);
+            return assetMap;
+        } catch (error) {
+            console.warn('[DALI] Cached asset map is invalid.', error);
+            return null;
+        }
+    }
+
+    function buildLookupTables() {
+        EQUIPMENT_NAMES = Object.keys(REPLACEMENTS.equipment);
+
+        NORMALIZED_EQUIPMENT_NAMES = new Map(
+            EQUIPMENT_NAMES.map(name => [
+                normalizeEquipmentName(name),
+                name
+            ])
+        );
+
+    }
 
 
     /*
@@ -122,24 +195,8 @@
     };
 
 // ------------------------------------------------------------------------
-// LOOKUP TABLES
+// NAME / CATALOG HELPERS
 // ------------------------------------------------------------------------
-
-    const EQUIPMENT_NAMES = Object.keys(REPLACEMENTS.equipment);
-
-    const NORMALIZED_EQUIPMENT_NAMES = new Map(
-        EQUIPMENT_NAMES.map(name => [
-            normalizeEquipmentName(name),
-            name
-        ])
-    );
-
-    const EQUIPMENT_SLUGS = new Map(
-        EQUIPMENT_NAMES.map(name => [
-            slugify(name),
-            name
-        ])
-    );
 
     function normalizeAssetName(value) {
         if (!value) {
@@ -191,36 +248,34 @@
         return null;
     }
 // ------------------------------------------------------------------------
-// INITIAL SCAN
+// INITIALIZATION / DYNAMIC CONTENT
 // ------------------------------------------------------------------------
 
-    scan(document);
+    function initializeDali() {
+        scan(document);
 
-// ------------------------------------------------------------------------
-// DYNAMIC CONTENT
-// ------------------------------------------------------------------------
+        const observer = new MutationObserver(mutations => {
+            for (const mutation of mutations) {
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType !== Node.ELEMENT_NODE) {
+                        continue;
+                    }
 
-    const observer = new MutationObserver(mutations => {
-        for (const mutation of mutations) {
-            for (const node of mutation.addedNodes) {
-                if (node.nodeType !== Node.ELEMENT_NODE) {
-                    continue;
+                    if (node.matches('img')) {
+                        processImage(node);
+                    }
+
+                    scan(node);
                 }
-
-                if (node.matches('img')) {
-                    processImage(node);
-                }
-
-                scan(node);
             }
-        }
-    });
-
-    if (document.body) {
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
         });
+
+        if (document.body) {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
     }
 
 // ------------------------------------------------------------------------
@@ -232,76 +287,54 @@
             return;
         }
 
-        /*
-         * One-off native top-menu currency icon replacement.
-         *
-         * The Cans counter in .section.bmenu is not an <img>; HoboWars renders
-         * it as <div class="img cans"></div>. Handle that legacy CSS-sprite
-         * location directly while preserving the native element geometry.
-         */
-        replaceBmenuCansIcon(root);
+        replaceBmenuIcons(root);
 
         for (const image of root.querySelectorAll('img')) {
             processImage(image);
         }
     }
 
-    function replaceBmenuCansIcon(root) {
-        const replacementUrl = REPLACEMENTS.currencies.Cans;
+    function replaceBmenuIcons(root) {
+        const menuAssets = {
+            home: ['backpackItems', 'Cardboard Box'],
+            backpack: ['backpackItems', 'Unusually Large Backpack'],
+            food: ['foodItems', 'Single-Single'],
+            city: ['backpackItems', 'School ID'],
+            cans: ['currencies', 'Cans']
+        };
 
-        if (!replacementUrl) {
-            return;
-        }
+        for (const [className, [catalogName, identity]] of Object.entries(menuAssets)) {
+            const replacementUrl = REPLACEMENTS[catalogName]?.[identity];
 
-        const selector = '.section.bmenu .img.cans';
-        const icons = [];
-
-        /*
-         * querySelectorAll() does not include root itself, so explicitly catch
-         * a dynamically-added .img.cans node before scanning its descendants.
-         */
-        if (
-            root instanceof Element &&
-            root.matches(selector)
-        ) {
-            icons.push(root);
-        }
-
-        icons.push(
-            ...root.querySelectorAll(selector)
-        );
-
-        for (const icon of icons) {
-            if (icon.dataset.daliCurrencyUi === 'Cans') {
+            if (!replacementUrl) {
                 continue;
             }
 
-            icon.dataset.daliCurrencyUi = 'Cans';
+            const selector = `.section.bmenu .img.${className}`;
+            const icons = [];
 
-            /*
-             * Override the native sprite properties only. Width, height,
-             * margins and surrounding top-menu layout remain owned by HoboWars.
-             */
-            icon.style.setProperty(
-                'background-image',
-                `url("${replacementUrl}")`,
-                'important'
-            );
-            icon.style.setProperty(
-                'background-position',
-                'center',
-                'important'
-            );
-            icon.style.setProperty(
-                'background-repeat',
-                'no-repeat',
-                'important'
-            );
-            icon.style.setProperty(
-                'background-size',
-                'contain',
-                'important'
-            );
+            if (root instanceof Element && root.matches(selector)) {
+                icons.push(root);
+            }
+
+            icons.push(...root.querySelectorAll(selector));
+
+            for (const icon of icons) {
+                if (icon.dataset.daliMenuAsset === identity) {
+                    continue;
+                }
+
+                icon.dataset.daliMenuAsset = identity;
+
+                icon.style.setProperty(
+                    'background-image',
+                    `url("${replacementUrl}")`,
+                    'important'
+                );
+                icon.style.setProperty('background-position', 'center', 'important');
+                icon.style.setProperty('background-repeat', 'no-repeat', 'important');
+                icon.style.setProperty('background-size', 'contain', 'important');
+            }
         }
     }
 
@@ -351,7 +384,7 @@
         }
 
         const replacementUrl =
-            REPLACEMENTS.specialItems[identity];
+            REPLACEMENTS.backpackItems[identity];
 
         if (!replacementUrl) {
             return false;
@@ -361,7 +394,7 @@
             image,
             identity,
             replacementUrl,
-            'special-item'
+            'backpack-item'
         );
 
         return true;
@@ -370,6 +403,7 @@
     function identifySpecialItem(image) {
         const src = image.getAttribute('src') || '';
         const alt = image.getAttribute('alt') || '';
+        const hash = dataSrcHash(src);
 
     // ------------------------------------------------------------
     // Hobo Grail — depleted
@@ -377,7 +411,7 @@
 
         if (
             /Hobo-Grail-Dark/i.test(src) ||
-            dataSrcHash(src) === '23e145b2'
+            hash === '23e145b2'
         ) {
             return 'Hobo Grail (Depleted)';
         }
@@ -388,7 +422,7 @@
 
         if (
             /Hobo-Grail(?!-Dark)/i.test(src) ||
-            dataSrcHash(src) === 'be956455'
+            hash === 'be956455'
         ) {
             return 'Hobo Grail (Full)';
         }
@@ -397,20 +431,13 @@
     // King's Kiddie Cup+
     // ------------------------------------------------------------
 
-        if (
-            alt === "King's Kiddie Cup" ||
-            /Kings-Kiddie-Cup/i.test(src)
-        ) {
+        if (hash === '69db8c2a') {
             return "King's Kiddie Cup+";
         }
 
-        /*
-         * HoboWars serves several differently resized base64 versions
-         * of the Kiddie Cup. These hashes identify those exact native
-         * image payloads without embedding thousands of characters of
-         * base64 into DALI.
-         */
-        const hash = dataSrcHash(src);
+    // ------------------------------------------------------------
+    // King's Kiddie Cup
+    // ------------------------------------------------------------
 
         if (
             hash === '9ab0cb50' ||
@@ -418,7 +445,14 @@
             hash === '32fea929' ||
             hash === '207191e6'
         ) {
-            return "King's Kiddie Cup+";
+            return "King's Kiddie Cup";
+        }
+
+        if (
+            alt === "King's Kiddie Cup" ||
+            /Kings-Kiddie-Cup/i.test(src)
+        ) {
+            return "King's Kiddie Cup";
         }
 
         return null;
@@ -1481,22 +1515,36 @@ function barSvg(x, y, scale = 1) {
     function identifyEquipmentFromSource(image) {
         const src = String(
             image.getAttribute('src') || ''
-        ).toLowerCase();
+        );
 
-        if (
-            !src ||
-            src.startsWith('data:')
-        ) {
+        if (!src || src.startsWith('data:')) {
             return null;
         }
 
-        for (const [slug, itemName] of EQUIPMENT_SLUGS) {
-            if (src.includes(slug)) {
-                return itemName;
-            }
+        let filename =
+            src.split(/[?#]/)[0]
+                .split('/')
+                .pop() || '';
+
+        try {
+            filename = decodeURIComponent(filename);
+        } catch (error) {
+            // Keep the undecoded filename.
         }
 
-        return null;
+        if (
+            /^x/i.test(filename) &&
+            /\.pagespeed\./i.test(filename)
+        ) {
+            filename = filename.slice(1);
+        }
+
+        filename = filename.replace(
+            /\.(?:gif|png|jpe?g|webp)(?:\.pagespeed\..*)?$/i,
+            ''
+        );
+
+        return canonicalizeEquipmentName(filename);
     }
 
 // ------------------------------------------------------------------------
@@ -1652,11 +1700,6 @@ function barSvg(x, y, scale = 1) {
             .trim();
     }
 
-    function slugify(value) {
-        return normalizeEquipmentName(value)
-            .toLowerCase()
-            .replace(/\s+/g, '-');
-    }
 
     function numericDimension(value) {
         const number = Number.parseFloat(value);

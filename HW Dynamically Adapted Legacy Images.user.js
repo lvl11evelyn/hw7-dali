@@ -431,22 +431,24 @@
     // King's Kiddie Cup+
     // ------------------------------------------------------------
 
-        if (hash === '43f62fec') {
+        const hash = dataSrcHash(src);
+
+        const KKC_PLUS_HASHES = new Set([
+            '43f62fec',
+            '69db8c2a',
+            '9ab0cb50',
+            '4217fcb3',
+            '32fea929',
+            '207191e6'
+        ]);
+
+        if (KKC_PLUS_HASHES.has(hash)) {
             return "King's Kiddie Cup+";
         }
 
     // ------------------------------------------------------------
     // King's Kiddie Cup
     // ------------------------------------------------------------
-
-        if (
-            hash === '9ab0cb50' ||
-            hash === '4217fcb3' ||
-            hash === '32fea929' ||
-            hash === '207191e6'
-        ) {
-            return "King's Kiddie Cup";
-        }
 
         if (
             alt === "King's Kiddie Cup" ||

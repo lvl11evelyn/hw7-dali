@@ -431,8 +431,6 @@
     // King's Kiddie Cup+
     // ------------------------------------------------------------
 
-        const hash = dataSrcHash(src);
-
         const KKC_PLUS_HASHES = new Set([
             '43f62fec',
             '69db8c2a',

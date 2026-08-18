@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      0.52
+// @version      0.6
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -347,6 +347,12 @@
             return;
         }
 
+        // Navigation arrows are anonymous legacy raster assets. Identify
+        // them from the native payload/filename before semantic item matching.
+        if (processNavigationArrow(image)) {
+            return;
+        }
+
         // Tattoos have the strongest native semantic identifier:
         // the exact tattoo name in the alt attribute.
         if (processTattoo(image)) {
@@ -498,6 +504,159 @@ function svgDataUrl(svg) {
                 .trim()
         )
     );
+}
+
+// ------------------------------------------------------------------------
+// INLINE NAVIGATION SVG ARTWORK
+// ------------------------------------------------------------------------
+
+const NAV_ARROW_HASHES = new Map([
+    // Cardinal north base64 payload observed in the Mines/explore UI.
+    ['069aac95', 'N'],
+
+    // Authoritatively mapped diagonal base64 payloads.
+    ['1563e943', 'NE'],
+    ['ebe24f2e', 'SE'],
+    ['fa4475fa', 'SW'],
+    ['44255e60', 'NW']
+]);
+
+const NAV_ARROW_FILENAMES = new Map([
+    ['1', 'N'],
+    ['2', 'E'],
+    ['3', 'S'],
+    ['4', 'W'],
+    ['5', 'NE'],
+    ['6', 'SE'],
+    ['7', 'SW'],
+    ['8', 'NW']
+]);
+
+const NAV_ARROW_ROTATIONS = Object.freeze({
+    N: 0,
+    NE: 45,
+    E: 90,
+    SE: 135,
+    S: 180,
+    SW: 225,
+    W: 270,
+    NW: 315
+});
+
+function processNavigationArrow(image) {
+    const direction = identifyNavigationArrow(image);
+
+    if (!direction) {
+        return false;
+    }
+
+    const dimensions = getRenderedDimensions(image);
+
+    if (!dimensions) {
+        return false;
+    }
+
+    const svg = makeNavigationArrowSvg(
+        direction,
+        dimensions.width,
+        dimensions.height
+    );
+
+    const originalSrc = image.getAttribute('src') || '';
+
+    image.dataset.daliName = `Navigation ${direction}`;
+    image.dataset.daliCategory = 'navigation';
+    image.dataset.daliOriginalSrc = originalSrc;
+    image.dataset.daliDirection = direction;
+
+    image.style.width = `${dimensions.width}px`;
+    image.style.height = `${dimensions.height}px`;
+    image.style.objectFit = 'contain';
+    image.style.objectPosition = 'center';
+    image.style.background = 'transparent';
+
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
+
+    image.src = svgDataUrl(svg);
+
+    return true;
+}
+
+function identifyNavigationArrow(image) {
+    const src = image.getAttribute('src') || '';
+    const hash = dataSrcHash(src);
+
+    if (hash && NAV_ARROW_HASHES.has(hash)) {
+        return NAV_ARROW_HASHES.get(hash);
+    }
+
+    /*
+     * Native/page-speed filename fallback. xmove_1 through xmove_8 form the
+     * eight-direction compass set; the URL suffix after the GIF is allowed
+     * to vary because PageSpeed rewrites are deployment details.
+     */
+    const filenameMatch = src.match(
+        /\/images\/xmove_([1-8])\.gif(?:\.pagespeed\.[^?#]+)?/i
+    );
+
+    if (!filenameMatch) {
+        return null;
+    }
+
+    return NAV_ARROW_FILENAMES.get(filenameMatch[1]) || null;
+}
+
+function makeNavigationArrowSvg(direction, width, height) {
+    const w = Math.max(1, Number(width) || 1);
+    const h = Math.max(1, Number(height) || 1);
+    const cx = w / 2;
+    const cy = h / 2;
+    const rotation = NAV_ARROW_ROTATIONS[direction] || 0;
+
+    /*
+     * One north-facing primitive is rotated into all eight directions.
+     * The canvas remains completely transparent; only the red arrow body
+     * and its deliberately broad black outline produce opaque pixels.
+     */
+    const margin = Math.max(2, Math.min(w, h) * 0.08);
+    const headY = margin;
+    const shoulderY = h * 0.46;
+    const tailY = h - margin;
+    const halfHead = Math.min(w * 0.43, h * 0.43);
+    const halfStem = Math.max(2, Math.min(w, h) * 0.13);
+    const strokeWidth = Math.max(2, Math.min(w, h) * 0.095);
+
+    const path = [
+        `M ${cx} ${headY}`,
+        `L ${cx + halfHead} ${shoulderY}`,
+        `L ${cx + halfStem} ${shoulderY}`,
+        `L ${cx + halfStem} ${tailY}`,
+        `L ${cx - halfStem} ${tailY}`,
+        `L ${cx - halfStem} ${shoulderY}`,
+        `L ${cx - halfHead} ${shoulderY}`,
+        'Z'
+    ].join(' ');
+
+    return `
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 ${w} ${h}"
+            width="${w}"
+            height="${h}"
+        >
+            <g transform="rotate(${rotation} ${cx} ${cy})">
+                <path
+                    d="${path}"
+                    fill="#d00"
+                    stroke="#000"
+                    stroke-width="${strokeWidth}"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                />
+            </g>
+        </svg>
+    `;
 }
 
 function makeSlotSvg(body) {

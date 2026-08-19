@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.95
+// @version      2.0
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -1874,46 +1874,68 @@ function barSvg(x, y, scale = 1) {
 // ------------------------------------------------------------------------
 // BERNARD'S SPECIAL ITEMS
 // ------------------------------------------------------------------------
-    
+
+    function processBernardsSpecialItem(image) {
+        const identity = identifyBernardsSpecialItem(image);
+
+        if (!identity) {
+            return false;
+        }
+
+        const entry = getCatalogEntry(
+            'bernardsSpecialItems',
+            identity
+        );
+
+        if (!entry) {
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry
+        );
+    }
+
     function identifyBernardsSpecialItem(image) {
         const candidates = [
             image.getAttribute('alt'),
             image.getAttribute('title'),
             image.getAttribute('src')
         ];
-    
+
         for (const candidate of candidates) {
             const identity = findCatalogMatch(
                 candidate,
                 REPLACEMENTS.bernardsSpecialItems
             );
-    
+
             if (identity) {
                 return identity;
             }
         }
-    
+
         /*
          * Some Bernard's Special Items are served as base64 imagery
          * with no useful filename/alt identity. Their immediate <center>
          * container contains the canonical displayed item name.
          */
         const itemContainer = image.closest('center');
-    
+
         if (itemContainer) {
             const containerText =
                 itemContainer.textContent || '';
-    
+
             for (
                 const name of
                 Object.keys(REPLACEMENTS.bernardsSpecialItems)
             ) {
                 const normalizedContainer =
                     normalizeAssetName(containerText);
-    
+
                 const normalizedName =
                     normalizeAssetName(name);
-    
+
                 if (
                     normalizedContainer === normalizedName ||
                     normalizedContainer.startsWith(
@@ -1927,7 +1949,7 @@ function barSvg(x, y, scale = 1) {
                 }
             }
         }
-    
+
         return null;
     }
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.93
+// @version      1.94
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -54,8 +54,6 @@
      * A cached catalog is usable synchronously; a first-run install can still
      * process self-contained SVG families while the remote map is arriving.
      */
-    initializeDali();
-    refreshRemoteAssetMap();
 
     async function refreshRemoteAssetMap() {
         try {
@@ -2575,4 +2573,7 @@ function barSvg(x, y, scale = 1) {
     if (cachedAssetMap) {
         applyAssetMap(cachedAssetMap);
     }
+
+    initializeDali();
+    refreshRemoteAssetMap();
 })();

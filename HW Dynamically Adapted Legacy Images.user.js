@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.1
+// @version      2.21
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -374,6 +374,78 @@
                 ? value.trim()
                 : null
         };
+    }
+
+    function findCatalogEntryByIdentity(catalogName, rawValue) {
+        const lookup = lookupCatalogIdentity(rawValue);
+
+        if (lookup.status === 'resolved') {
+            return lookup.entry.catalog === catalogName
+                ? lookup.entry
+                : null;
+        }
+
+        if (lookup.status !== 'ambiguous') {
+            return null;
+        }
+
+        const matches = lookup.entries.filter(
+            entry => entry.catalog === catalogName
+        );
+
+        return matches.length === 1
+            ? matches[0]
+            : null;
+    }
+
+    function findCatalogEntryByContainerText(catalogName, rawValue) {
+        const catalog = REPLACEMENTS?.[catalogName];
+
+        if (!catalog) {
+            return null;
+        }
+
+        const normalizedContainer = normalizeAssetName(rawValue);
+
+        if (!normalizedContainer) {
+            return null;
+        }
+
+        let match = null;
+
+        walkCatalogLeaves(
+            catalogName,
+            catalog,
+            [],
+            (name, url, path) => {
+                if (match) {
+                    return;
+                }
+
+                const normalizedName = normalizeAssetName(name);
+
+                if (
+                    normalizedContainer === normalizedName ||
+                    normalizedContainer.startsWith(
+                        `${normalizedName} `
+                    ) ||
+                    normalizedContainer.startsWith(
+                        `${normalizedName}(`
+                    )
+                ) {
+                    match = {
+                        name,
+                        catalog: catalogName,
+                        path: [catalogName, ...path, name],
+                        url: typeof url === 'string' && url.trim()
+                            ? url.trim()
+                            : null
+                    };
+                }
+            }
+        );
+
+        return match;
     }
 
     function lookupCatalogIdentity(rawValue) {
@@ -996,6 +1068,30 @@ function renderInlineAssetSvg(identity) {
         case 'plastic-explosives':
             return makePlasticExplosivesSvg();
 
+        case 'ore-green':
+            return makeOreHexSvg('#2fd249', '#166f29', '#9cf7a8');
+
+        case 'ore-white':
+            return makeOreHexSvg('#d8dde3', '#8a949d', '#ffffff');
+
+        case 'ore-yellow':
+            return makeOreHexSvg('#e6db1f', '#9a8f12', '#fff37a');
+
+        case 'ore-orange':
+            return makeOreHexSvg('#ef9a2d', '#a65c17', '#ffd08a');
+
+        case 'ore-red':
+            return makeOreHexSvg('#e14a36', '#8f2318', '#ff8a78');
+
+        case 'ore-purple':
+            return makeOreHexSvg('#bf56eb', '#6b2390', '#e3a1ff');
+
+        case 'ore-black':
+            return makeOreHexSvg('#3a3a3a', '#111111', '#7a7a7a');
+
+        case 'hobalt-shard':
+            return makeHobaltShardSvg();
+
         default:
             return null;
     }
@@ -1205,6 +1301,81 @@ function makePlasticExplosivesSvg() {
             stroke="#2f383b"
             stroke-width="3.5"
             stroke-linecap="round"
+        />
+    `);
+}
+
+
+function makeOreHexSvg(fill, stroke, shine) {
+    return makeMiningToolSvg(`
+        <polygon
+            points="50,10 74,24 74,52 50,66 26,52 26,24"
+            fill="${fill}"
+            stroke="${stroke}"
+            stroke-width="5"
+            stroke-linejoin="round"
+        />
+        <polygon
+            points="50,17 67,27 67,48 50,58 33,48 33,27"
+            fill="${fill}"
+            opacity=".45"
+        />
+        <path
+            d="M35 25 L50 16 L64 24"
+            fill="none"
+            stroke="${shine}"
+            stroke-width="4"
+            stroke-linecap="round"
+            opacity=".85"
+        />
+        <path
+            d="M34 31 L34 48 L50 57"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="3"
+            stroke-linecap="round"
+            opacity=".18"
+        />
+        <path
+            d="M66 31 L66 48 L50 57"
+            fill="none"
+            stroke="#000000"
+            stroke-width="3"
+            stroke-linecap="round"
+            opacity=".18"
+        />
+    `);
+}
+
+function makeHobaltShardSvg() {
+    return makeMiningToolSvg(`
+        <path
+            d="M42 8 L62 18 L66 39 L56 86 L34 73 L28 35 Z"
+            fill="#2da6ff"
+            stroke="#0b4f8a"
+            stroke-width="5"
+            stroke-linejoin="round"
+        />
+        <path
+            d="M43 16 L56 22 L58 38 L50 72 L37 63 L33 36 Z"
+            fill="#7fd0ff"
+            opacity=".75"
+        />
+        <path
+            d="M44 14 L53 21 L47 67"
+            fill="none"
+            stroke="#d8f4ff"
+            stroke-width="4"
+            stroke-linecap="round"
+            opacity=".9"
+        />
+        <path
+            d="M55 23 L61 39 L54 79"
+            fill="none"
+            stroke="#0a3561"
+            stroke-width="3"
+            stroke-linecap="round"
+            opacity=".4"
         />
     `);
 }
@@ -2003,16 +2174,7 @@ function barSvg(x, y, scale = 1) {
 // ------------------------------------------------------------------------
 
     function processBackpackItem(image) {
-        const identity = identifyBackpackItem(image);
-
-        if (!identity) {
-            return false;
-        }
-
-        const entry = getCatalogEntry(
-            'backpackItems',
-            identity
-        );
+        const entry = identifyBackpackItem(image);
 
         if (!entry) {
             return false;
@@ -2033,15 +2195,19 @@ function barSvg(x, y, scale = 1) {
 
         /*
          * Prefer identity attached directly to the image.
+         *
+         * Backpack items now rely on the catalog identity index so nested
+         * subfamilies such as Misc, Wearables, and MiningTools resolve
+         * authoritatively.
          */
         for (const candidate of candidates) {
-            const identity = findCatalogMatch(
-                candidate,
-                REPLACEMENTS.backpackItems
+            const entry = findCatalogEntryByIdentity(
+                'backpackItems',
+                candidate
             );
 
-            if (identity) {
-                return identity;
+            if (entry) {
+                return entry;
             }
         }
 
@@ -2051,13 +2217,6 @@ function barSvg(x, y, scale = 1) {
          *
          * Only inspect the item's immediate semantic container, and
          * require its displayed text to BEGIN with the item name.
-         *
-         * This prevents:
-         *
-         * "Championship Belt + Care Package"
-         *
-         * from causing the Championship Belt image to be identified
-         * as a Care Package.
          */
         const container = image.closest('center, td');
 
@@ -2065,27 +2224,10 @@ function barSvg(x, y, scale = 1) {
             return null;
         }
 
-        const containerText =
-            normalizeAssetName(container.textContent || '');
-
-        for (
-            const name of
-            Object.keys(REPLACEMENTS.backpackItems)
-        ) {
-            const normalizedName =
-                normalizeAssetName(name);
-
-            if (
-                containerText === normalizedName ||
-                containerText.startsWith(
-                    `${normalizedName} `
-                )
-            ) {
-                return name;
-            }
-        }
-
-        return null;
+        return findCatalogEntryByContainerText(
+            'backpackItems',
+            container.textContent || ''
+        );
     }
 
 // ------------------------------------------------------------------------
@@ -2448,8 +2590,14 @@ function barSvg(x, y, scale = 1) {
         category,
         path = null
     ) {
-        const dimensions =
-            getRenderedDimensions(image);
+        const isMiningTool =
+            Array.isArray(path) &&
+            path[0] === 'backpackItems' &&
+            path.includes('MiningTools');
+
+        const dimensions = isMiningTool
+            ? { width: 30, height: 30 }
+            : getRenderedDimensions(image);
 
         if (!dimensions) {
             queueImageRetry(image);
@@ -2475,8 +2623,23 @@ function barSvg(x, y, scale = 1) {
         image.style.height =
             `${dimensions.height}px`;
 
-        image.style.objectFit = 'cover';
-        image.style.objectPosition = 'center';
+        image.style.objectFit = isMiningTool
+            ? 'contain'
+            : 'cover';
+        image.style.objectPosition = 'center center';
+
+        if (isMiningTool) {
+            image.setAttribute('width', '30');
+            image.setAttribute('height', '30');
+            image.style.minWidth = '30px';
+            image.style.minHeight = '30px';
+            image.style.maxWidth = '30px';
+            image.style.maxHeight = '30px';
+            image.style.boxSizing = 'border-box';
+            image.style.display = 'inline-block';
+            image.style.verticalAlign = 'middle';
+            image.style.background = 'transparent';
+        }
 
         image.removeAttribute('srcset');
         image.removeAttribute('sizes');

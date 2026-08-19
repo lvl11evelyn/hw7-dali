@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.5
+// @version      1.6
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -642,8 +642,21 @@
             childList: true,
             subtree: true
         });
-    
+
         scan(document);
+
+        /*
+         * Parser-time image nodes can arrive before their surrounding item
+         * text exists. Revisit the completed DOM once so semantic fallbacks
+         * can identify base64/context-backed assets without guessing early.
+         */
+        if (document.readyState === 'loading') {
+            document.addEventListener(
+                'DOMContentLoaded',
+                () => scan(document),
+                { once: true }
+            );
+        }
     }
 
 
@@ -778,6 +791,17 @@
             direct.status === 'resolved' &&
             applyResolvedCatalogEntry(image, direct.entry)
         ) {
+            return;
+        }
+
+        /*
+         * At document-start the parser may have inserted the <img> before
+         * the surrounding cell/row text that several semantic fallbacks use
+         * as their authoritative identity. Do not permanently classify such
+         * images as unresolved while that context is still being constructed.
+         * The DOMContentLoaded sweep above will reconsider them once complete.
+         */
+        if (document.readyState === 'loading') {
             return;
         }
 

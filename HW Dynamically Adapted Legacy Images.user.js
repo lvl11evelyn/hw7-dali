@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.23
+// @version      2.3
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2248,13 +2248,20 @@ function barSvg(x, y, scale = 1) {
     }
 
     function identifyRatEntry(image) {
-        const rating = image.closest('div.rating');
+        const ratCell = image.closest(
+            'td.ratcell[id^="ratimg-"]'
+        );
 
-        if (!rating) {
+        if (
+            !ratCell ||
+            !/^ratimg-\d+$/.test(ratCell.id)
+        ) {
             return null;
         }
 
-        const hostImage = rating.querySelector('img.mainimg[title]');
+        const hostImage = ratCell.querySelector(
+            'div.ratimg > img.mainimg[title]'
+        );
 
         if (!hostImage) {
             return null;
@@ -2275,8 +2282,12 @@ function barSvg(x, y, scale = 1) {
             );
         }
 
+        const subImage = ratCell.querySelector(
+            'div.ratimg > img.ratImg2'
+        );
+
         if (
-            image.matches('img.ratImg2') &&
+            image === subImage &&
             identities.sub
         ) {
             return findCatalogEntryByIdentity(

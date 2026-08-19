@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.0
+// @version      2.1
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -1214,6 +1214,12 @@ function makePlasticExplosivesSvg() {
 // ------------------------------------------------------------------------
 
 const NAV_ARROW_HASHES = new Map([
+    /* Authoritatively mapped cardinal base64 payloads. */
+    ['30bc4f42', 'N'],
+    ['3eb8d06b', 'E'],
+    ['acda841b', 'S'],
+    ['e1200fbc', 'W'],
+
     /* Authoritatively mapped diagonal base64 payloads. */
     ['1563e943', 'NE'],
     ['ebe24f2e', 'SE'],
@@ -1308,28 +1314,70 @@ function identifyNavigationArrow(image) {
 function makeNavigationArrowSvg(direction, width, height) {
     const w = Math.max(1, Number(width) || 1);
     const h = Math.max(1, Number(height) || 1);
-    const cx = w / 2;
-    const cy = h / 2;
-    const rotation = NAV_ARROW_ROTATIONS[direction] || 0;
-
-    const margin = Math.max(2, Math.min(w, h) * 0.08);
-    const headY = margin;
-    const shoulderY = h * 0.46;
-    const tailY = h - margin;
-    const halfHead = Math.min(w * 0.43, h * 0.43);
-    const halfStem = Math.max(2, Math.min(w, h) * 0.13);
     const strokeWidth = Math.max(2, Math.min(w, h) * 0.095);
+    const inset = Math.max(1.5, strokeWidth * 0.75);
 
-    const path = [
-        `M ${cx} ${headY}`,
-        `L ${cx + halfHead} ${shoulderY}`,
-        `L ${cx + halfStem} ${shoulderY}`,
-        `L ${cx + halfStem} ${tailY}`,
-        `L ${cx - halfStem} ${tailY}`,
-        `L ${cx - halfStem} ${shoulderY}`,
-        `L ${cx - halfHead} ${shoulderY}`,
-        'Z'
-    ].join(' ');
+    let points;
+
+    switch (direction) {
+        case 'N':
+            points = [
+                [w / 2, inset],
+                [w - inset, h - inset],
+                [inset, h - inset]
+            ];
+            break;
+
+        case 'E':
+            points = [
+                [w - inset, h / 2],
+                [inset, inset],
+                [inset, h - inset]
+            ];
+            break;
+
+        case 'S':
+            points = [
+                [w / 2, h - inset],
+                [inset, inset],
+                [w - inset, inset]
+            ];
+            break;
+
+        case 'W':
+            points = [
+                [inset, h / 2],
+                [w - inset, h - inset],
+                [w - inset, inset]
+            ];
+            break;
+
+        default: {
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = Math.max(
+                1,
+                (Math.min(w, h) / 2) - inset
+            );
+            const rotation = NAV_ARROW_ROTATIONS[direction] || 0;
+            const angle = rotation * Math.PI / 180;
+            const spread = 2 * Math.PI / 3;
+
+            points = [
+                angle - Math.PI / 2,
+                angle - Math.PI / 2 + spread,
+                angle - Math.PI / 2 - spread
+            ].map(theta => [
+                cx + Math.cos(theta) * radius,
+                cy + Math.sin(theta) * radius
+            ]);
+            break;
+        }
+    }
+
+    const pointString = points
+        .map(([x, y]) => `${x},${y}`)
+        .join(' ');
 
     return `
         <svg
@@ -1338,16 +1386,13 @@ function makeNavigationArrowSvg(direction, width, height) {
             width="${w}"
             height="${h}"
         >
-            <g transform="rotate(${rotation} ${cx} ${cy})">
-                <path
-                    d="${path}"
-                    fill="#d00"
-                    stroke="#000"
-                    stroke-width="${strokeWidth}"
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                />
-            </g>
+            <polygon
+                points="${pointString}"
+                fill="#d00"
+                stroke="#000"
+                stroke-width="${strokeWidth}"
+                stroke-linejoin="round"
+            />
         </svg>
     `;
 }

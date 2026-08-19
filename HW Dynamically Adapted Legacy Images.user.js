@@ -1338,7 +1338,7 @@ function makePlasticExplosivesSvg() {
 function makeOreHexSvg(fill, stroke, shine) {
     return makeMiningToolSvg(`
         <polygon
-            points="50,3 95,26 99,74 50,97 5,74 5,26"
+            points="50,7 93,25 93,75 50,93 7,75 7,25"
             fill="${fill}"
             stroke="${stroke}"
             stroke-width="5"

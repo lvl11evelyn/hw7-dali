@@ -1338,19 +1338,19 @@ function makePlasticExplosivesSvg() {
 function makeOreHexSvg(fill, stroke, shine) {
     return makeMiningToolSvg(`
         <polygon
-            points="50,7 93,25 93,75 50,93 7,75 7,25"
+            points="50,3 95,26 95,73 50,97 5,73 5,26"
             fill="${fill}"
             stroke="${stroke}"
             stroke-width="5"
             stroke-linejoin="round"
         />
         <polygon
-            points="50,8 67,27 67,48 50,58 33,48 33,27"
+            points="50,12 86,31 86,68 50,87 13,68 13,31"
             fill="${fill}"
             opacity=".45"
         />
         <path
-            d="M35 25 L50 16 L64 24"
+            d="M11 28 L50 8 L88 28"
             fill="none"
             stroke="${shine}"
             stroke-width="4"
@@ -1358,7 +1358,7 @@ function makeOreHexSvg(fill, stroke, shine) {
             opacity=".85"
         />
         <path
-            d="M34 31 L34 48 L50 57"
+            d="M9 29 L9 71 L50 92"
             fill="none"
             stroke="#ffffff"
             stroke-width="3"
@@ -1366,7 +1366,7 @@ function makeOreHexSvg(fill, stroke, shine) {
             opacity=".18"
         />
         <path
-            d="M66 31 L66 48 L50 57"
+            d="M90 29 L90 71 L51 92"
             fill="none"
             stroke="#000000"
             stroke-width="3"

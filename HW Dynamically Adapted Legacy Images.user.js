@@ -1373,6 +1373,14 @@ function makeOreHexSvg(fill, stroke, shine) {
             stroke-linecap="round"
             opacity=".18"
         />
+        <path
+            d="M7 47 L47 6"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="1"
+            stroke-linecap="round"
+            opacity=".22"
+        />
     `);
 }
 

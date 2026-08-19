@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.3
+// @version      1.4
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -642,8 +642,22 @@
             childList: true,
             subtree: true
         });
-    
+
         scan(document);
+
+        /*
+         * Parser-built / cached imagery can occasionally complete between a
+         * document-start mutation and the image retry listener being attached.
+         * A single DOMContentLoaded sweep closes that timing gap without
+         * putting the network back on DALI's critical path.
+         */
+        if (document.readyState === 'loading') {
+            document.addEventListener(
+                'DOMContentLoaded',
+                () => scan(document),
+                { once: true }
+            );
+        }
     }
 
 
@@ -2432,14 +2446,29 @@ function barSvg(x, y, scale = 1) {
 
         image.dataset.daliPending = 'true';
 
+        const retry = () => {
+            delete image.dataset.daliPending;
+            delete image.dataset.daliState;
+            delete image.dataset.daliGeneration;
+            processImage(image);
+        };
+
+        /*
+         * Cached native images can already be complete by the time a
+         * document-start MutationObserver callback reaches them. In that case
+         * attaching a one-shot load listener is too late and the replacement
+         * can remain stranded forever. Retry after layout instead.
+         */
+        if (image.complete) {
+            requestAnimationFrame(() =>
+                requestAnimationFrame(retry)
+            );
+            return;
+        }
+
         image.addEventListener(
             'load',
-            () => {
-                delete image.dataset.daliPending;
-                delete image.dataset.daliState;
-                delete image.dataset.daliGeneration;
-                processImage(image);
-            },
+            retry,
             { once: true }
         );
     }

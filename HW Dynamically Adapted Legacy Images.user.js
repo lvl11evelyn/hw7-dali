@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.91
+// @version      1.92
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -531,7 +531,7 @@
         if (!entry) {
             return false;
         }
-
+    
         if (!entry.url) {
             markKnownUnmapped(
                 image,
@@ -541,9 +541,9 @@
             );
             return true;
         }
-
+    
         const replacementUrl = resolveReplacementPointer(entry.url);
-
+    
         if (!replacementUrl) {
             markKnownUnmapped(
                 image,
@@ -553,25 +553,27 @@
             );
             return true;
         }
-
+    
         const fade = entry.catalog === 'tattoos'
             ? getTattooFade(image)
             : null;
-
-        replaceImage(
+    
+        const replaced = replaceImage(
             image,
             entry.name,
             replacementUrl,
             catalogCategoryLabel(entry.catalog),
             entry.path
         );
-
-        if (fade !== null) {
-            image.style.opacity = String(
-                TATTOO_OPACITY[fade]
-            );
+    
+        if (!replaced) {
+            return false;
         }
-
+    
+        if (fade !== null) {
+            image.style.opacity = String(TATTOO_OPACITY[fade]);
+        }
+    
         return true;
     }
 

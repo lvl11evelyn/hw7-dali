@@ -331,12 +331,12 @@
             "Booze Drip": null
         },
         "MiningTools": {
-          "Pickaxe": "https://i.imgur.com/q3GnIkZ.png",
-          "Dynamite Stick": null,
-          "Bundle of Dynamite": null,
-          "Bomb": null,
-          "TNT": null,
-          "Plastic Explosives": null
+            "Pickaxe": "https://i.imgur.com/q3GnIkZ.png",
+            "Dynamite Stick": "dali-svg://dynamite-stick",
+            "Bundle of Dynamite": "dali-svg://bundle-of-dynamite",
+            "Bomb": "dali-svg://bomb",
+            "TNT": "dali-svg://tnt",
+            "Plastic Explosives": "dali-svg://plastic-explosives"
         }
     },
     "currencies": {

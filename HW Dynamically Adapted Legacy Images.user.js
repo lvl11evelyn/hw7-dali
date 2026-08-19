@@ -49,12 +49,6 @@
      */
     let CATALOG_IDENTITY_INDEX = new Map();
 
-    const cachedAssetMap = readCachedAssetMap();
-
-    if (cachedAssetMap) {
-        applyAssetMap(cachedAssetMap);
-    }
-
     /*
      * DALI starts immediately. The network is never on the critical path.
      * A cached catalog is usable synchronously; a first-run install can still
@@ -2574,5 +2568,11 @@ function barSvg(x, y, scale = 1) {
         return Number.isFinite(number)
             ? number
             : 0;
+    }
+
+    const cachedAssetMap = readCachedAssetMap();
+
+    if (cachedAssetMap) {
+        applyAssetMap(cachedAssetMap);
     }
 })();

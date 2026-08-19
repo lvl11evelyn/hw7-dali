@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.21
+// @version      2.23
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -800,6 +800,17 @@
                 return;
             }
 
+        const src = image.getAttribute('src') || '';
+
+        /*
+         * Message-board icons are HoboWars emoji. Many are animated, and
+         * filename identities such as money.gif can collide with DALI's
+         * ordinary catalogs. Preserve the entire emoji namespace untouched.
+         */
+        if (/\/mb_icons\//i.test(src)) {
+            return;
+        }
+
         const state = image.dataset.daliState || '';
         const generation = Number.parseInt(
             image.dataset.daliGeneration || '-1',
@@ -844,6 +855,24 @@
          * catalog index so a KKC+ cannot be downgraded to the base cup by alt.
          */
         if (processSpecialItem(image)) {
+            return;
+        }
+
+        /*
+         * Rat pairings encode two identities in the host image title:
+         *
+         *     Host Rat / Sub Rat
+         *
+         * The host portrait must use the first identity while the smaller
+         * sub-rat portrait uses the second. A lone rat title contains only
+         * the host identity. Resolve this semantic relationship before the
+         * generic catalog normalizer sees the slash-delimited title.
+         */
+        if (processRatUpgrade(image)) {
+            return;
+        }
+
+        if (processRat(image)) {
             return;
         }
 
@@ -2170,6 +2199,108 @@ function barSvg(x, y, scale = 1) {
     }
 
 // ------------------------------------------------------------------------
+// RATS
+// ------------------------------------------------------------------------
+
+    const RAT_UPGRADE_TITLES = new Map([
+        ["Rat's specials will fire more often in battle", 'Buddhism'],
+        ['Rat is better at finding, fetching and stealing stuff', 'Materialism'],
+        ["Rat won't eat meat, but gains increase from other food", 'Vegetarianism']
+    ]);
+
+    function processRatUpgrade(image) {
+        const title = String(
+            image.getAttribute('title') || ''
+        ).trim();
+
+        const identity = RAT_UPGRADE_TITLES.get(title);
+
+        if (!identity) {
+            return false;
+        }
+
+        const entry = findCatalogEntryByIdentity(
+            'rats',
+            identity
+        );
+
+        if (!entry) {
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry
+        );
+    }
+
+    function processRat(image) {
+        const entry = identifyRatEntry(image);
+
+        if (!entry) {
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry
+        );
+    }
+
+    function identifyRatEntry(image) {
+        const rating = image.closest('div.rating');
+
+        if (!rating) {
+            return null;
+        }
+
+        const hostImage = rating.querySelector('img.mainimg[title]');
+
+        if (!hostImage) {
+            return null;
+        }
+
+        const identities = parseRatTitle(
+            hostImage.getAttribute('title') || ''
+        );
+
+        if (!identities.host) {
+            return null;
+        }
+
+        if (image === hostImage) {
+            return findCatalogEntryByIdentity(
+                'rats',
+                identities.host
+            );
+        }
+
+        if (
+            image.matches('img.ratImg2') &&
+            identities.sub
+        ) {
+            return findCatalogEntryByIdentity(
+                'rats',
+                identities.sub
+            );
+        }
+
+        return null;
+    }
+
+    function parseRatTitle(value) {
+        const parts = String(value || '')
+            .split(/\s*\/\s*/)
+            .map(part => part.trim())
+            .filter(Boolean);
+
+        return {
+            host: parts[0] || null,
+            sub: parts[1] || null
+        };
+    }
+
+// ------------------------------------------------------------------------
 // BACKPACK ITEMS
 // ------------------------------------------------------------------------
 
@@ -2595,7 +2726,12 @@ function barSvg(x, y, scale = 1) {
             path[0] === 'backpackItems' &&
             path.includes('MiningTools');
 
-        const dimensions = isMiningTool
+        const isBlastMiningTool =
+            isMiningTool &&
+            /^choose_tool_\d+$/.test(image.id || '') &&
+            Boolean(image.closest('td[id^="tool_"]'));
+
+        const dimensions = isBlastMiningTool
             ? { width: 30, height: 30 }
             : getRenderedDimensions(image);
 
@@ -2628,7 +2764,7 @@ function barSvg(x, y, scale = 1) {
             : 'cover';
         image.style.objectPosition = 'center center';
 
-        if (isMiningTool) {
+        if (isBlastMiningTool) {
             image.setAttribute('width', '30');
             image.setAttribute('height', '30');
             image.style.minWidth = '30px';

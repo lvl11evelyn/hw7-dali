@@ -146,7 +146,7 @@
         "Hobo Grail (Depleted)": "https://i.imgur.com/BEX1ls6.png",
         "Hobo Grail (Full)": "https://i.imgur.com/2Lz5HCc.png",
         "King's Kiddie Cup": "https://i.imgur.com/qCxDIVc.png",
-        "King's Kiddie Cup+": "https://i.imgur.com/yueUd7n.png"
+        "King's Kiddie Cup+": "https://i.imgur.com/yueUd7n.png",
         "Adventure Items": {
             "Locker": null,
             "Bartender Guide": null,
@@ -296,16 +296,11 @@
             "Shrunken Head": null,
             "Stick": null,
             "Abandoned Motor": null,
-            "Bundle of Dynamite": null,
             "Meat Pie with a Hacksaw in it": null,
             "Foul Smelling Bag": null,
             "Flaming Bag of Something Awful": null,
             "Ring Setting": null,
             "Hobalt Shard": null,
-            "Dynamite Stick": null,
-            "Bomb": null,
-            "TNT": null,
-            "Plastic Explosives": null,
             "Green Ore": null,
             "White Ore": null,
             "Yellow Ore": null,
@@ -329,12 +324,19 @@
             "Dungeon Security Clearance Badge": null,
             "Thinking Cap": null,
             "Smarty Pants": null,
-            "Pickaxe": "https://i.imgur.com/q3GnIkZ.png",
             "Pockets": null,
             "Spelunking Satchel": null,
             "Dynamite Pouch": null,
             "Blast Jacket": null,
             "Booze Drip": null
+        },
+        "MiningTools": {
+          "Pickaxe": "https://i.imgur.com/q3GnIkZ.png",
+          "Dynamite Stick": null,
+          "Bundle of Dynamite": null,
+          "Bomb": null,
+          "TNT": null,
+          "Plastic Explosives": null
         }
     },
     "currencies": {

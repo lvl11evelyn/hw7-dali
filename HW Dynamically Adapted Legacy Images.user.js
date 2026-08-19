@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.3
+// @version      2.4
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -1374,7 +1374,7 @@ function makeOreHexSvg(fill, stroke, shine) {
             opacity=".18"
         />
         <path
-            d="M7 47 L47 6"
+            d="M7 27 L47 6"
             fill="none"
             stroke="#ffffff"
             stroke-width="1"

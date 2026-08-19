@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      1.8
+// @version      1.9
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -542,6 +542,18 @@
             return true;
         }
 
+        const replacementUrl = resolveReplacementPointer(entry.url);
+
+        if (!replacementUrl) {
+            markKnownUnmapped(
+                image,
+                entry.name,
+                entry.catalog,
+                entry.path
+            );
+            return true;
+        }
+
         const fade = entry.catalog === 'tattoos'
             ? getTattooFade(image)
             : null;
@@ -549,7 +561,7 @@
         replaceImage(
             image,
             entry.name,
-            entry.url,
+            replacementUrl,
             catalogCategoryLabel(entry.catalog),
             entry.path
         );
@@ -630,9 +642,24 @@
             childList: true,
             subtree: true
         });
-    
+
         scan(document);
+
+        /*
+         * Parser-built / cached imagery can occasionally complete between a
+         * document-start mutation and the image retry listener being attached.
+         * A single DOMContentLoaded sweep closes that timing gap without
+         * putting the network back on DALI's critical path.
+         */
+        if (document.readyState === 'loading') {
+            document.addEventListener(
+                'DOMContentLoaded',
+                () => scan(document),
+                { once: true }
+            );
+        }
     }
+
 
 // ------------------------------------------------------------------------
 // SCANNING
@@ -917,6 +944,271 @@ function svgDataUrl(svg) {
                 .trim()
         )
     );
+}
+
+
+// ------------------------------------------------------------------------
+// ASSET-MAP INLINE SVG POINTERS
+// ------------------------------------------------------------------------
+
+const DALI_SVG_POINTER_PREFIX = 'dali-svg://';
+
+function resolveReplacementPointer(pointer) {
+    if (typeof pointer !== 'string') {
+        return null;
+    }
+
+    const value = pointer.trim();
+
+    if (!value.startsWith(DALI_SVG_POINTER_PREFIX)) {
+        return value || null;
+    }
+
+    const identity = value
+        .slice(DALI_SVG_POINTER_PREFIX.length)
+        .trim()
+        .toLowerCase();
+
+    const svg = renderInlineAssetSvg(identity);
+
+    if (!svg) {
+        console.warn(
+            `[DALI] Unknown inline SVG pointer: ${value}`
+        );
+        return null;
+    }
+
+    return svgDataUrl(svg);
+}
+
+function renderInlineAssetSvg(identity) {
+    switch (identity) {
+        case 'dynamite-stick':
+            return makeDynamiteStickSvg();
+
+        case 'bundle-of-dynamite':
+            return makeBundleOfDynamiteSvg();
+
+        case 'bomb':
+            return makeBombSvg();
+
+        case 'tnt':
+            return makeTntSvg();
+
+        case 'plastic-explosives':
+            return makePlasticExplosivesSvg();
+
+        default:
+            return null;
+    }
+}
+
+function makeMiningToolSvg(body) {
+    return `
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            width="100"
+            height="100"
+        >
+            ${body}
+        </svg>
+    `;
+}
+
+function fuseSvg(path, sparkX, sparkY) {
+    return `
+        <path
+            d="${path}"
+            fill="none"
+            stroke="#363636"
+            stroke-width="7"
+            stroke-linecap="round"
+        />
+        <path
+            d="${path}"
+            fill="none"
+            stroke="#b18b4f"
+            stroke-width="3.2"
+            stroke-linecap="round"
+        />
+        <g transform="translate(${sparkX} ${sparkY})">
+            <path
+                d="M0 -8 L0 -14 M6 -5 L11 -10 M8 1 L15 1 M-6 -5 L-11 -10"
+                fill="none"
+                stroke="#f3b632"
+                stroke-width="3"
+                stroke-linecap="round"
+            />
+            <circle cx="0" cy="0" r="4.3" fill="#ff7a19"/>
+            <circle cx="0" cy="0" r="1.8" fill="#fff4aa"/>
+        </g>
+    `;
+}
+
+function makeDynamiteStickSvg() {
+    return makeMiningToolSvg(`
+        ${fuseSvg('M57 24 C61 13 72 13 76 6', 76, 6)}
+        <rect
+            x="34"
+            y="21"
+            width="32"
+            height="69"
+            rx="8"
+            fill="#c9312f"
+            stroke="#6e1718"
+            stroke-width="4"
+        />
+        <ellipse
+            cx="50"
+            cy="22"
+            rx="15"
+            ry="5"
+            fill="#e7524e"
+            stroke="#6e1718"
+            stroke-width="3"
+        />
+        <rect x="37" y="39" width="26" height="7" rx="2" fill="#382b29"/>
+        <rect x="37" y="65" width="26" height="7" rx="2" fill="#382b29"/>
+        <path
+            d="M40 30 C43 27 47 27 50 27"
+            fill="none"
+            stroke="#f17a70"
+            stroke-width="3"
+            stroke-linecap="round"
+            opacity=".65"
+        />
+    `);
+}
+
+function makeBundleOfDynamiteSvg() {
+    return makeMiningToolSvg(`
+        ${fuseSvg('M54 23 C58 14 68 13 72 5', 72, 5)}
+        <g stroke="#6e1718" stroke-width="3.5">
+            <rect x="20" y="26" width="24" height="59" rx="7" fill="#ba2a2a"/>
+            <rect x="38" y="19" width="25" height="69" rx="7" fill="#d33a36"/>
+            <rect x="57" y="27" width="24" height="58" rx="7" fill="#b92727"/>
+        </g>
+        <rect x="17" y="43" width="67" height="10" rx="3" fill="#2d2927"/>
+        <rect x="18" y="66" width="65" height="10" rx="3" fill="#2d2927"/>
+        <path
+            d="M43 27 C47 24 52 24 55 25"
+            fill="none"
+            stroke="#f17a70"
+            stroke-width="3"
+            stroke-linecap="round"
+            opacity=".7"
+        />
+    `);
+}
+
+function makeBombSvg() {
+    return makeMiningToolSvg(`
+        ${fuseSvg('M62 28 C66 17 76 15 80 7', 80, 7)}
+        <path
+            d="M44 31 L56 31 L60 39 L40 39 Z"
+            fill="#656565"
+            stroke="#282828"
+            stroke-width="4"
+            stroke-linejoin="round"
+        />
+        <circle
+            cx="50"
+            cy="61"
+            r="30"
+            fill="#777a7c"
+            stroke="#262626"
+            stroke-width="5"
+        />
+        <path
+            d="M31 45 C37 37 48 33 57 34"
+            fill="none"
+            stroke="#b7b9ba"
+            stroke-width="5"
+            stroke-linecap="round"
+            opacity=".7"
+        />
+        <ellipse cx="55" cy="81" rx="17" ry="5" fill="#505355" opacity=".4"/>
+    `);
+}
+
+function makeTntSvg() {
+    return makeMiningToolSvg(`
+        ${fuseSvg('M55 20 C60 11 70 11 74 4', 74, 4)}
+        <rect
+            x="27"
+            y="20"
+            width="46"
+            height="70"
+            rx="9"
+            fill="#c92f2c"
+            stroke="#681718"
+            stroke-width="4"
+        />
+        <ellipse
+            cx="50"
+            cy="21"
+            rx="21"
+            ry="6"
+            fill="#e34a45"
+            stroke="#681718"
+            stroke-width="3"
+        />
+        <rect x="28" y="42" width="44" height="24" fill="#f2e3c7"/>
+        <text
+            x="50"
+            y="60"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="22"
+            font-weight="900"
+            fill="#2b2522"
+        >TNT</text>
+        <path d="M34 31 L34 38" stroke="#f16d66" stroke-width="4" stroke-linecap="round"/>
+    `);
+}
+
+function makePlasticExplosivesSvg() {
+    return makeMiningToolSvg(`
+        <path
+            d="M18 35 L27 23 L77 20 L86 31 L82 78 L70 87 L24 84 L14 73 Z"
+            fill="#879566"
+            stroke="#343a2c"
+            stroke-width="4"
+            stroke-linejoin="round"
+        />
+        <path
+            d="M27 31 L72 28 L76 34 L72 75 L29 77 L23 69 Z"
+            fill="#aab68a"
+            opacity=".72"
+        />
+        <rect
+            x="37"
+            y="45"
+            width="28"
+            height="20"
+            rx="2"
+            fill="#52594a"
+            stroke="#292d26"
+            stroke-width="3"
+        />
+        <circle cx="44" cy="55" r="3" fill="#d8cf65"/>
+        <circle cx="58" cy="55" r="3" fill="#b44a42"/>
+        <path
+            d="M45 45 C38 33 37 23 42 15"
+            fill="none"
+            stroke="#a82f2c"
+            stroke-width="3.5"
+            stroke-linecap="round"
+        />
+        <path
+            d="M57 45 C64 34 69 24 66 14"
+            fill="none"
+            stroke="#2f383b"
+            stroke-width="3.5"
+            stroke-linecap="round"
+        />
+    `);
 }
 
 // ------------------------------------------------------------------------
@@ -2154,14 +2446,29 @@ function barSvg(x, y, scale = 1) {
 
         image.dataset.daliPending = 'true';
 
+        const retry = () => {
+            delete image.dataset.daliPending;
+            delete image.dataset.daliState;
+            delete image.dataset.daliGeneration;
+            processImage(image);
+        };
+
+        /*
+         * Cached native images can already be complete by the time a
+         * document-start MutationObserver callback reaches them. In that case
+         * attaching a one-shot load listener is too late and the replacement
+         * can remain stranded forever. Retry after layout instead.
+         */
+        if (image.complete) {
+            requestAnimationFrame(() =>
+                requestAnimationFrame(retry)
+            );
+            return;
+        }
+
         image.addEventListener(
             'load',
-            () => {
-                delete image.dataset.daliPending;
-                delete image.dataset.daliState;
-                delete image.dataset.daliGeneration;
-                processImage(image);
-            },
+            retry,
             { once: true }
         );
     }

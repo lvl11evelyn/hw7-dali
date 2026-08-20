@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.4
+// @version      2.5
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -873,6 +873,18 @@
         }
 
         if (processRat(image)) {
+            return;
+        }
+
+        /*
+         * The native Mines Blast tool picker can serve its tool imagery as
+         * base64 data URIs, removing the filename identity used by ordinary
+         * catalog resolution. In that narrowly scoped UI, explosive tools
+         * expose their own marker name while pickaxe-class tools use the
+         * generic marker name "x". Resolve the safe explicit names here and
+         * use known native-payload fingerprints only for the pickaxe variants.
+         */
+        if (processMiningBlastTool(image)) {
             return;
         }
 
@@ -2580,6 +2592,105 @@ function barSvg(x, y, scale = 1) {
         if (hash === 'bad82abb') return '777';
 
         return null;
+    }
+
+// ------------------------------------------------------------------------
+// MINES BLAST TOOL PICKER
+// ------------------------------------------------------------------------
+
+    const MINING_BLAST_TOOL_HASHES = new Map([
+        /* Native base64 Pickaxe payload. Gold Pickaxe hash not yet captured. */
+        ['e5c4ccfa', 'Pickaxe']
+    ]);
+
+    function processMiningBlastTool(image) {
+        const entry = identifyMiningBlastToolEntry(image);
+
+        if (!entry) {
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry
+        );
+    }
+
+    function identifyMiningBlastToolEntry(image) {
+        const idMatch = String(image.id || '').match(
+            /^choose_tool_(\d+)$/
+        );
+
+        if (!idMatch) {
+            return null;
+        }
+
+        const toolCell = image.closest(
+            'td[id^="tool_"]'
+        );
+
+        if (
+            !toolCell ||
+            toolCell.id !== `tool_${idMatch[1]}`
+        ) {
+            return null;
+        }
+
+        const src = image.getAttribute('src') || '';
+
+        /*
+         * Filename-backed imagery is already handled authoritatively by the
+         * ordinary catalog/equipment resolver. This specialized path exists
+         * only for native data-image fallback states.
+         */
+        if (!src.startsWith('data:image/')) {
+            return null;
+        }
+
+        const markerName = String(
+            image.getAttribute('name') || ''
+        ).trim();
+
+        /*
+         * Explosive tools use their own image identity as the Blast marker.
+         * The pickaxe family deliberately does not: both Pickaxe and Gold
+         * Pickaxe use name="x", so never infer taxonomy from that marker.
+         */
+        if (markerName && markerName.toLowerCase() !== 'x') {
+            const namedEntry = findCatalogEntryByIdentity(
+                'backpackItems',
+                markerName
+            );
+
+            if (
+                namedEntry &&
+                namedEntry.path.includes('MiningTools')
+            ) {
+                return namedEntry;
+            }
+        }
+
+        const identity = MINING_BLAST_TOOL_HASHES.get(
+            dataSrcHash(src)
+        );
+
+        if (!identity) {
+            return null;
+        }
+
+        const hashedEntry = findCatalogEntryByIdentity(
+            'backpackItems',
+            identity
+        );
+
+        if (
+            !hashedEntry ||
+            !hashedEntry.path.includes('MiningTools')
+        ) {
+            return null;
+        }
+
+        return hashedEntry;
     }
 
 // ------------------------------------------------------------------------

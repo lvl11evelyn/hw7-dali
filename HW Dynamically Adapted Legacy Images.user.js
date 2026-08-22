@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.6
+// @version      2.7
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2780,6 +2780,27 @@ function barSvg(x, y, scale = 1) {
      * serve images as base64 data URIs. The individual table cell is the
      * narrowest reliable semantic container for those items.
      */
+    /*
+     * Player-profile link text is not valid equipment evidence. Hobos may use
+     * equipment names as their display names, so strip those links from a
+     * cloned semantic container before contextual equipment matching.
+     */
+    function getEquipmentContextText(container) {
+        if (!container) {
+            return '';
+        }
+
+        const clone = container.cloneNode(true);
+
+        clone.querySelectorAll(
+            'a[href*="cmd=player"][href*="ID="]'
+        ).forEach(link => link.remove());
+
+        return normalizeEquipmentName(
+            clone.textContent
+        );
+    }
+
     function identifyEquipmentFromCell(image) {
         const cell = image.closest('td');
 
@@ -2787,9 +2808,7 @@ function barSvg(x, y, scale = 1) {
             return null;
         }
 
-        const text = normalizeEquipmentName(
-            cell.textContent
-        );
+        const text = getEquipmentContextText(cell);
 
         const matches = EQUIPMENT_NAMES.filter(name =>
             containsEquipmentName(text, name)
@@ -2814,9 +2833,7 @@ function barSvg(x, y, scale = 1) {
             return null;
         }
 
-        const text = normalizeEquipmentName(
-            row.textContent
-        );
+        const text = getEquipmentContextText(row);
 
         const matches = EQUIPMENT_NAMES.filter(name =>
             containsEquipmentName(text, name)

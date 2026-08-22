@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.5
+// @version      2.6
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2539,6 +2539,24 @@ function barSvg(x, y, scale = 1) {
         return true;
     }
 
+    const SLOT_IDENTITIES = Object.freeze({
+        1: '1 Cherry',
+        2: '2 Cherries',
+        3: '3 Cherries',
+        4: '1 Coin',
+        5: '2 Coins',
+        6: '3 Coins',
+        7: '1 Bar',
+        8: '2 Bars',
+        9: '3 Bars',
+        10: '1 Can',
+        11: '2 Cans',
+        12: '3 Cans',
+        13: '7',
+        14: '77',
+        15: '777'
+    });
+
     function identifySlotSymbol(image) {
         const src = image.getAttribute('src') || '';
         const hash = dataSrcHash(src);
@@ -2547,25 +2565,22 @@ function barSvg(x, y, scale = 1) {
     // Filename / pagespeed-backed native slot imagery
     // ------------------------------------------------------------
 
-        if (/\/images\/slots\/xslot1\.gif/i.test(src)) return '1 Cherry';
-        if (/\/images\/slots\/xslot2\.gif/i.test(src)) return '2 Cherries';
-        if (/\/images\/slots\/xslot3\.gif/i.test(src)) return '3 Cherries';
+        const filenameMatch = src.match(
+            /\/slots\/x?slot(\d{1,2})\.gif/i
+        );
 
-        if (/\/images\/slots\/xslot4\.gif/i.test(src)) return '1 Coin';
-        if (/\/images\/slots\/xslot5\.gif/i.test(src)) return '2 Coins';
-        if (/\/images\/slots\/xslot6\.gif/i.test(src)) return '3 Coins';
+        if (filenameMatch) {
+            const slot = Number.parseInt(
+                filenameMatch[1],
+                10
+            );
 
-        if (/\/images\/slots\/xslot7\.gif/i.test(src)) return '1 Bar';
-        if (/\/images\/slots\/xslot8\.gif/i.test(src)) return '2 Bars';
-        if (/\/images\/slots\/xslot9\.gif/i.test(src)) return '3 Bars';
+            const identity = SLOT_IDENTITIES[slot];
 
-        if (/\/images\/slots\/xslot10\.gif/i.test(src)) return '1 Can';
-        if (/\/images\/slots\/xslot11\.gif/i.test(src)) return '2 Cans';
-        if (/\/images\/slots\/xslot12\.gif/i.test(src)) return '3 Cans';
-
-        if (/\/images\/slots\/xslot13\.gif/i.test(src)) return '7';
-        if (/\/images\/slots\/xslot14\.gif/i.test(src)) return '77';
-        if (/\/images\/slots\/slot15\.gif/i.test(src)) return '777';
+            if (identity) {
+                return identity;
+            }
+        }
 
     // ------------------------------------------------------------
     // Base64/native data:image variants
@@ -2599,7 +2614,7 @@ function barSvg(x, y, scale = 1) {
 // ------------------------------------------------------------------------
 
     const MINING_BLAST_TOOL_HASHES = new Map([
-        /* Native base64 Pickaxe payload. Gold Pickaxe hash not yet captured. */
+        /* Authoritatively captured native base64 Pickaxe payload. */
         ['e5c4ccfa', 'Pickaxe']
     ]);
 
@@ -2670,27 +2685,41 @@ function barSvg(x, y, scale = 1) {
             }
         }
 
-        const identity = MINING_BLAST_TOOL_HASHES.get(
-            dataSrcHash(src)
-        );
+        const hash = dataSrcHash(src);
+        const identity = MINING_BLAST_TOOL_HASHES.get(hash);
 
-        if (!identity) {
-            return null;
+        if (identity) {
+            const hashedEntry = findCatalogEntryByIdentity(
+                'backpackItems',
+                identity
+            );
+
+            if (
+                hashedEntry &&
+                hashedEntry.path.includes('MiningTools')
+            ) {
+                return hashedEntry;
+            }
         }
 
-        const hashedEntry = findCatalogEntryByIdentity(
-            'backpackItems',
-            identity
-        );
-
+        /*
+         * tool_1 is the pickaxe-class Blast slot. HoboWars exposes only two
+         * player-accessible variants there: Pickaxe and Gold Pickaxe. The
+         * ordinary Pickaxe payload is fingerprinted above, so any other
+         * base64 image in this exact slot with the shared name="x" marker can
+         * safely fall through to Gold Pickaxe.
+         */
         if (
-            !hashedEntry ||
-            !hashedEntry.path.includes('MiningTools')
+            idMatch[1] === '1' &&
+            markerName.toLowerCase() === 'x'
         ) {
-            return null;
+            return findCatalogEntryByIdentity(
+                'equipment',
+                'Gold Pickaxe'
+            );
         }
 
-        return hashedEntry;
+        return null;
     }
 
 // ------------------------------------------------------------------------

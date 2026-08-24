@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.8
+// @version      2.10
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -68,6 +68,16 @@
      * Unknown or ambiguous imagery is left untouched.
      */
     let CATALOG_IDENTITY_INDEX = new Map();
+
+    /*
+     * One native image node gets one immutable examination snapshot.
+     *
+     * DALI may revisit an unresolved node when a remote catalog arrives or a
+     * layout retry becomes possible, but learning evidence must always refer
+     * to the native image state captured before DALI adapts it. WeakMap keeps
+     * even large base64 sources out of DOM data attributes.
+     */
+    const IMAGE_EXAMINATIONS = new WeakMap();
 
     let ID_REGISTRY = null;
     let ID_REGISTRY_SIGNATURE = '';
@@ -708,13 +718,40 @@
         array.push(text);
     }
 
-    function collectLearningEvidence(image, entry, descriptor) {
-        const alt = image.getAttribute('alt') || '';
-        const title = image.getAttribute('title') || '';
-        const ariaLabel = image.getAttribute('aria-label') || '';
+    function getImageExamination(image) {
+        let examination = IMAGE_EXAMINATIONS.get(image);
+
+        if (examination) {
+            return examination;
+        }
+
         const anchor = image.closest('a[href]');
         const container = image.closest('td, center, li, div, a');
-        const containerText = compactText(container?.textContent || '');
+
+        examination = Object.freeze({
+            src: image.getAttribute('src') || '',
+            alt: image.getAttribute('alt') || '',
+            title: image.getAttribute('title') || '',
+            ariaLabel: image.getAttribute('aria-label') || '',
+            pageHref: String(location.href || ''),
+            anchorHref: anchor?.href || '',
+            containerText: compactText(container?.textContent || ''),
+            ratStructure: Boolean(image.closest('td.ratcell[id^="ratimg-"]')),
+            miningToolStructure: Boolean(
+                /^choose_tool_\d+$/.test(image.id || '') &&
+                image.closest('td[id^="tool_"]')
+            )
+        });
+
+        IMAGE_EXAMINATIONS.set(image, examination);
+        return examination;
+    }
+
+    function collectLearningEvidence(image, entry, descriptor, examination) {
+        const alt = examination.alt;
+        const title = examination.title;
+        const ariaLabel = examination.ariaLabel;
+        const containerText = examination.containerText;
         const identityKey = normalizeIdentityKey(entry.name);
         const cues = [];
 
@@ -751,15 +788,15 @@
             cues.push('container-contains');
         }
 
-        if (image.closest('td.ratcell[id^="ratimg-"]')) {
+        if (examination.ratStructure) {
             cues.push('rat-structure');
         }
 
-        if (/^choose_tool_\d+$/.test(image.id || '') && image.closest('td[id^="tool_"]')) {
+        if (examination.miningToolStructure) {
             cues.push('mining-tool-structure');
         }
 
-        if (entry.catalog === 'tattoos' && /-(1|2|3)(?:\.|$)/i.test(alt || image.getAttribute('src') || '')) {
+        if (entry.catalog === 'tattoos' && /-(1|2|3)(?:\.|$)/i.test(alt || examination.src || '')) {
             cues.push('tattoo-stage-structure');
         }
 
@@ -772,8 +809,8 @@
         if (cues.includes('container-contains')) confidence = Math.max(confidence, 0.68);
 
         return {
-            pageHref: String(location.href || ''),
-            anchorHref: anchor?.href || '',
+            pageHref: examination.pageHref,
+            anchorHref: examination.anchorHref,
             alt,
             title,
             ariaLabel,
@@ -788,10 +825,8 @@
             return;
         }
 
-        const nativeSrc =
-            image.getAttribute('data-dali-original-src') ||
-            image.getAttribute('src') ||
-            '';
+        const examination = getImageExamination(image);
+        const nativeSrc = examination.src;
 
         if (!nativeSrc || /^data:image\/svg\+xml/i.test(nativeSrc)) {
             return;
@@ -812,7 +847,7 @@
             return;
         }
 
-        const evidence = collectLearningEvidence(image, entry, descriptor);
+        const evidence = collectLearningEvidence(image, entry, descriptor, examination);
         const now = Date.now();
         let proposal = LEARNING_STATE.pending[key];
 
@@ -942,6 +977,106 @@
         downloadJson(`dali-pending-associations-${stamp}.json`, payload);
     }
 
+    function resolvePendingNativePreviewSource(proposal) {
+        const src = String(proposal?.source?.src || '').trim();
+
+        if (!src) {
+            return null;
+        }
+
+        if (src.startsWith('data:image/')) {
+            return src;
+        }
+
+        const base = proposal?.evidence?.pageHrefs?.[0] || location.href;
+
+        try {
+            return new URL(src, base).href;
+        } catch {
+            return src;
+        }
+    }
+
+    function resolvePendingReplacementPreviewSource(proposal) {
+        const entry = getCatalogEntryByPath(
+            proposal?.proposedIdentity?.path
+        );
+
+        if (!entry?.url) {
+            return null;
+        }
+
+        return resolveReplacementPointer(entry.url);
+    }
+
+    function makePendingPreviewBox(label, src, emptyText) {
+        const box = document.createElement('div');
+        Object.assign(box.style, {
+            flex: '1 1 280px',
+            minWidth: '0',
+            border: '1px solid #999',
+            borderRadius: '6px',
+            background: '#fff',
+            padding: '8px'
+        });
+
+        const heading = document.createElement('strong');
+        heading.textContent = label;
+        heading.style.display = 'block';
+        heading.style.marginBottom = '6px';
+        box.appendChild(heading);
+
+        if (!src) {
+            const empty = document.createElement('div');
+            empty.textContent = emptyText;
+            Object.assign(empty.style, {
+                minHeight: '120px',
+                display: 'grid',
+                placeItems: 'center',
+                color: '#666',
+                background: '#eee'
+            });
+            box.appendChild(empty);
+            return box;
+        }
+
+        const image = document.createElement('img');
+        image.dataset.daliReviewPreview = '1';
+        image.alt = label;
+        image.src = src;
+        Object.assign(image.style, {
+            display: 'block',
+            width: '100%',
+            height: '160px',
+            objectFit: 'contain',
+            background: '#eee',
+            imageRendering: 'auto'
+        });
+        box.appendChild(image);
+        return box;
+    }
+
+    async function copyPendingSource(proposal) {
+        const src = String(proposal?.source?.src || '');
+
+        if (!src) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(src);
+        } catch {
+            const area = document.createElement('textarea');
+            area.value = src;
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            (document.body || document.documentElement).appendChild(area);
+            area.select();
+            document.execCommand('copy');
+            area.remove();
+        }
+    }
+
     function openPendingReview() {
         document.getElementById('dali-pending-review')?.remove();
 
@@ -959,7 +1094,7 @@
 
         const panel = document.createElement('div');
         Object.assign(panel.style, {
-            maxWidth: '980px',
+            maxWidth: '1100px',
             margin: '0 auto',
             background: '#f4f4f4',
             color: '#111',
@@ -992,7 +1127,7 @@
         panel.appendChild(header);
 
         const note = document.createElement('p');
-        note.textContent = 'Pending associations may be exported or rejected here. DALI intentionally provides no local approval control; authoritative promotion occurs only in the core ID registry.';
+        note.textContent = 'Compare the native source image on the left with DALI\'s proposed replacement on the right. FNV is retained as the deterministic fingerprint, but you do not need to validate an association by reading the hash. Pending associations may be exported or rejected here; authoritative promotion occurs only in the core ID registry.';
         panel.appendChild(note);
 
         const entries = Object.entries(LEARNING_STATE.pending)
@@ -1008,34 +1143,90 @@
             const card = document.createElement('div');
             Object.assign(card.style, {
                 borderTop: '1px solid #aaa',
-                marginTop: '12px',
-                paddingTop: '12px'
+                marginTop: '16px',
+                paddingTop: '16px'
             });
 
             const heading = document.createElement('div');
             heading.innerHTML = `<strong>${escapeHtml(proposal.proposedIdentity.path.join('/'))}</strong> — confidence ${(proposal.confidence * 100).toFixed(1)}% — ${proposal.observations} observation(s)`;
+            card.appendChild(heading);
 
-            const source = document.createElement('code');
-            source.style.display = 'block';
-            source.style.whiteSpace = 'pre-wrap';
-            source.style.wordBreak = 'break-all';
-            source.style.margin = '6px 0';
-            source.textContent = proposal.source.fnvHash
-                ? `FNV ${proposal.source.fnvHash}`
-                : proposal.source.normalizedFilename;
+            const comparison = document.createElement('div');
+            Object.assign(comparison.style, {
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '12px',
+                margin: '10px 0'
+            });
+
+            comparison.append(
+                makePendingPreviewBox(
+                    'Native source',
+                    resolvePendingNativePreviewSource(proposal),
+                    'Native source unavailable'
+                ),
+                makePendingPreviewBox(
+                    'Proposed DALI replacement',
+                    resolvePendingReplacementPreviewSource(proposal),
+                    'No replacement currently mapped'
+                )
+            );
+            card.appendChild(comparison);
+
+            const sourceSummary = document.createElement('code');
+            sourceSummary.style.display = 'block';
+            sourceSummary.style.whiteSpace = 'pre-wrap';
+            sourceSummary.style.wordBreak = 'break-all';
+            sourceSummary.style.margin = '6px 0';
+
+            const summaryParts = [];
+            if (proposal.source.fnvHash) {
+                summaryParts.push(`FNV: ${proposal.source.fnvHash}`);
+            }
+            if (proposal.source.filename) {
+                summaryParts.push(`Filename: ${proposal.source.filename}`);
+            }
+            sourceSummary.textContent = summaryParts.join(' | ') || 'No compact source fingerprint recorded';
+            card.appendChild(sourceSummary);
+
+            const srcDetails = document.createElement('details');
+            srcDetails.style.margin = '6px 0';
+
+            const srcSummary = document.createElement('summary');
+            srcSummary.textContent = 'Show exact native src';
+            srcSummary.style.cursor = 'pointer';
+
+            const srcText = document.createElement('code');
+            srcText.style.display = 'block';
+            srcText.style.whiteSpace = 'pre-wrap';
+            srcText.style.wordBreak = 'break-all';
+            srcText.style.maxHeight = '180px';
+            srcText.style.overflow = 'auto';
+            srcText.style.marginTop = '6px';
+            srcText.textContent = proposal.source.src || '';
+
+            srcDetails.append(srcSummary, srcText);
+            card.appendChild(srcDetails);
 
             const cues = document.createElement('div');
             cues.textContent = `Cues: ${proposal.evidence.cues.join(', ') || 'none recorded'}`;
+            card.appendChild(cues);
 
             const page = document.createElement('div');
             page.textContent = `Seen: ${proposal.evidence.pageHrefs[0] || 'unknown page'}`;
             page.style.wordBreak = 'break-all';
+            card.appendChild(page);
 
             const buttons = document.createElement('div');
             buttons.style.marginTop = '8px';
 
+            const copySource = document.createElement('button');
+            copySource.textContent = 'Copy Native src';
+            copySource.onclick = () => copyPendingSource(proposal);
+
             const exportOne = document.createElement('button');
             exportOne.textContent = 'Export';
+            exportOne.style.marginLeft = '8px';
             exportOne.onclick = () => exportPendingAssociations([key]);
 
             const reject = document.createElement('button');
@@ -1047,8 +1238,8 @@
                 openPendingReview();
             };
 
-            buttons.append(exportOne, reject);
-            card.append(heading, source, cues, page, buttons);
+            buttons.append(copySource, exportOne, reject);
+            card.appendChild(buttons);
             panel.appendChild(card);
         }
 
@@ -1688,6 +1879,10 @@
                 return;
             }
 
+        if (image.dataset.daliReviewPreview === '1') {
+            return;
+        }
+
         const src = image.getAttribute('src') || '';
 
         /*
@@ -1708,6 +1903,13 @@
         if (state === 'replaced') {
             return;
         }
+
+        /*
+         * Capture native evidence once, before any resolver can adapt this node.
+         * Later catalog-generation rescans and layout retries reuse this exact
+         * snapshot instead of examining DALI's own replacement.
+         */
+        getImageExamination(image);
 
         if (
             generation === CATALOG_GENERATION &&
@@ -3528,6 +3730,16 @@ function barSvg(x, y, scale = 1) {
 
         const retry = () => {
             delete image.dataset.daliPending;
+
+            /*
+             * The native load event may fire after another pass has already
+             * adapted this node. A stale retry must never erase the terminal
+             * replaced state and interrogate DALI's own replacement image.
+             */
+            if (image.dataset.daliState === 'replaced') {
+                return;
+            }
+
             delete image.dataset.daliState;
             delete image.dataset.daliGeneration;
             processImage(image);

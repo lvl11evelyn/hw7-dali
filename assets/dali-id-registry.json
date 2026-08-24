@@ -1,1 +1,7938 @@
-
+{
+  "schema": 1,
+  "revision": 1,
+  "sourceCounts": {
+    "identity": 601,
+    "filename": 656,
+    "fnv": 300,
+    "total": 956
+  },
+  "identities": {
+    "backpackItems/Adventure Items/Address Book": {
+      "catalog": "backpackItems",
+      "identity": "Address Book",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Address Book"
+      ],
+      "filenames": [
+        "Address Book"
+      ],
+      "hashes": [
+        "4e2508e2"
+      ]
+    },
+    "backpackItems/Adventure Items/Arena Package": {
+      "catalog": "backpackItems",
+      "identity": "Arena Package",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Arena Package"
+      ],
+      "filenames": [
+        "Arena Package"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Atlas": {
+      "catalog": "backpackItems",
+      "identity": "Atlas",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Atlas"
+      ],
+      "filenames": [
+        "Atlas"
+      ],
+      "hashes": [
+        "99dba4cf",
+        "d398d660"
+      ]
+    },
+    "backpackItems/Adventure Items/Bartender Guide": {
+      "catalog": "backpackItems",
+      "identity": "Bartender Guide",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Bartender Guide"
+      ],
+      "filenames": [
+        "Bartender Guide"
+      ],
+      "hashes": [
+        "9974f95c",
+        "a17f7ce2"
+      ]
+    },
+    "backpackItems/Adventure Items/Blue Gift": {
+      "catalog": "backpackItems",
+      "identity": "Blue Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Blue Gift"
+      ],
+      "filenames": [
+        "Blue Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Bow": {
+      "catalog": "backpackItems",
+      "identity": "Bow",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Bow"
+      ],
+      "filenames": [
+        "Bow"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Brown Suitcase": {
+      "catalog": "backpackItems",
+      "identity": "Brown Suitcase",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Brown Suitcase"
+      ],
+      "filenames": [
+        "Brown Suitcase"
+      ],
+      "hashes": [
+        "6e8e9cc3",
+        "b86e0331"
+      ]
+    },
+    "backpackItems/Adventure Items/Canbodia Map": {
+      "catalog": "backpackItems",
+      "identity": "Canbodia Map",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Canbodia Map"
+      ],
+      "filenames": [
+        "Canbodia Map"
+      ],
+      "hashes": [
+        "3661e627",
+        "d5e104ce"
+      ]
+    },
+    "backpackItems/Adventure Items/Champion Package": {
+      "catalog": "backpackItems",
+      "identity": "Champion Package",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Champion Package"
+      ],
+      "filenames": [
+        "Champion Package"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/City Map": {
+      "catalog": "backpackItems",
+      "identity": "City Map",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "City Map"
+      ],
+      "filenames": [
+        "City Map"
+      ],
+      "hashes": [
+        "0c7413de",
+        "1cf9e4b0",
+        "20b3c605",
+        "44bd5186",
+        "567e3774",
+        "640b033c",
+        "7c559ad2",
+        "86835869",
+        "9302b9f1",
+        "b14dc969",
+        "ebc4f37d",
+        "f514d472",
+        "fdc926b0"
+      ]
+    },
+    "backpackItems/Adventure Items/Cryptic Poem": {
+      "catalog": "backpackItems",
+      "identity": "Cryptic Poem",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Cryptic Poem"
+      ],
+      "filenames": [
+        "Cryptic Poem"
+      ],
+      "hashes": [
+        "9bc40904",
+        "ae2dc905"
+      ]
+    },
+    "backpackItems/Adventure Items/Dossier": {
+      "catalog": "backpackItems",
+      "identity": "Dossier",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Dossier"
+      ],
+      "filenames": [
+        "Dossier"
+      ],
+      "hashes": [
+        "884dd518",
+        "b272c171"
+      ]
+    },
+    "backpackItems/Adventure Items/Dreamcatcher": {
+      "catalog": "backpackItems",
+      "identity": "Dreamcatcher",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Dreamcatcher"
+      ],
+      "filenames": [
+        "Dreamcatcher"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Empty Bottles": {
+      "catalog": "backpackItems",
+      "identity": "Empty Bottles",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Empty Bottles"
+      ],
+      "filenames": [
+        "Empty Bottles"
+      ],
+      "hashes": [
+        "0ed5a581"
+      ]
+    },
+    "backpackItems/Adventure Items/Empty Cigarette Pack": {
+      "catalog": "backpackItems",
+      "identity": "Empty Cigarette Pack",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Empty Cigarette Pack"
+      ],
+      "filenames": [
+        "25x25xEmpty Cigarette Pack",
+        "Empty Cigarette Pack"
+      ],
+      "hashes": [
+        "0fb5abc6",
+        "1dd2889d"
+      ]
+    },
+    "backpackItems/Adventure Items/Green Gift": {
+      "catalog": "backpackItems",
+      "identity": "Green Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Green Gift"
+      ],
+      "filenames": [
+        "Green Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Hobalt Chunk": {
+      "catalog": "backpackItems",
+      "identity": "Hobalt Chunk",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Hobalt Chunk"
+      ],
+      "filenames": [
+        "25x25xHobalt Chunk",
+        "Hobalt Chunk"
+      ],
+      "hashes": [
+        "66099b09"
+      ]
+    },
+    "backpackItems/Adventure Items/Hoburbia Map": {
+      "catalog": "backpackItems",
+      "identity": "Hoburbia Map",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Hoburbia Map"
+      ],
+      "filenames": [
+        "Hoburbia Map"
+      ],
+      "hashes": [
+        "a1e0e3b1",
+        "b38dc0e5"
+      ]
+    },
+    "backpackItems/Adventure Items/Home": {
+      "catalog": "backpackItems",
+      "identity": "Home",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Home"
+      ],
+      "filenames": [
+        "Home"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Huge In-N-Out order": {
+      "catalog": "backpackItems",
+      "identity": "Huge In-N-Out order",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Huge In-N-Out order"
+      ],
+      "filenames": [
+        "Huge In N Out order"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Jump Rope": {
+      "catalog": "backpackItems",
+      "identity": "Jump Rope",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Jump Rope"
+      ],
+      "filenames": [
+        "Jump Rope"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Lasso": {
+      "catalog": "backpackItems",
+      "identity": "Lasso",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Lasso"
+      ],
+      "filenames": [
+        "Lasso"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Locker": {
+      "catalog": "backpackItems",
+      "identity": "Locker",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Locker"
+      ],
+      "filenames": [
+        "25x25xLocker",
+        "Locker"
+      ],
+      "hashes": [
+        "23e67c0d",
+        "3237c94b",
+        "e008565b"
+      ]
+    },
+    "backpackItems/Adventure Items/Loompa Whistle": {
+      "catalog": "backpackItems",
+      "identity": "Loompa Whistle",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Loompa Whistle"
+      ],
+      "filenames": [
+        "Loompa Whistle"
+      ],
+      "hashes": [
+        "5c0568ac"
+      ]
+    },
+    "backpackItems/Adventure Items/Metal Suitcase": {
+      "catalog": "backpackItems",
+      "identity": "Metal Suitcase",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Metal Suitcase"
+      ],
+      "filenames": [
+        "Metal Suitcase"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Mini Hobot": {
+      "catalog": "backpackItems",
+      "identity": "Mini Hobot",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Mini Hobot"
+      ],
+      "filenames": [
+        "Mini Hobot"
+      ],
+      "hashes": [
+        "b77a3a14"
+      ]
+    },
+    "backpackItems/Adventure Items/Mixer": {
+      "catalog": "backpackItems",
+      "identity": "Mixer",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Mixer"
+      ],
+      "filenames": [
+        "Mixer"
+      ],
+      "hashes": [
+        "789daf2e"
+      ]
+    },
+    "backpackItems/Adventure Items/Mobile Phone": {
+      "catalog": "backpackItems",
+      "identity": "Mobile Phone",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Mobile Phone"
+      ],
+      "filenames": [
+        "Mobile Phone"
+      ],
+      "hashes": [
+        "329007b8"
+      ]
+    },
+    "backpackItems/Adventure Items/Note from Sven": {
+      "catalog": "backpackItems",
+      "identity": "Note from Sven",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Note from Sven"
+      ],
+      "filenames": [
+        "Note from Sven"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Nutcracker": {
+      "catalog": "backpackItems",
+      "identity": "Nutcracker",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Nutcracker"
+      ],
+      "filenames": [
+        "Nutcracker"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Open Packet of Sugar": {
+      "catalog": "backpackItems",
+      "identity": "Open Packet of Sugar",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Open Packet of Sugar"
+      ],
+      "filenames": [
+        "Open Packet Of Sugar"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Orange Gift": {
+      "catalog": "backpackItems",
+      "identity": "Orange Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Orange Gift"
+      ],
+      "filenames": [
+        "Orange Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Packet of Sugar": {
+      "catalog": "backpackItems",
+      "identity": "Packet of Sugar",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Packet of Sugar"
+      ],
+      "filenames": [
+        "Packet Of Sugar"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Property Deed": {
+      "catalog": "backpackItems",
+      "identity": "Property Deed",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Property Deed"
+      ],
+      "filenames": [
+        "Property Deed"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Purple Gift": {
+      "catalog": "backpackItems",
+      "identity": "Purple Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Purple Gift"
+      ],
+      "filenames": [
+        "Purple Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Raffle Ticket": {
+      "catalog": "backpackItems",
+      "identity": "Raffle Ticket",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Raffle Ticket"
+      ],
+      "filenames": [
+        "Raffle Ticket"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Rat Poison": {
+      "catalog": "backpackItems",
+      "identity": "Rat Poison",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Rat Poison"
+      ],
+      "filenames": [
+        "Rat Poison"
+      ],
+      "hashes": [
+        "1deb5189"
+      ]
+    },
+    "backpackItems/Adventure Items/Rat Trough": {
+      "catalog": "backpackItems",
+      "identity": "Rat Trough",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Rat Trough"
+      ],
+      "filenames": [
+        "Rat Trough"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Red Gift": {
+      "catalog": "backpackItems",
+      "identity": "Red Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Red Gift"
+      ],
+      "filenames": [
+        "Red Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Robo Hobo Butler": {
+      "catalog": "backpackItems",
+      "identity": "Robo Hobo Butler",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Robo Hobo Butler"
+      ],
+      "filenames": [
+        "Robo Hobo Butler"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Rope": {
+      "catalog": "backpackItems",
+      "identity": "Rope",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Rope"
+      ],
+      "filenames": [
+        "Rope"
+      ],
+      "hashes": [
+        "133fd59f",
+        "5ad87269"
+      ]
+    },
+    "backpackItems/Adventure Items/Rusty Butler": {
+      "catalog": "backpackItems",
+      "identity": "Rusty Butler",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Rusty Butler"
+      ],
+      "filenames": [
+        "Rusty Butler"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Skill Pack": {
+      "catalog": "backpackItems",
+      "identity": "Skill Pack",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Skill Pack"
+      ],
+      "filenames": [
+        "Skill Pack"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Spooky Gift": {
+      "catalog": "backpackItems",
+      "identity": "Spooky Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Spooky Gift"
+      ],
+      "filenames": [
+        "Spooky Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Stack of Drivers Licenses": {
+      "catalog": "backpackItems",
+      "identity": "Stack of Drivers Licenses",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Stack of Drivers Licenses"
+      ],
+      "filenames": [
+        "Stack of Drivers Licenses"
+      ],
+      "hashes": [
+        "0e3ea278",
+        "ace3a806"
+      ]
+    },
+    "backpackItems/Adventure Items/Tattoo Flash Book": {
+      "catalog": "backpackItems",
+      "identity": "Tattoo Flash Book",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Tattoo Flash Book"
+      ],
+      "filenames": [
+        "Tattoo Flash Book"
+      ],
+      "hashes": [
+        "3e2985cc",
+        "7e1dedf7"
+      ]
+    },
+    "backpackItems/Adventure Items/The One Beer": {
+      "catalog": "backpackItems",
+      "identity": "The One Beer",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "The One Beer"
+      ],
+      "filenames": [
+        "The One Beer"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Tickle Me Hobo": {
+      "catalog": "backpackItems",
+      "identity": "Tickle Me Hobo",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Tickle Me Hobo"
+      ],
+      "filenames": [
+        "Tickle Me Hobo"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Trick-or-Treat Basket": {
+      "catalog": "backpackItems",
+      "identity": "Trick-or-Treat Basket",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Trick-or-Treat Basket"
+      ],
+      "filenames": [
+        "Trick or Treat Basket"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/White Gift": {
+      "catalog": "backpackItems",
+      "identity": "White Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "White Gift"
+      ],
+      "filenames": [
+        "White Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Wonka Letter": {
+      "catalog": "backpackItems",
+      "identity": "Wonka Letter",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Wonka Letter"
+      ],
+      "filenames": [
+        "Wonka Letter"
+      ],
+      "hashes": [
+        "a1f720a9"
+      ]
+    },
+    "backpackItems/Adventure Items/Xmas Gift": {
+      "catalog": "backpackItems",
+      "identity": "Xmas Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Xmas Gift"
+      ],
+      "filenames": [
+        "Xmas Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Xmas Ornaments": {
+      "catalog": "backpackItems",
+      "identity": "Xmas Ornaments",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Xmas Ornaments"
+      ],
+      "filenames": [
+        "Xmas Ornaments"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Yellow Gift": {
+      "catalog": "backpackItems",
+      "identity": "Yellow Gift",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Yellow Gift"
+      ],
+      "filenames": [
+        "Yellow Gift"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Adventure Items/Yiff Whistle": {
+      "catalog": "backpackItems",
+      "identity": "Yiff Whistle",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Yiff Whistle"
+      ],
+      "filenames": [
+        "Yiff Whistle"
+      ],
+      "hashes": [
+        "24a20e7b",
+        "fc4e52c9"
+      ]
+    },
+    "backpackItems/Adventure Items/Zippo Lighter": {
+      "catalog": "backpackItems",
+      "identity": "Zippo Lighter",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Zippo Lighter"
+      ],
+      "filenames": [
+        "Zippo Lighter"
+      ],
+      "hashes": [
+        "5d1a35d0",
+        "ba732a00"
+      ]
+    },
+    "backpackItems/Adventure Items/Zombie Survival Package": {
+      "catalog": "backpackItems",
+      "identity": "Zombie Survival Package",
+      "path": [
+        "backpackItems",
+        "Adventure Items",
+        "Zombie Survival Package"
+      ],
+      "filenames": [
+        "Zombie Survival Package"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Cardboard Box": {
+      "catalog": "backpackItems",
+      "identity": "Cardboard Box",
+      "path": [
+        "backpackItems",
+        "Cardboard Box"
+      ],
+      "filenames": [
+        "Cardboard Box"
+      ],
+      "hashes": [
+        "44ea5ce3",
+        "b7048735"
+      ]
+    },
+    "backpackItems/Care Package": {
+      "catalog": "backpackItems",
+      "identity": "Care Package",
+      "path": [
+        "backpackItems",
+        "Care Package"
+      ],
+      "filenames": [
+        "Care Package"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Hobo Grail (Depleted)": {
+      "catalog": "backpackItems",
+      "identity": "Hobo Grail (Depleted)",
+      "path": [
+        "backpackItems",
+        "Hobo Grail (Depleted)"
+      ],
+      "filenames": [
+        "Hobo Grail Dark"
+      ],
+      "hashes": [
+        "23e145b2"
+      ]
+    },
+    "backpackItems/Hobo Grail (Full)": {
+      "catalog": "backpackItems",
+      "identity": "Hobo Grail (Full)",
+      "path": [
+        "backpackItems",
+        "Hobo Grail (Full)"
+      ],
+      "filenames": [
+        "Hobo Grail"
+      ],
+      "hashes": [
+        "be956455"
+      ]
+    },
+    "backpackItems/Ingredients/Bath Salts": {
+      "catalog": "backpackItems",
+      "identity": "Bath Salts",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Bath Salts"
+      ],
+      "filenames": [
+        "Bath Salts"
+      ],
+      "hashes": [
+        "8f3d3e3e",
+        "b2b526b8"
+      ]
+    },
+    "backpackItems/Ingredients/Celery": {
+      "catalog": "backpackItems",
+      "identity": "Celery",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Celery"
+      ],
+      "filenames": [
+        "Celery"
+      ],
+      "hashes": [
+        "ed0d5624"
+      ]
+    },
+    "backpackItems/Ingredients/Cola": {
+      "catalog": "backpackItems",
+      "identity": "Cola",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Cola"
+      ],
+      "filenames": [
+        "Cola"
+      ],
+      "hashes": [
+        "7707aca8"
+      ]
+    },
+    "backpackItems/Ingredients/Dry Ice": {
+      "catalog": "backpackItems",
+      "identity": "Dry Ice",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Dry Ice"
+      ],
+      "filenames": [
+        "Dry Ice"
+      ],
+      "hashes": [
+        "2d3b18a5",
+        "57d3066a"
+      ]
+    },
+    "backpackItems/Ingredients/Fire": {
+      "catalog": "backpackItems",
+      "identity": "Fire",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Fire"
+      ],
+      "filenames": [
+        "Fire"
+      ],
+      "hashes": [
+        "2250d366"
+      ]
+    },
+    "backpackItems/Ingredients/Hair of the Dog": {
+      "catalog": "backpackItems",
+      "identity": "Hair of the Dog",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Hair of the Dog"
+      ],
+      "filenames": [
+        "Hair of the Dog"
+      ],
+      "hashes": [
+        "432a94e7",
+        "4a8c5f85"
+      ]
+    },
+    "backpackItems/Ingredients/Ice": {
+      "catalog": "backpackItems",
+      "identity": "Ice",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Ice"
+      ],
+      "filenames": [
+        "Ice"
+      ],
+      "hashes": [
+        "2e1d173e"
+      ]
+    },
+    "backpackItems/Ingredients/Jolly Rancher": {
+      "catalog": "backpackItems",
+      "identity": "Jolly Rancher",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Jolly Rancher"
+      ],
+      "filenames": [
+        "Jolly Rancher"
+      ],
+      "hashes": [
+        "03fd2086"
+      ]
+    },
+    "backpackItems/Ingredients/Milk": {
+      "catalog": "backpackItems",
+      "identity": "Milk",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Milk"
+      ],
+      "filenames": [
+        "Milk"
+      ],
+      "hashes": [
+        "1cb9301f",
+        "1fedd19b",
+        "54de5711"
+      ]
+    },
+    "backpackItems/Ingredients/Olive": {
+      "catalog": "backpackItems",
+      "identity": "Olive",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Olive"
+      ],
+      "filenames": [
+        "Olive"
+      ],
+      "hashes": [
+        "9ba16401",
+        "d79aea60"
+      ]
+    },
+    "backpackItems/Ingredients/Orange Juice": {
+      "catalog": "backpackItems",
+      "identity": "Orange Juice",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Orange Juice"
+      ],
+      "filenames": [
+        "Orange Juice"
+      ],
+      "hashes": [
+        "2bf9747b",
+        "edd39a99"
+      ]
+    },
+    "backpackItems/Ingredients/Red Bull": {
+      "catalog": "backpackItems",
+      "identity": "Red Bull",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Red Bull"
+      ],
+      "filenames": [
+        "Red Bull"
+      ],
+      "hashes": [
+        "0e2849bc",
+        "f0d1049f"
+      ]
+    },
+    "backpackItems/Ingredients/Soda Water": {
+      "catalog": "backpackItems",
+      "identity": "Soda Water",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Soda Water"
+      ],
+      "filenames": [
+        "Soda Water"
+      ],
+      "hashes": [
+        "0e2b735c",
+        "a81a1fe2"
+      ]
+    },
+    "backpackItems/Ingredients/Sweet & Sour": {
+      "catalog": "backpackItems",
+      "identity": "Sweet & Sour",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Sweet & Sour"
+      ],
+      "filenames": [
+        "Sweet & Sour"
+      ],
+      "hashes": [
+        "da77a1cc",
+        "fe6b7acb"
+      ]
+    },
+    "backpackItems/Ingredients/Tabasco": {
+      "catalog": "backpackItems",
+      "identity": "Tabasco",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Tabasco"
+      ],
+      "filenames": [
+        "Tabasco"
+      ],
+      "hashes": [
+        "972b563d"
+      ]
+    },
+    "backpackItems/Ingredients/Wonka Bar Wrapper": {
+      "catalog": "backpackItems",
+      "identity": "Wonka Bar Wrapper",
+      "path": [
+        "backpackItems",
+        "Ingredients",
+        "Wonka Bar Wrapper"
+      ],
+      "filenames": [
+        "Wonka Bar Wrapper"
+      ],
+      "hashes": [
+        "9b471dd2"
+      ]
+    },
+    "backpackItems/King's Kiddie Cup": {
+      "catalog": "backpackItems",
+      "identity": "King's Kiddie Cup",
+      "path": [
+        "backpackItems",
+        "King's Kiddie Cup"
+      ],
+      "filenames": [
+        "Kings Kiddie Cup",
+        "Nx38xKings Kiddie Cup"
+      ],
+      "hashes": []
+    },
+    "backpackItems/King's Kiddie Cup+": {
+      "catalog": "backpackItems",
+      "identity": "King's Kiddie Cup+",
+      "path": [
+        "backpackItems",
+        "King's Kiddie Cup+"
+      ],
+      "filenames": [],
+      "hashes": [
+        "207191e6",
+        "32fea929",
+        "4217fcb3",
+        "9ab0cb50"
+      ]
+    },
+    "backpackItems/MiningTools/Bomb": {
+      "catalog": "backpackItems",
+      "identity": "Bomb",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "Bomb"
+      ],
+      "filenames": [
+        "25x25xBomb",
+        "Bomb"
+      ],
+      "hashes": [
+        "2a8c13e1",
+        "e0bf95c4"
+      ]
+    },
+    "backpackItems/MiningTools/Bundle of Dynamite": {
+      "catalog": "backpackItems",
+      "identity": "Bundle of Dynamite",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "Bundle of Dynamite"
+      ],
+      "filenames": [
+        "Bundle of Dynamite"
+      ],
+      "hashes": []
+    },
+    "backpackItems/MiningTools/Dynamite Stick": {
+      "catalog": "backpackItems",
+      "identity": "Dynamite Stick",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "Dynamite Stick"
+      ],
+      "filenames": [
+        "Dynamite Stick"
+      ],
+      "hashes": [
+        "090caa33",
+        "4a87b48d"
+      ]
+    },
+    "backpackItems/MiningTools/Pickaxe": {
+      "catalog": "backpackItems",
+      "identity": "Pickaxe",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "Pickaxe"
+      ],
+      "filenames": [
+        "Pickaxe"
+      ],
+      "hashes": [
+        "1f4bd271",
+        "e5c4ccfa"
+      ]
+    },
+    "backpackItems/MiningTools/Plastic Explosives": {
+      "catalog": "backpackItems",
+      "identity": "Plastic Explosives",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "Plastic Explosives"
+      ],
+      "filenames": [
+        "Plastic Explosives"
+      ],
+      "hashes": []
+    },
+    "backpackItems/MiningTools/TNT": {
+      "catalog": "backpackItems",
+      "identity": "TNT",
+      "path": [
+        "backpackItems",
+        "MiningTools",
+        "TNT"
+      ],
+      "filenames": [
+        "TNT"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/8 Ball": {
+      "catalog": "backpackItems",
+      "identity": "8 Ball",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "8 Ball"
+      ],
+      "filenames": [
+        "8 Ball"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Abandoned Motor": {
+      "catalog": "backpackItems",
+      "identity": "Abandoned Motor",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Abandoned Motor"
+      ],
+      "filenames": [
+        "Abandoned Motor"
+      ],
+      "hashes": [
+        "6df95306",
+        "b6890089",
+        "fd63c4cd"
+      ]
+    },
+    "backpackItems/Misc/Action Comics 1": {
+      "catalog": "backpackItems",
+      "identity": "Action Comics 1",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Action Comics 1"
+      ],
+      "filenames": [
+        "Action Comics 1"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Anarchy Patch": {
+      "catalog": "backpackItems",
+      "identity": "Anarchy Patch",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Anarchy Patch"
+      ],
+      "filenames": [
+        "Anarchy Patch"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Aquarium Key": {
+      "catalog": "backpackItems",
+      "identity": "Aquarium Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Aquarium Key"
+      ],
+      "filenames": [
+        "Aquarium Key"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bar of Lead": {
+      "catalog": "backpackItems",
+      "identity": "Bar of Lead",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bar of Lead"
+      ],
+      "filenames": [
+        "Bar of Lead"
+      ],
+      "hashes": [
+        "403e4a19",
+        "792f4a65",
+        "f7857ea8"
+      ]
+    },
+    "backpackItems/Misc/Bar of Soap": {
+      "catalog": "backpackItems",
+      "identity": "Bar of Soap",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bar of Soap"
+      ],
+      "filenames": [
+        "Bar of Soap"
+      ],
+      "hashes": [
+        "563bca02",
+        "676b718c"
+      ]
+    },
+    "backpackItems/Misc/Bar-B-Q Grill": {
+      "catalog": "backpackItems",
+      "identity": "Bar-B-Q Grill",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bar-B-Q Grill"
+      ],
+      "filenames": [
+        "Bar B Q Grill"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bathroom Key": {
+      "catalog": "backpackItems",
+      "identity": "Bathroom Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bathroom Key"
+      ],
+      "filenames": [
+        "Bathroom Key"
+      ],
+      "hashes": [
+        "2b50b31e"
+      ]
+    },
+    "backpackItems/Misc/Black Ore": {
+      "catalog": "backpackItems",
+      "identity": "Black Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Black Ore"
+      ],
+      "filenames": [
+        "25x25xBlack Ore",
+        "Black Ore"
+      ],
+      "hashes": [
+        "5d8303af",
+        "eb64f555"
+      ]
+    },
+    "backpackItems/Misc/Bottle Caps": {
+      "catalog": "backpackItems",
+      "identity": "Bottle Caps",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bottle Caps"
+      ],
+      "filenames": [
+        "Bottle Caps"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bottle of Glue": {
+      "catalog": "backpackItems",
+      "identity": "Bottle of Glue",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bottle of Glue"
+      ],
+      "filenames": [
+        "Bottle of Glue"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bottle of Lye": {
+      "catalog": "backpackItems",
+      "identity": "Bottle of Lye",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bottle of Lye"
+      ],
+      "filenames": [
+        "Bottle of Lye"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bowling Trophy": {
+      "catalog": "backpackItems",
+      "identity": "Bowling Trophy",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bowling Trophy"
+      ],
+      "filenames": [
+        "Bowling Trophy"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Bus Pass": {
+      "catalog": "backpackItems",
+      "identity": "Bus Pass",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Bus Pass"
+      ],
+      "filenames": [
+        "Bus Pass"
+      ],
+      "hashes": [
+        "a59463d2"
+      ]
+    },
+    "backpackItems/Misc/Car Key": {
+      "catalog": "backpackItems",
+      "identity": "Car Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Car Key"
+      ],
+      "filenames": [
+        "Car Key"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Chocolate Factory Key": {
+      "catalog": "backpackItems",
+      "identity": "Chocolate Factory Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Chocolate Factory Key"
+      ],
+      "filenames": [
+        "Chocolate Factory Key"
+      ],
+      "hashes": [
+        "c1ec07f0"
+      ]
+    },
+    "backpackItems/Misc/Chocolate-Filled Keg": {
+      "catalog": "backpackItems",
+      "identity": "Chocolate-Filled Keg",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Chocolate-Filled Keg"
+      ],
+      "filenames": [
+        "Chocolate Filled Keg"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Crystal Skull": {
+      "catalog": "backpackItems",
+      "identity": "Crystal Skull",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Crystal Skull"
+      ],
+      "filenames": [
+        "Crystal Skull"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Disappearing Ink": {
+      "catalog": "backpackItems",
+      "identity": "Disappearing Ink",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Disappearing Ink"
+      ],
+      "filenames": [
+        "Disappearing Ink"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Empty Keg": {
+      "catalog": "backpackItems",
+      "identity": "Empty Keg",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Empty Keg"
+      ],
+      "filenames": [
+        "25x25xEmpty Keg",
+        "Empty Keg"
+      ],
+      "hashes": [
+        "5066d626",
+        "5650c489",
+        "bfd1e834"
+      ]
+    },
+    "backpackItems/Misc/Envelope": {
+      "catalog": "backpackItems",
+      "identity": "Envelope",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Envelope"
+      ],
+      "filenames": [
+        "Envelope"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Everlasting Gobstopper": {
+      "catalog": "backpackItems",
+      "identity": "Everlasting Gobstopper",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Everlasting Gobstopper"
+      ],
+      "filenames": [
+        "Everlasting Gobstopper"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Faberge Egg": {
+      "catalog": "backpackItems",
+      "identity": "Faberge Egg",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Faberge Egg"
+      ],
+      "filenames": [
+        "Faberge Egg"
+      ],
+      "hashes": [
+        "b4301776"
+      ]
+    },
+    "backpackItems/Misc/Fake ID": {
+      "catalog": "backpackItems",
+      "identity": "Fake ID",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Fake ID"
+      ],
+      "filenames": [
+        "Fake ID"
+      ],
+      "hashes": [
+        "0c58f8ce",
+        "4e0681f4"
+      ]
+    },
+    "backpackItems/Misc/Fancy Rims": {
+      "catalog": "backpackItems",
+      "identity": "Fancy Rims",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Fancy Rims"
+      ],
+      "filenames": [
+        "Fancy Rims"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Flaming Bag of Something Awful": {
+      "catalog": "backpackItems",
+      "identity": "Flaming Bag of Something Awful",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Flaming Bag of Something Awful"
+      ],
+      "filenames": [
+        "Flaming bag of something awful"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Flashlight": {
+      "catalog": "backpackItems",
+      "identity": "Flashlight",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Flashlight"
+      ],
+      "filenames": [
+        "Flashlight"
+      ],
+      "hashes": [
+        "2baf0d3c",
+        "8fcf3b14"
+      ]
+    },
+    "backpackItems/Misc/Foul Smelling Bag": {
+      "catalog": "backpackItems",
+      "identity": "Foul Smelling Bag",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Foul Smelling Bag"
+      ],
+      "filenames": [
+        "Foul Smelling bag"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Full Access Evil Security Badge": {
+      "catalog": "backpackItems",
+      "identity": "Full Access Evil Security Badge",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Full Access Evil Security Badge"
+      ],
+      "filenames": [
+        "Full Access Evil Security Badge"
+      ],
+      "hashes": [
+        "6d160fc4",
+        "c49aed6e"
+      ]
+    },
+    "backpackItems/Misc/Garden Shears": {
+      "catalog": "backpackItems",
+      "identity": "Garden Shears",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Garden Shears"
+      ],
+      "filenames": [
+        "Garden Shears"
+      ],
+      "hashes": [
+        "256a34bf",
+        "3cb30910"
+      ]
+    },
+    "backpackItems/Misc/Gasoline": {
+      "catalog": "backpackItems",
+      "identity": "Gasoline",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Gasoline"
+      ],
+      "filenames": [
+        "Gasoline"
+      ],
+      "hashes": [
+        "222475a3",
+        "ad40a071"
+      ]
+    },
+    "backpackItems/Misc/Gold Watch": {
+      "catalog": "backpackItems",
+      "identity": "Gold Watch",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Gold Watch"
+      ],
+      "filenames": [
+        "Gold Watch"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Golden Goose Egg": {
+      "catalog": "backpackItems",
+      "identity": "Golden Goose Egg",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Golden Goose Egg"
+      ],
+      "filenames": [
+        "Golden Goose Egg"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Golden Ticket": {
+      "catalog": "backpackItems",
+      "identity": "Golden Ticket",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Golden Ticket"
+      ],
+      "filenames": [
+        "Golden Ticket"
+      ],
+      "hashes": [
+        "878b7328",
+        "95c0bb72"
+      ]
+    },
+    "backpackItems/Misc/Grande Key": {
+      "catalog": "backpackItems",
+      "identity": "Grande Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Grande Key"
+      ],
+      "filenames": [
+        "Grande Key"
+      ],
+      "hashes": [
+        "781157d0"
+      ]
+    },
+    "backpackItems/Misc/Green Ore": {
+      "catalog": "backpackItems",
+      "identity": "Green Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Green Ore"
+      ],
+      "filenames": [
+        "25x25xGreen Ore",
+        "Green Ore",
+        "Nx30xGreen Ore"
+      ],
+      "hashes": [
+        "15132ba3",
+        "478973a7",
+        "fb4b1c46"
+      ]
+    },
+    "backpackItems/Misc/Hammer": {
+      "catalog": "backpackItems",
+      "identity": "Hammer",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Hammer"
+      ],
+      "filenames": [
+        "Hammer"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Harvard Degree": {
+      "catalog": "backpackItems",
+      "identity": "Harvard Degree",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Harvard Degree"
+      ],
+      "filenames": [
+        "Harvard Degree"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Hobalt Shard": {
+      "catalog": "backpackItems",
+      "identity": "Hobalt Shard",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Hobalt Shard"
+      ],
+      "filenames": [
+        "25x25xHobalt Shard",
+        "Hobalt Shard",
+        "Nx30xHobalt Shard"
+      ],
+      "hashes": [
+        "0d1e8b3b",
+        "25b9f72f",
+        "b86e2d07"
+      ]
+    },
+    "backpackItems/Misc/Huge Ass Diamond": {
+      "catalog": "backpackItems",
+      "identity": "Huge Ass Diamond",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Huge Ass Diamond"
+      ],
+      "filenames": [
+        "Huge Ass Diamond"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/I Love You Bracelet": {
+      "catalog": "backpackItems",
+      "identity": "I Love You Bracelet",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "I Love You Bracelet"
+      ],
+      "filenames": [
+        "I Love You Bracelet"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Incriminating Photographs": {
+      "catalog": "backpackItems",
+      "identity": "Incriminating Photographs",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Incriminating Photographs"
+      ],
+      "filenames": [
+        "Incriminating Photographs"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Lucky Screwdriver": {
+      "catalog": "backpackItems",
+      "identity": "Lucky Screwdriver",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Lucky Screwdriver"
+      ],
+      "filenames": [
+        "Lucky Screwdriver"
+      ],
+      "hashes": [
+        "432e1b48",
+        "d5ddac84"
+      ]
+    },
+    "backpackItems/Misc/Magnet": {
+      "catalog": "backpackItems",
+      "identity": "Magnet",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Magnet"
+      ],
+      "filenames": [
+        "Magnet"
+      ],
+      "hashes": [
+        "cfd2fd0f"
+      ]
+    },
+    "backpackItems/Misc/Meat Pie with a Hacksaw in it": {
+      "catalog": "backpackItems",
+      "identity": "Meat Pie with a Hacksaw in it",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Meat Pie with a Hacksaw in it"
+      ],
+      "filenames": [
+        "Meat Pie with a Hacksaw in it"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Ming Vase": {
+      "catalog": "backpackItems",
+      "identity": "Ming Vase",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Ming Vase"
+      ],
+      "filenames": [
+        "Ming Vase"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Mirror Shard": {
+      "catalog": "backpackItems",
+      "identity": "Mirror Shard",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Mirror Shard"
+      ],
+      "filenames": [
+        "Mirror Shard"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Name Tag": {
+      "catalog": "backpackItems",
+      "identity": "Name Tag",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Name Tag"
+      ],
+      "filenames": [
+        "Name Tag"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Old Can of Soup Stock": {
+      "catalog": "backpackItems",
+      "identity": "Old Can of Soup Stock",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Old Can of Soup Stock"
+      ],
+      "filenames": [
+        "Old Can of Soup Stock"
+      ],
+      "hashes": [
+        "3cb22170",
+        "7550abaf",
+        "bc5109f7",
+        "f7baaa88"
+      ]
+    },
+    "backpackItems/Misc/Orange Ore": {
+      "catalog": "backpackItems",
+      "identity": "Orange Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Orange Ore"
+      ],
+      "filenames": [
+        "25x25xOrange Ore",
+        "Orange Ore"
+      ],
+      "hashes": [
+        "0bec5c05",
+        "c2b68230",
+        "dc90a755"
+      ]
+    },
+    "backpackItems/Misc/Pack of Cigarettes": {
+      "catalog": "backpackItems",
+      "identity": "Pack of Cigarettes",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Pack of Cigarettes"
+      ],
+      "filenames": [
+        "Pack of cigarettes"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Pail of Sand": {
+      "catalog": "backpackItems",
+      "identity": "Pail of Sand",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Pail of Sand"
+      ],
+      "filenames": [
+        "Pail of Sand"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Pink Lawn Flamingo": {
+      "catalog": "backpackItems",
+      "identity": "Pink Lawn Flamingo",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Pink Lawn Flamingo"
+      ],
+      "filenames": [
+        "Pink Lawn Flamingo"
+      ],
+      "hashes": [
+        "45ec343a",
+        "e0149b33",
+        "fdb76740"
+      ]
+    },
+    "backpackItems/Misc/Plasma Screen TV": {
+      "catalog": "backpackItems",
+      "identity": "Plasma Screen TV",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Plasma Screen TV"
+      ],
+      "filenames": [
+        "Plasma Screen TV"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Prize-Winning Yorkshire Terrier": {
+      "catalog": "backpackItems",
+      "identity": "Prize-Winning Yorkshire Terrier",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Prize-Winning Yorkshire Terrier"
+      ],
+      "filenames": [
+        "Prize Winning Yorkshire Terrier"
+      ],
+      "hashes": [
+        "51be444b",
+        "974ba6cf"
+      ]
+    },
+    "backpackItems/Misc/Purple Heart": {
+      "catalog": "backpackItems",
+      "identity": "Purple Heart",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Purple Heart"
+      ],
+      "filenames": [
+        "Purple Heart"
+      ],
+      "hashes": [
+        "810dab32",
+        "83e89a0e",
+        "ebd50a53"
+      ]
+    },
+    "backpackItems/Misc/Purple Ore": {
+      "catalog": "backpackItems",
+      "identity": "Purple Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Purple Ore"
+      ],
+      "filenames": [
+        "25x25xPurple Ore",
+        "Nx30xPurple Ore",
+        "Purple Ore"
+      ],
+      "hashes": [
+        "4d81e121",
+        "734af2f8",
+        "dad8c452"
+      ]
+    },
+    "backpackItems/Misc/Rat Wing": {
+      "catalog": "backpackItems",
+      "identity": "Rat Wing",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Rat Wing"
+      ],
+      "filenames": [
+        "Rat Wing"
+      ],
+      "hashes": [
+        "e90f0c62"
+      ]
+    },
+    "backpackItems/Misc/Rather Large Ruby": {
+      "catalog": "backpackItems",
+      "identity": "Rather Large Ruby",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Rather Large Ruby"
+      ],
+      "filenames": [
+        "Rather Large Ruby"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Red Ore": {
+      "catalog": "backpackItems",
+      "identity": "Red Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Red Ore"
+      ],
+      "filenames": [
+        "25x25xRed Ore",
+        "Nx30xRed Ore",
+        "Red Ore"
+      ],
+      "hashes": [
+        "59fda96f",
+        "86cbf6b0",
+        "b375a691"
+      ]
+    },
+    "backpackItems/Misc/Ring Setting": {
+      "catalog": "backpackItems",
+      "identity": "Ring Setting",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Ring Setting"
+      ],
+      "filenames": [
+        "25x25xRing Setting",
+        "Ring Setting"
+      ],
+      "hashes": [
+        "2d31fb0b",
+        "a61b56da",
+        "d8b84b86"
+      ]
+    },
+    "backpackItems/Misc/Sexy Mother Theresa Costume": {
+      "catalog": "backpackItems",
+      "identity": "Sexy Mother Theresa Costume",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Sexy Mother Theresa Costume"
+      ],
+      "filenames": [
+        "Sexy Mother Theresa Costume"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Shipwreck Key": {
+      "catalog": "backpackItems",
+      "identity": "Shipwreck Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Shipwreck Key"
+      ],
+      "filenames": [
+        "Shipwreck Key"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Shrunken Head": {
+      "catalog": "backpackItems",
+      "identity": "Shrunken Head",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Shrunken Head"
+      ],
+      "filenames": [
+        "25x25xShrunken Head",
+        "Shrunken Head"
+      ],
+      "hashes": [
+        "58c819f7",
+        "8385a246",
+        "af489467"
+      ]
+    },
+    "backpackItems/Misc/Signed Basketball": {
+      "catalog": "backpackItems",
+      "identity": "Signed Basketball",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Signed Basketball"
+      ],
+      "filenames": [
+        "Signed Basketball"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Skateboard": {
+      "catalog": "backpackItems",
+      "identity": "Skateboard",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Skateboard"
+      ],
+      "filenames": [
+        "25x25xSkateboard",
+        "Skateboard"
+      ],
+      "hashes": [
+        "56760454",
+        "b521913b",
+        "cd54ee0b"
+      ]
+    },
+    "backpackItems/Misc/Skull Bong": {
+      "catalog": "backpackItems",
+      "identity": "Skull Bong",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Skull Bong"
+      ],
+      "filenames": [
+        "Skull Bong"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Small Silver Key": {
+      "catalog": "backpackItems",
+      "identity": "Small Silver Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Small Silver Key"
+      ],
+      "filenames": [
+        "Small Silver Key"
+      ],
+      "hashes": [
+        "2248ab92"
+      ]
+    },
+    "backpackItems/Misc/Stick": {
+      "catalog": "backpackItems",
+      "identity": "Stick",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Stick"
+      ],
+      "filenames": [
+        "25x25xStick",
+        "Stick"
+      ],
+      "hashes": [
+        "58837f48",
+        "b10d19e9"
+      ]
+    },
+    "backpackItems/Misc/Surveillance Tape": {
+      "catalog": "backpackItems",
+      "identity": "Surveillance Tape",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Surveillance Tape"
+      ],
+      "filenames": [
+        "Surveillance Tape"
+      ],
+      "hashes": [
+        "67759aab",
+        "cde5130f"
+      ]
+    },
+    "backpackItems/Misc/Tall Key": {
+      "catalog": "backpackItems",
+      "identity": "Tall Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Tall Key"
+      ],
+      "filenames": [
+        "Tall Key"
+      ],
+      "hashes": [
+        "04945008"
+      ]
+    },
+    "backpackItems/Misc/The Magna Carta": {
+      "catalog": "backpackItems",
+      "identity": "The Magna Carta",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "The Magna Carta"
+      ],
+      "filenames": [
+        "The Magna Carta"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Tin Can": {
+      "catalog": "backpackItems",
+      "identity": "Tin Can",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Tin Can"
+      ],
+      "filenames": [
+        "Tin Can"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Toothpuff": {
+      "catalog": "backpackItems",
+      "identity": "Toothpuff",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Toothpuff"
+      ],
+      "filenames": [
+        "Toothpuff"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/VCR": {
+      "catalog": "backpackItems",
+      "identity": "VCR",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "VCR"
+      ],
+      "filenames": [
+        "VCR"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Venti Key": {
+      "catalog": "backpackItems",
+      "identity": "Venti Key",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Venti Key"
+      ],
+      "filenames": [
+        "Venti Key"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Misc/Walkman": {
+      "catalog": "backpackItems",
+      "identity": "Walkman",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Walkman"
+      ],
+      "filenames": [
+        "Walkman"
+      ],
+      "hashes": [
+        "842309ee",
+        "e12a2d9d"
+      ]
+    },
+    "backpackItems/Misc/White Ore": {
+      "catalog": "backpackItems",
+      "identity": "White Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "White Ore"
+      ],
+      "filenames": [
+        "25x25xWhite Ore",
+        "White Ore"
+      ],
+      "hashes": [
+        "1ca71cdb",
+        "f9180b76"
+      ]
+    },
+    "backpackItems/Misc/Yellow Ore": {
+      "catalog": "backpackItems",
+      "identity": "Yellow Ore",
+      "path": [
+        "backpackItems",
+        "Misc",
+        "Yellow Ore"
+      ],
+      "filenames": [
+        "25x25xYellow Ore",
+        "Nx30xYellow Ore",
+        "Yellow Ore"
+      ],
+      "hashes": [
+        "068ac2f3",
+        "920a17b0",
+        "c98d0b11"
+      ]
+    },
+    "backpackItems/School ID": {
+      "catalog": "backpackItems",
+      "identity": "School ID",
+      "path": [
+        "backpackItems",
+        "School ID"
+      ],
+      "filenames": [
+        "School ID"
+      ],
+      "hashes": [
+        "cb728564",
+        "f9b88658"
+      ]
+    },
+    "backpackItems/Unusually Large Backpack": {
+      "catalog": "backpackItems",
+      "identity": "Unusually Large Backpack",
+      "path": [
+        "backpackItems",
+        "Unusually Large Backpack"
+      ],
+      "filenames": [
+        "Unusually Large Backpack"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Wearables/Begging Piggy": {
+      "catalog": "backpackItems",
+      "identity": "Begging Piggy",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Begging Piggy"
+      ],
+      "filenames": [
+        "Begging Piggy"
+      ],
+      "hashes": [
+        "e5f96d45"
+      ]
+    },
+    "backpackItems/Wearables/Blast Jacket": {
+      "catalog": "backpackItems",
+      "identity": "Blast Jacket",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Blast Jacket"
+      ],
+      "filenames": [
+        "25x25xBlast Jacket",
+        "Blast Jacket"
+      ],
+      "hashes": [
+        "1c75d7a9",
+        "3fdef323"
+      ]
+    },
+    "backpackItems/Wearables/Booze Drip": {
+      "catalog": "backpackItems",
+      "identity": "Booze Drip",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Booze Drip"
+      ],
+      "filenames": [
+        "25x25xBooze Drip",
+        "Booze Drip"
+      ],
+      "hashes": [
+        "9cc3e45f",
+        "df74cf57"
+      ]
+    },
+    "backpackItems/Wearables/Bowling Shoes": {
+      "catalog": "backpackItems",
+      "identity": "Bowling Shoes",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Bowling Shoes"
+      ],
+      "filenames": [
+        "Bowling Shoes"
+      ],
+      "hashes": [
+        "b9504b34"
+      ]
+    },
+    "backpackItems/Wearables/Choco-Vision Goggles": {
+      "catalog": "backpackItems",
+      "identity": "Choco-Vision Goggles",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Choco-Vision Goggles"
+      ],
+      "filenames": [
+        "Choco Vision Goggles",
+        "xChoco Vision Goggles"
+      ],
+      "hashes": [
+        "8dc3fb8c",
+        "f0e90400"
+      ]
+    },
+    "backpackItems/Wearables/Dungeon Security Clearance Badge": {
+      "catalog": "backpackItems",
+      "identity": "Dungeon Security Clearance Badge",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Dungeon Security Clearance Badge"
+      ],
+      "filenames": [
+        "Dungeon Security Clearance Badge"
+      ],
+      "hashes": [
+        "2f6fb2e8",
+        "aa954257"
+      ]
+    },
+    "backpackItems/Wearables/Dynamite Pouch": {
+      "catalog": "backpackItems",
+      "identity": "Dynamite Pouch",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Dynamite Pouch"
+      ],
+      "filenames": [
+        "Dynamite Pouch"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Wearables/Extra Large Bowling Ball": {
+      "catalog": "backpackItems",
+      "identity": "Extra Large Bowling Ball",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Extra Large Bowling Ball"
+      ],
+      "filenames": [
+        "Extra Large Bowling Ball"
+      ],
+      "hashes": [
+        "3b852970"
+      ]
+    },
+    "backpackItems/Wearables/Gas Mask": {
+      "catalog": "backpackItems",
+      "identity": "Gas Mask",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Gas Mask"
+      ],
+      "filenames": [
+        "Gas Mask"
+      ],
+      "hashes": [
+        "0f36430d"
+      ]
+    },
+    "backpackItems/Wearables/Green Gloves": {
+      "catalog": "backpackItems",
+      "identity": "Green Gloves",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Green Gloves"
+      ],
+      "filenames": [
+        "Green Gloves"
+      ],
+      "hashes": [
+        "19a6d574",
+        "2b9876cb"
+      ]
+    },
+    "backpackItems/Wearables/Green Headband": {
+      "catalog": "backpackItems",
+      "identity": "Green Headband",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Green Headband"
+      ],
+      "filenames": [
+        "Green Headband"
+      ],
+      "hashes": [
+        "ef44bdbe"
+      ]
+    },
+    "backpackItems/Wearables/Miner's Cap": {
+      "catalog": "backpackItems",
+      "identity": "Miner's Cap",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Miner's Cap"
+      ],
+      "filenames": [
+        "Miners Cap"
+      ],
+      "hashes": [
+        "3d86dfe6"
+      ]
+    },
+    "backpackItems/Wearables/Pockets": {
+      "catalog": "backpackItems",
+      "identity": "Pockets",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Pockets"
+      ],
+      "filenames": [
+        "Pockets"
+      ],
+      "hashes": [
+        "8fc3752f",
+        "b375b286"
+      ]
+    },
+    "backpackItems/Wearables/Smarty Pants": {
+      "catalog": "backpackItems",
+      "identity": "Smarty Pants",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Smarty Pants"
+      ],
+      "filenames": [
+        "Smarty Pants"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Wearables/Spelunking Satchel": {
+      "catalog": "backpackItems",
+      "identity": "Spelunking Satchel",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Spelunking Satchel"
+      ],
+      "filenames": [
+        "Spelunking Satchel"
+      ],
+      "hashes": []
+    },
+    "backpackItems/Wearables/Thinking Cap": {
+      "catalog": "backpackItems",
+      "identity": "Thinking Cap",
+      "path": [
+        "backpackItems",
+        "Wearables",
+        "Thinking Cap"
+      ],
+      "filenames": [
+        "25x25xThinking Cap",
+        "Thinking Cap"
+      ],
+      "hashes": [
+        "040f65f8",
+        "06c946a6"
+      ]
+    },
+    "bernardsSpecialItems/Cabana Club Card": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Cabana Club Card",
+      "path": [
+        "bernardsSpecialItems",
+        "Cabana Club Card"
+      ],
+      "filenames": [
+        "Cabana Club Card"
+      ],
+      "hashes": [
+        "51a3c19b"
+      ]
+    },
+    "bernardsSpecialItems/Debit Card": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Debit Card",
+      "path": [
+        "bernardsSpecialItems",
+        "Debit Card"
+      ],
+      "filenames": [
+        "Debit Card"
+      ],
+      "hashes": []
+    },
+    "bernardsSpecialItems/Green Card": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Green Card",
+      "path": [
+        "bernardsSpecialItems",
+        "Green Card"
+      ],
+      "filenames": [
+        "Green Card"
+      ],
+      "hashes": []
+    },
+    "bernardsSpecialItems/Library Card": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Library Card",
+      "path": [
+        "bernardsSpecialItems",
+        "Library Card"
+      ],
+      "filenames": [
+        "Library Card"
+      ],
+      "hashes": []
+    },
+    "bernardsSpecialItems/Professional Beggar Outfit": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Professional Beggar Outfit",
+      "path": [
+        "bernardsSpecialItems",
+        "Professional Beggar Outfit"
+      ],
+      "filenames": [
+        "Professional Beggar Outfit"
+      ],
+      "hashes": []
+    },
+    "bernardsSpecialItems/Special Sunglasses": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Special Sunglasses",
+      "path": [
+        "bernardsSpecialItems",
+        "Special Sunglasses"
+      ],
+      "filenames": [
+        "Special Sunglasses"
+      ],
+      "hashes": []
+    },
+    "bernardsSpecialItems/Training Shoes": {
+      "catalog": "bernardsSpecialItems",
+      "identity": "Training Shoes",
+      "path": [
+        "bernardsSpecialItems",
+        "Training Shoes"
+      ],
+      "filenames": [
+        "Training Shoes"
+      ],
+      "hashes": []
+    },
+    "currencies/Cans": {
+      "catalog": "currencies",
+      "identity": "Cans",
+      "path": [
+        "currencies",
+        "Cans"
+      ],
+      "filenames": [],
+      "hashes": [
+        "2276bb55"
+      ]
+    },
+    "currencies/Donator Packs": {
+      "catalog": "currencies",
+      "identity": "Donator Packs",
+      "path": [
+        "currencies",
+        "Donator Packs"
+      ],
+      "filenames": [
+        "donator",
+        "donator packs"
+      ],
+      "hashes": [
+        "2d6369e8"
+      ]
+    },
+    "currencies/Points": {
+      "catalog": "currencies",
+      "identity": "Points",
+      "path": [
+        "currencies",
+        "Points"
+      ],
+      "filenames": [
+        "xpoints"
+      ],
+      "hashes": []
+    },
+    "currencies/Tokens": {
+      "catalog": "currencies",
+      "identity": "Tokens",
+      "path": [
+        "currencies",
+        "Tokens"
+      ],
+      "filenames": [
+        "tokens"
+      ],
+      "hashes": []
+    },
+    "equipment/Ad Sign": {
+      "catalog": "equipment",
+      "identity": "Ad Sign",
+      "path": [
+        "equipment",
+        "Ad Sign"
+      ],
+      "filenames": [
+        "Ad Sign"
+      ],
+      "hashes": []
+    },
+    "equipment/Adamantium Claws": {
+      "catalog": "equipment",
+      "identity": "Adamantium Claws",
+      "path": [
+        "equipment",
+        "Adamantium Claws"
+      ],
+      "filenames": [
+        "Adamantium Claws"
+      ],
+      "hashes": []
+    },
+    "equipment/Adamantium Pasties": {
+      "catalog": "equipment",
+      "identity": "Adamantium Pasties",
+      "path": [
+        "equipment",
+        "Adamantium Pasties"
+      ],
+      "filenames": [
+        "Adamantium Pasties"
+      ],
+      "hashes": []
+    },
+    "equipment/Ak-47": {
+      "catalog": "equipment",
+      "identity": "Ak-47",
+      "path": [
+        "equipment",
+        "Ak-47"
+      ],
+      "filenames": [
+        "Ak 47"
+      ],
+      "hashes": []
+    },
+    "equipment/Amish Hat": {
+      "catalog": "equipment",
+      "identity": "Amish Hat",
+      "path": [
+        "equipment",
+        "Amish Hat"
+      ],
+      "filenames": [
+        "Amish Hat"
+      ],
+      "hashes": []
+    },
+    "equipment/Animal Style Blade": {
+      "catalog": "equipment",
+      "identity": "Animal Style Blade",
+      "path": [
+        "equipment",
+        "Animal Style Blade"
+      ],
+      "filenames": [
+        "Animal Style Blade"
+      ],
+      "hashes": []
+    },
+    "equipment/Another Hobo": {
+      "catalog": "equipment",
+      "identity": "Another Hobo",
+      "path": [
+        "equipment",
+        "Another Hobo"
+      ],
+      "filenames": [
+        "Another Hobo"
+      ],
+      "hashes": []
+    },
+    "equipment/Bad to the Bone T-Shirt": {
+      "catalog": "equipment",
+      "identity": "Bad to the Bone T-Shirt",
+      "path": [
+        "equipment",
+        "Bad to the Bone T-Shirt"
+      ],
+      "filenames": [
+        "Bad to the Bone T Shirt"
+      ],
+      "hashes": []
+    },
+    "equipment/Balltop Cane": {
+      "catalog": "equipment",
+      "identity": "Balltop Cane",
+      "path": [
+        "equipment",
+        "Balltop Cane"
+      ],
+      "filenames": [
+        "Balltop Cane"
+      ],
+      "hashes": [
+        "bfa588ec"
+      ]
+    },
+    "equipment/BB-Gun": {
+      "catalog": "equipment",
+      "identity": "BB-Gun",
+      "path": [
+        "equipment",
+        "BB-Gun"
+      ],
+      "filenames": [
+        "BB Gun"
+      ],
+      "hashes": []
+    },
+    "equipment/Beggar Ring": {
+      "catalog": "equipment",
+      "identity": "Beggar Ring",
+      "path": [
+        "equipment",
+        "Beggar Ring"
+      ],
+      "filenames": [
+        "Beggar Ring"
+      ],
+      "hashes": []
+    },
+    "equipment/Beggar's Bludgeon": {
+      "catalog": "equipment",
+      "identity": "Beggar's Bludgeon",
+      "path": [
+        "equipment",
+        "Beggar's Bludgeon"
+      ],
+      "filenames": [
+        "Beggars Bludgeon"
+      ],
+      "hashes": []
+    },
+    "equipment/BFG": {
+      "catalog": "equipment",
+      "identity": "BFG",
+      "path": [
+        "equipment",
+        "BFG"
+      ],
+      "filenames": [
+        "BFG"
+      ],
+      "hashes": []
+    },
+    "equipment/Bin Lid": {
+      "catalog": "equipment",
+      "identity": "Bin Lid",
+      "path": [
+        "equipment",
+        "Bin Lid"
+      ],
+      "filenames": [
+        "Bin Lid"
+      ],
+      "hashes": []
+    },
+    "equipment/Blaster": {
+      "catalog": "equipment",
+      "identity": "Blaster",
+      "path": [
+        "equipment",
+        "Blaster"
+      ],
+      "filenames": [
+        "Blaster"
+      ],
+      "hashes": []
+    },
+    "equipment/Bling Necklace": {
+      "catalog": "equipment",
+      "identity": "Bling Necklace",
+      "path": [
+        "equipment",
+        "Bling Necklace"
+      ],
+      "filenames": [
+        "Bling Necklace"
+      ],
+      "hashes": []
+    },
+    "equipment/Bloody Knife": {
+      "catalog": "equipment",
+      "identity": "Bloody Knife",
+      "path": [
+        "equipment",
+        "Bloody Knife"
+      ],
+      "filenames": [
+        "Bloody Knife"
+      ],
+      "hashes": []
+    },
+    "equipment/Bloody Prisoner Uniform": {
+      "catalog": "equipment",
+      "identity": "Bloody Prisoner Uniform",
+      "path": [
+        "equipment",
+        "Bloody Prisoner Uniform"
+      ],
+      "filenames": [
+        "Bloody Prisoner Uniform"
+      ],
+      "hashes": []
+    },
+    "equipment/Bulletproof Shield": {
+      "catalog": "equipment",
+      "identity": "Bulletproof Shield",
+      "path": [
+        "equipment",
+        "Bulletproof Shield"
+      ],
+      "filenames": [
+        "Bulletproof Shield"
+      ],
+      "hashes": []
+    },
+    "equipment/Bulletproof Vest": {
+      "catalog": "equipment",
+      "identity": "Bulletproof Vest",
+      "path": [
+        "equipment",
+        "Bulletproof Vest"
+      ],
+      "filenames": [
+        "Bulletproof Vest"
+      ],
+      "hashes": []
+    },
+    "equipment/Can Cannon": {
+      "catalog": "equipment",
+      "identity": "Can Cannon",
+      "path": [
+        "equipment",
+        "Can Cannon"
+      ],
+      "filenames": [
+        "Can Cannon"
+      ],
+      "hashes": []
+    },
+    "equipment/Chainsaw": {
+      "catalog": "equipment",
+      "identity": "Chainsaw",
+      "path": [
+        "equipment",
+        "Chainsaw"
+      ],
+      "filenames": [
+        "Chainsaw"
+      ],
+      "hashes": []
+    },
+    "equipment/Championship Belt": {
+      "catalog": "equipment",
+      "identity": "Championship Belt",
+      "path": [
+        "equipment",
+        "Championship Belt"
+      ],
+      "filenames": [
+        "Championship Belt"
+      ],
+      "hashes": []
+    },
+    "equipment/Chest Armor": {
+      "catalog": "equipment",
+      "identity": "Chest Armor",
+      "path": [
+        "equipment",
+        "Chest Armor"
+      ],
+      "filenames": [
+        "Chest Armor"
+      ],
+      "hashes": []
+    },
+    "equipment/Chewing Gum Ring": {
+      "catalog": "equipment",
+      "identity": "Chewing Gum Ring",
+      "path": [
+        "equipment",
+        "Chewing Gum Ring"
+      ],
+      "filenames": [
+        "Chewing Gum Ring"
+      ],
+      "hashes": []
+    },
+    "equipment/Coffee-Soaked Mop": {
+      "catalog": "equipment",
+      "identity": "Coffee-Soaked Mop",
+      "path": [
+        "equipment",
+        "Coffee-Soaked Mop"
+      ],
+      "filenames": [
+        "Coffee Soaked Mop"
+      ],
+      "hashes": [
+        "5e7db314"
+      ]
+    },
+    "equipment/Cricket Bat": {
+      "catalog": "equipment",
+      "identity": "Cricket Bat",
+      "path": [
+        "equipment",
+        "Cricket Bat"
+      ],
+      "filenames": [
+        "Cricket Bat"
+      ],
+      "hashes": [
+        "5f074cda"
+      ]
+    },
+    "equipment/Crow-bar": {
+      "catalog": "equipment",
+      "identity": "Crow-bar",
+      "path": [
+        "equipment",
+        "Crow-bar"
+      ],
+      "filenames": [
+        "Crow bar"
+      ],
+      "hashes": []
+    },
+    "equipment/Desert-Eagle": {
+      "catalog": "equipment",
+      "identity": "Desert-Eagle",
+      "path": [
+        "equipment",
+        "Desert-Eagle"
+      ],
+      "filenames": [
+        "Desert Eagle"
+      ],
+      "hashes": []
+    },
+    "equipment/Diamond Shuriken": {
+      "catalog": "equipment",
+      "identity": "Diamond Shuriken",
+      "path": [
+        "equipment",
+        "Diamond Shuriken"
+      ],
+      "filenames": [
+        "Diamond Shuriken"
+      ],
+      "hashes": []
+    },
+    "equipment/Diamond Tuxedo": {
+      "catalog": "equipment",
+      "identity": "Diamond Tuxedo",
+      "path": [
+        "equipment",
+        "Diamond Tuxedo"
+      ],
+      "filenames": [
+        "Diamond Tuxedo"
+      ],
+      "hashes": []
+    },
+    "equipment/Double Hobos": {
+      "catalog": "equipment",
+      "identity": "Double Hobos",
+      "path": [
+        "equipment",
+        "Double Hobos"
+      ],
+      "filenames": [
+        "Double Hobos"
+      ],
+      "hashes": []
+    },
+    "equipment/Dress": {
+      "catalog": "equipment",
+      "identity": "Dress",
+      "path": [
+        "equipment",
+        "Dress"
+      ],
+      "filenames": [
+        "Dress"
+      ],
+      "hashes": []
+    },
+    "equipment/Eagle Shirt": {
+      "catalog": "equipment",
+      "identity": "Eagle Shirt",
+      "path": [
+        "equipment",
+        "Eagle Shirt"
+      ],
+      "filenames": [
+        "Eagle Shirt"
+      ],
+      "hashes": []
+    },
+    "equipment/Engagement Ring": {
+      "catalog": "equipment",
+      "identity": "Engagement Ring",
+      "path": [
+        "equipment",
+        "Engagement Ring"
+      ],
+      "filenames": [
+        "Engagement Ring"
+      ],
+      "hashes": [
+        "b169321d"
+      ]
+    },
+    "equipment/Excalibur": {
+      "catalog": "equipment",
+      "identity": "Excalibur",
+      "path": [
+        "equipment",
+        "Excalibur"
+      ],
+      "filenames": [
+        "Excalibur"
+      ],
+      "hashes": []
+    },
+    "equipment/Fat Suit": {
+      "catalog": "equipment",
+      "identity": "Fat Suit",
+      "path": [
+        "equipment",
+        "Fat Suit"
+      ],
+      "filenames": [
+        "Fat Suit"
+      ],
+      "hashes": []
+    },
+    "equipment/Filthy Socks": {
+      "catalog": "equipment",
+      "identity": "Filthy Socks",
+      "path": [
+        "equipment",
+        "Filthy Socks"
+      ],
+      "filenames": [
+        "Filthy Socks"
+      ],
+      "hashes": [
+        "dede8249"
+      ]
+    },
+    "equipment/Full-Body Armor": {
+      "catalog": "equipment",
+      "identity": "Full-Body Armor",
+      "path": [
+        "equipment",
+        "Full-Body Armor"
+      ],
+      "filenames": [
+        "Full Body Armor"
+      ],
+      "hashes": []
+    },
+    "equipment/Full-Body Trap": {
+      "catalog": "equipment",
+      "identity": "Full-Body Trap",
+      "path": [
+        "equipment",
+        "Full-Body Trap"
+      ],
+      "filenames": [
+        "Full Body Trap"
+      ],
+      "hashes": [
+        "85377ea3"
+      ]
+    },
+    "equipment/Garbage Bag": {
+      "catalog": "equipment",
+      "identity": "Garbage Bag",
+      "path": [
+        "equipment",
+        "Garbage Bag"
+      ],
+      "filenames": [
+        "Garbage Bag"
+      ],
+      "hashes": []
+    },
+    "equipment/Gold Folding Chair": {
+      "catalog": "equipment",
+      "identity": "Gold Folding Chair",
+      "path": [
+        "equipment",
+        "Gold Folding Chair"
+      ],
+      "filenames": [
+        "Gold Folding Chair"
+      ],
+      "hashes": []
+    },
+    "equipment/Gold Pickaxe": {
+      "catalog": "equipment",
+      "identity": "Gold Pickaxe",
+      "path": [
+        "equipment",
+        "Gold Pickaxe"
+      ],
+      "filenames": [
+        "Gold Pickaxe"
+      ],
+      "hashes": []
+    },
+    "equipment/Golden Rod": {
+      "catalog": "equipment",
+      "identity": "Golden Rod",
+      "path": [
+        "equipment",
+        "Golden Rod"
+      ],
+      "filenames": [
+        "Golden Rod"
+      ],
+      "hashes": []
+    },
+    "equipment/Goofy Paper Hat": {
+      "catalog": "equipment",
+      "identity": "Goofy Paper Hat",
+      "path": [
+        "equipment",
+        "Goofy Paper Hat"
+      ],
+      "filenames": [
+        "Goofy Paper Hat"
+      ],
+      "hashes": []
+    },
+    "equipment/Green Lantern Ring": {
+      "catalog": "equipment",
+      "identity": "Green Lantern Ring",
+      "path": [
+        "equipment",
+        "Green Lantern Ring"
+      ],
+      "filenames": [
+        "Green Lantern Ring"
+      ],
+      "hashes": []
+    },
+    "equipment/Grizzly Armor": {
+      "catalog": "equipment",
+      "identity": "Grizzly Armor",
+      "path": [
+        "equipment",
+        "Grizzly Armor"
+      ],
+      "filenames": [
+        "Grizzly Armor"
+      ],
+      "hashes": []
+    },
+    "equipment/Hackeysack": {
+      "catalog": "equipment",
+      "identity": "Hackeysack",
+      "path": [
+        "equipment",
+        "Hackeysack"
+      ],
+      "filenames": [
+        "Hackeysack"
+      ],
+      "hashes": []
+    },
+    "equipment/Hacksaw": {
+      "catalog": "equipment",
+      "identity": "Hacksaw",
+      "path": [
+        "equipment",
+        "Hacksaw"
+      ],
+      "filenames": [
+        "Hacksaw"
+      ],
+      "hashes": [
+        "d45c2d6a"
+      ]
+    },
+    "equipment/Hattori-Hanzo Sword": {
+      "catalog": "equipment",
+      "identity": "Hattori-Hanzo Sword",
+      "path": [
+        "equipment",
+        "Hattori-Hanzo Sword"
+      ],
+      "filenames": [
+        "Hattori Hanzo Sword"
+      ],
+      "hashes": [
+        "9532a01e"
+      ]
+    },
+    "equipment/Hazmat Suit": {
+      "catalog": "equipment",
+      "identity": "Hazmat Suit",
+      "path": [
+        "equipment",
+        "Hazmat Suit"
+      ],
+      "filenames": [
+        "Hazmat Suit"
+      ],
+      "hashes": []
+    },
+    "equipment/Hi-Tech Tuxedo": {
+      "catalog": "equipment",
+      "identity": "Hi-Tech Tuxedo",
+      "path": [
+        "equipment",
+        "Hi-Tech Tuxedo"
+      ],
+      "filenames": [
+        "Hi Tech Tuxedo"
+      ],
+      "hashes": []
+    },
+    "equipment/HK G11": {
+      "catalog": "equipment",
+      "identity": "HK G11",
+      "path": [
+        "equipment",
+        "HK G11"
+      ],
+      "filenames": [
+        "HK G11"
+      ],
+      "hashes": []
+    },
+    "equipment/Iron Man Armor": {
+      "catalog": "equipment",
+      "identity": "Iron Man Armor",
+      "path": [
+        "equipment",
+        "Iron Man Armor"
+      ],
+      "filenames": [
+        "Iron Man Armor"
+      ],
+      "hashes": []
+    },
+    "equipment/Jacket": {
+      "catalog": "equipment",
+      "identity": "Jacket",
+      "path": [
+        "equipment",
+        "Jacket"
+      ],
+      "filenames": [
+        "Jacket"
+      ],
+      "hashes": []
+    },
+    "equipment/Jester's Cap": {
+      "catalog": "equipment",
+      "identity": "Jester's Cap",
+      "path": [
+        "equipment",
+        "Jester's Cap"
+      ],
+      "filenames": [
+        "Jesters Cap"
+      ],
+      "hashes": []
+    },
+    "equipment/Juggernaut Helmet": {
+      "catalog": "equipment",
+      "identity": "Juggernaut Helmet",
+      "path": [
+        "equipment",
+        "Juggernaut Helmet"
+      ],
+      "filenames": [
+        "Juggernaut Helmet"
+      ],
+      "hashes": []
+    },
+    "equipment/Kobayashi Ring": {
+      "catalog": "equipment",
+      "identity": "Kobayashi Ring",
+      "path": [
+        "equipment",
+        "Kobayashi Ring"
+      ],
+      "filenames": [
+        "Kobayashi Ring"
+      ],
+      "hashes": []
+    },
+    "equipment/Large Stick": {
+      "catalog": "equipment",
+      "identity": "Large Stick",
+      "path": [
+        "equipment",
+        "Large Stick"
+      ],
+      "filenames": [
+        "Large Stick"
+      ],
+      "hashes": []
+    },
+    "equipment/Lightsaber": {
+      "catalog": "equipment",
+      "identity": "Lightsaber",
+      "path": [
+        "equipment",
+        "Lightsaber"
+      ],
+      "filenames": [
+        "Lightsaber"
+      ],
+      "hashes": []
+    },
+    "equipment/Long Black Trenchcoat": {
+      "catalog": "equipment",
+      "identity": "Long Black Trenchcoat",
+      "path": [
+        "equipment",
+        "Long Black Trenchcoat"
+      ],
+      "filenames": [
+        "Long Black Trenchcoat"
+      ],
+      "hashes": [
+        "3aa9659c"
+      ]
+    },
+    "equipment/M16": {
+      "catalog": "equipment",
+      "identity": "M16",
+      "path": [
+        "equipment",
+        "M16"
+      ],
+      "filenames": [
+        "M16"
+      ],
+      "hashes": []
+    },
+    "equipment/Mac-10": {
+      "catalog": "equipment",
+      "identity": "Mac-10",
+      "path": [
+        "equipment",
+        "Mac-10"
+      ],
+      "filenames": [
+        "Mac 10"
+      ],
+      "hashes": []
+    },
+    "equipment/Metal Helmet": {
+      "catalog": "equipment",
+      "identity": "Metal Helmet",
+      "path": [
+        "equipment",
+        "Metal Helmet"
+      ],
+      "filenames": [
+        "Metal Helmet"
+      ],
+      "hashes": []
+    },
+    "equipment/Metal Knife": {
+      "catalog": "equipment",
+      "identity": "Metal Knife",
+      "path": [
+        "equipment",
+        "Metal Knife"
+      ],
+      "filenames": [
+        "Metal Knife"
+      ],
+      "hashes": []
+    },
+    "equipment/Metal Rod": {
+      "catalog": "equipment",
+      "identity": "Metal Rod",
+      "path": [
+        "equipment",
+        "Metal Rod"
+      ],
+      "filenames": [
+        "Metal Rod"
+      ],
+      "hashes": []
+    },
+    "equipment/Metal Shield": {
+      "catalog": "equipment",
+      "identity": "Metal Shield",
+      "path": [
+        "equipment",
+        "Metal Shield"
+      ],
+      "filenames": [
+        "Metal Shield"
+      ],
+      "hashes": []
+    },
+    "equipment/MHGA Hat": {
+      "catalog": "equipment",
+      "identity": "MHGA Hat",
+      "path": [
+        "equipment",
+        "MHGA Hat"
+      ],
+      "filenames": [
+        "MHGA Hat"
+      ],
+      "hashes": []
+    },
+    "equipment/MHGA Sign": {
+      "catalog": "equipment",
+      "identity": "MHGA Sign",
+      "path": [
+        "equipment",
+        "MHGA Sign"
+      ],
+      "filenames": [
+        "MHGA Sign",
+        "xMHGA Sign"
+      ],
+      "hashes": [
+        "54d4817e"
+      ]
+    },
+    "equipment/Mithril Garbage Bin": {
+      "catalog": "equipment",
+      "identity": "Mithril Garbage Bin",
+      "path": [
+        "equipment",
+        "Mithril Garbage Bin"
+      ],
+      "filenames": [
+        "Mithril Garbage Bin"
+      ],
+      "hashes": []
+    },
+    "equipment/Mithril Grocery Bag": {
+      "catalog": "equipment",
+      "identity": "Mithril Grocery Bag",
+      "path": [
+        "equipment",
+        "Mithril Grocery Bag"
+      ],
+      "filenames": [
+        "Mithril Grocery Bag"
+      ],
+      "hashes": [
+        "32102567"
+      ]
+    },
+    "equipment/Mystery Hat": {
+      "catalog": "equipment",
+      "identity": "Mystery Hat",
+      "path": [
+        "equipment",
+        "Mystery Hat"
+      ],
+      "filenames": [
+        "Mystery Hat"
+      ],
+      "hashes": [
+        "2c619b67"
+      ]
+    },
+    "equipment/Nights Watch Cloak": {
+      "catalog": "equipment",
+      "identity": "Nights Watch Cloak",
+      "path": [
+        "equipment",
+        "Nights Watch Cloak"
+      ],
+      "filenames": [
+        "Nights Watch Cloak"
+      ],
+      "hashes": []
+    },
+    "equipment/Nippled Breastplate": {
+      "catalog": "equipment",
+      "identity": "Nippled Breastplate",
+      "path": [
+        "equipment",
+        "Nippled Breastplate"
+      ],
+      "filenames": [
+        "Nippled Breastplate"
+      ],
+      "hashes": []
+    },
+    "equipment/Onion Ring": {
+      "catalog": "equipment",
+      "identity": "Onion Ring",
+      "path": [
+        "equipment",
+        "Onion Ring"
+      ],
+      "filenames": [
+        "Onion Ring"
+      ],
+      "hashes": [
+        "dbd634cb"
+      ]
+    },
+    "equipment/Paper Bag": {
+      "catalog": "equipment",
+      "identity": "Paper Bag",
+      "path": [
+        "equipment",
+        "Paper Bag"
+      ],
+      "filenames": [
+        "Paper Bag"
+      ],
+      "hashes": []
+    },
+    "equipment/Paper Cup": {
+      "catalog": "equipment",
+      "identity": "Paper Cup",
+      "path": [
+        "equipment",
+        "Paper Cup"
+      ],
+      "filenames": [
+        "Paper Cup"
+      ],
+      "hashes": [
+        "679dce1d"
+      ]
+    },
+    "equipment/Phaser": {
+      "catalog": "equipment",
+      "identity": "Phaser",
+      "path": [
+        "equipment",
+        "Phaser"
+      ],
+      "filenames": [
+        "Phaser"
+      ],
+      "hashes": [
+        "0cabfea2",
+        "e29a925f"
+      ]
+    },
+    "equipment/Pipe": {
+      "catalog": "equipment",
+      "identity": "Pipe",
+      "path": [
+        "equipment",
+        "Pipe"
+      ],
+      "filenames": [
+        "Pipe"
+      ],
+      "hashes": []
+    },
+    "equipment/Plastic Bag": {
+      "catalog": "equipment",
+      "identity": "Plastic Bag",
+      "path": [
+        "equipment",
+        "Plastic Bag"
+      ],
+      "filenames": [
+        "Plastic Bag"
+      ],
+      "hashes": []
+    },
+    "equipment/Plastic Helmet": {
+      "catalog": "equipment",
+      "identity": "Plastic Helmet",
+      "path": [
+        "equipment",
+        "Plastic Helmet"
+      ],
+      "filenames": [
+        "Plastic Helmet"
+      ],
+      "hashes": []
+    },
+    "equipment/Plastic Spoon": {
+      "catalog": "equipment",
+      "identity": "Plastic Spoon",
+      "path": [
+        "equipment",
+        "Plastic Spoon"
+      ],
+      "filenames": [
+        "Plastic Spoon"
+      ],
+      "hashes": [
+        "5a3b8bc3"
+      ]
+    },
+    "equipment/Police Baton": {
+      "catalog": "equipment",
+      "identity": "Police Baton",
+      "path": [
+        "equipment",
+        "Police Baton"
+      ],
+      "filenames": [
+        "Police Baton"
+      ],
+      "hashes": []
+    },
+    "equipment/Potato Gun": {
+      "catalog": "equipment",
+      "identity": "Potato Gun",
+      "path": [
+        "equipment",
+        "Potato Gun"
+      ],
+      "filenames": [
+        "Potato Gun"
+      ],
+      "hashes": []
+    },
+    "equipment/Power Glove": {
+      "catalog": "equipment",
+      "identity": "Power Glove",
+      "path": [
+        "equipment",
+        "Power Glove"
+      ],
+      "filenames": [
+        "Power Glove"
+      ],
+      "hashes": []
+    },
+    "equipment/Rags": {
+      "catalog": "equipment",
+      "identity": "Rags",
+      "path": [
+        "equipment",
+        "Rags"
+      ],
+      "filenames": [
+        "Rags"
+      ],
+      "hashes": []
+    },
+    "equipment/Ratarang": {
+      "catalog": "equipment",
+      "identity": "Ratarang",
+      "path": [
+        "equipment",
+        "Ratarang"
+      ],
+      "filenames": [
+        "Ratarang"
+      ],
+      "hashes": []
+    },
+    "equipment/Respect Ring": {
+      "catalog": "equipment",
+      "identity": "Respect Ring",
+      "path": [
+        "equipment",
+        "Respect Ring"
+      ],
+      "filenames": [
+        "Respect Ring"
+      ],
+      "hashes": [
+        "fe58635a"
+      ]
+    },
+    "equipment/Revolver": {
+      "catalog": "equipment",
+      "identity": "Revolver",
+      "path": [
+        "equipment",
+        "Revolver"
+      ],
+      "filenames": [
+        "Revolver"
+      ],
+      "hashes": []
+    },
+    "equipment/Ring Pop": {
+      "catalog": "equipment",
+      "identity": "Ring Pop",
+      "path": [
+        "equipment",
+        "Ring Pop"
+      ],
+      "filenames": [
+        "Ring Pop"
+      ],
+      "hashes": []
+    },
+    "equipment/Riot Shield": {
+      "catalog": "equipment",
+      "identity": "Riot Shield",
+      "path": [
+        "equipment",
+        "Riot Shield"
+      ],
+      "filenames": [
+        "Riot Shield"
+      ],
+      "hashes": []
+    },
+    "equipment/Rocks": {
+      "catalog": "equipment",
+      "identity": "Rocks",
+      "path": [
+        "equipment",
+        "Rocks"
+      ],
+      "filenames": [
+        "Rocks"
+      ],
+      "hashes": []
+    },
+    "equipment/Rodent Ring": {
+      "catalog": "equipment",
+      "identity": "Rodent Ring",
+      "path": [
+        "equipment",
+        "Rodent Ring"
+      ],
+      "filenames": [
+        "Rodent Ring"
+      ],
+      "hashes": [
+        "e4081765"
+      ]
+    },
+    "equipment/Rubber Knife": {
+      "catalog": "equipment",
+      "identity": "Rubber Knife",
+      "path": [
+        "equipment",
+        "Rubber Knife"
+      ],
+      "filenames": [
+        "Rubber Knife"
+      ],
+      "hashes": []
+    },
+    "equipment/Shot-Gun": {
+      "catalog": "equipment",
+      "identity": "Shot-Gun",
+      "path": [
+        "equipment",
+        "Shot-Gun"
+      ],
+      "filenames": [
+        "Shot Gun"
+      ],
+      "hashes": []
+    },
+    "equipment/Singlet": {
+      "catalog": "equipment",
+      "identity": "Singlet",
+      "path": [
+        "equipment",
+        "Singlet"
+      ],
+      "filenames": [
+        "Singlet"
+      ],
+      "hashes": []
+    },
+    "equipment/Slurpee Cup": {
+      "catalog": "equipment",
+      "identity": "Slurpee Cup",
+      "path": [
+        "equipment",
+        "Slurpee Cup"
+      ],
+      "filenames": [
+        "Slurpee Cup"
+      ],
+      "hashes": []
+    },
+    "equipment/Small Stick": {
+      "catalog": "equipment",
+      "identity": "Small Stick",
+      "path": [
+        "equipment",
+        "Small Stick"
+      ],
+      "filenames": [
+        "Small Stick"
+      ],
+      "hashes": []
+    },
+    "equipment/Steel Bat": {
+      "catalog": "equipment",
+      "identity": "Steel Bat",
+      "path": [
+        "equipment",
+        "Steel Bat"
+      ],
+      "filenames": [
+        "Steel Bat"
+      ],
+      "hashes": []
+    },
+    "equipment/Sting": {
+      "catalog": "equipment",
+      "identity": "Sting",
+      "path": [
+        "equipment",
+        "Sting"
+      ],
+      "filenames": [
+        "Sting"
+      ],
+      "hashes": [
+        "b4ad6cf2"
+      ]
+    },
+    "equipment/Symbiote": {
+      "catalog": "equipment",
+      "identity": "Symbiote",
+      "path": [
+        "equipment",
+        "Symbiote"
+      ],
+      "filenames": [
+        "Symbiote"
+      ],
+      "hashes": []
+    },
+    "equipment/T-Shirt": {
+      "catalog": "equipment",
+      "identity": "T-Shirt",
+      "path": [
+        "equipment",
+        "T-Shirt"
+      ],
+      "filenames": [
+        "T Shirt"
+      ],
+      "hashes": []
+    },
+    "equipment/Thor's Hammer": {
+      "catalog": "equipment",
+      "identity": "Thor's Hammer",
+      "path": [
+        "equipment",
+        "Thor's Hammer"
+      ],
+      "filenames": [
+        "Thors Hammer"
+      ],
+      "hashes": []
+    },
+    "equipment/Toothpuff Ring": {
+      "catalog": "equipment",
+      "identity": "Toothpuff Ring",
+      "path": [
+        "equipment",
+        "Toothpuff Ring"
+      ],
+      "filenames": [
+        "Toothpuff Ring"
+      ],
+      "hashes": []
+    },
+    "equipment/Tron Armor": {
+      "catalog": "equipment",
+      "identity": "Tron Armor",
+      "path": [
+        "equipment",
+        "Tron Armor"
+      ],
+      "filenames": [
+        "Tron Armor"
+      ],
+      "hashes": []
+    },
+    "equipment/Utility Belt": {
+      "catalog": "equipment",
+      "identity": "Utility Belt",
+      "path": [
+        "equipment",
+        "Utility Belt"
+      ],
+      "filenames": [
+        "Utility Belt"
+      ],
+      "hashes": []
+    },
+    "equipment/Valyrian Steel Blade": {
+      "catalog": "equipment",
+      "identity": "Valyrian Steel Blade",
+      "path": [
+        "equipment",
+        "Valyrian Steel Blade"
+      ],
+      "filenames": [
+        "Valyrian Steel Blade"
+      ],
+      "hashes": []
+    },
+    "equipment/Vest": {
+      "catalog": "equipment",
+      "identity": "Vest",
+      "path": [
+        "equipment",
+        "Vest"
+      ],
+      "filenames": [
+        "Vest"
+      ],
+      "hashes": []
+    },
+    "equipment/Viking Helmet": {
+      "catalog": "equipment",
+      "identity": "Viking Helmet",
+      "path": [
+        "equipment",
+        "Viking Helmet"
+      ],
+      "filenames": [
+        "Viking Helmet"
+      ],
+      "hashes": []
+    },
+    "equipment/Water Cannon": {
+      "catalog": "equipment",
+      "identity": "Water Cannon",
+      "path": [
+        "equipment",
+        "Water Cannon"
+      ],
+      "filenames": [
+        "Water Cannon"
+      ],
+      "hashes": []
+    },
+    "equipment/Water Pistol": {
+      "catalog": "equipment",
+      "identity": "Water Pistol",
+      "path": [
+        "equipment",
+        "Water Pistol"
+      ],
+      "filenames": [
+        "Water Pistol"
+      ],
+      "hashes": []
+    },
+    "equipment/Weaponized Bindle": {
+      "catalog": "equipment",
+      "identity": "Weaponized Bindle",
+      "path": [
+        "equipment",
+        "Weaponized Bindle"
+      ],
+      "filenames": [
+        "Weaponized Bindle"
+      ],
+      "hashes": []
+    },
+    "equipment/Wolf Shirt": {
+      "catalog": "equipment",
+      "identity": "Wolf Shirt",
+      "path": [
+        "equipment",
+        "Wolf Shirt"
+      ],
+      "filenames": [
+        "Wolf Shirt"
+      ],
+      "hashes": [
+        "65c88b7e",
+        "8037233a"
+      ]
+    },
+    "equipment/Wonka Ring": {
+      "catalog": "equipment",
+      "identity": "Wonka Ring",
+      "path": [
+        "equipment",
+        "Wonka Ring"
+      ],
+      "filenames": [
+        "Wonka Ring"
+      ],
+      "hashes": [
+        "ffe30508"
+      ]
+    },
+    "equipment/Wooden Bat": {
+      "catalog": "equipment",
+      "identity": "Wooden Bat",
+      "path": [
+        "equipment",
+        "Wooden Bat"
+      ],
+      "filenames": [
+        "Wooden Bat"
+      ],
+      "hashes": []
+    },
+    "equipment/Wooden Shield": {
+      "catalog": "equipment",
+      "identity": "Wooden Shield",
+      "path": [
+        "equipment",
+        "Wooden Shield"
+      ],
+      "filenames": [
+        "Wooden Shield"
+      ],
+      "hashes": []
+    },
+    "equipment/Yellow Jumpsuit": {
+      "catalog": "equipment",
+      "identity": "Yellow Jumpsuit",
+      "path": [
+        "equipment",
+        "Yellow Jumpsuit"
+      ],
+      "filenames": [
+        "Yellow Jumpsuit"
+      ],
+      "hashes": [
+        "428add1f"
+      ]
+    },
+    "foodItems/Altoids": {
+      "catalog": "foodItems",
+      "identity": "Altoids",
+      "path": [
+        "foodItems",
+        "Altoids"
+      ],
+      "filenames": [
+        "Altoids"
+      ],
+      "hashes": [
+        "28101f45"
+      ]
+    },
+    "foodItems/Animal Style Fries": {
+      "catalog": "foodItems",
+      "identity": "Animal Style Fries",
+      "path": [
+        "foodItems",
+        "Animal Style Fries"
+      ],
+      "filenames": [
+        "Animal Style Fries"
+      ],
+      "hashes": []
+    },
+    "foodItems/Apple Core": {
+      "catalog": "foodItems",
+      "identity": "Apple Core",
+      "path": [
+        "foodItems",
+        "Apple Core"
+      ],
+      "filenames": [
+        "Apple Core"
+      ],
+      "hashes": []
+    },
+    "foodItems/Apple Flavored Gum": {
+      "catalog": "foodItems",
+      "identity": "Apple Flavored Gum",
+      "path": [
+        "foodItems",
+        "Apple Flavored Gum"
+      ],
+      "filenames": [
+        "Apple Flavored Gum"
+      ],
+      "hashes": []
+    },
+    "foodItems/Apple Surprise": {
+      "catalog": "foodItems",
+      "identity": "Apple Surprise",
+      "path": [
+        "foodItems",
+        "Apple Surprise"
+      ],
+      "filenames": [
+        "Apple Surprise"
+      ],
+      "hashes": []
+    },
+    "foodItems/Bachelor Chow": {
+      "catalog": "foodItems",
+      "identity": "Bachelor Chow",
+      "path": [
+        "foodItems",
+        "Bachelor Chow"
+      ],
+      "filenames": [
+        "Bachelor Chow"
+      ],
+      "hashes": []
+    },
+    "foodItems/Bacon Blast Jelly Beans": {
+      "catalog": "foodItems",
+      "identity": "Bacon Blast Jelly Beans",
+      "path": [
+        "foodItems",
+        "Bacon Blast Jelly Beans"
+      ],
+      "filenames": [
+        "Bacon Blast Jelly Beans"
+      ],
+      "hashes": []
+    },
+    "foodItems/Beef Mushroom Stew": {
+      "catalog": "foodItems",
+      "identity": "Beef Mushroom Stew",
+      "path": [
+        "foodItems",
+        "Beef Mushroom Stew"
+      ],
+      "filenames": [
+        "Beef Mushroom Stew"
+      ],
+      "hashes": []
+    },
+    "foodItems/Beggar's Bouillon": {
+      "catalog": "foodItems",
+      "identity": "Beggar's Bouillon",
+      "path": [
+        "foodItems",
+        "Beggar's Bouillon"
+      ],
+      "filenames": [
+        "Beggar's Bouillon"
+      ],
+      "hashes": [
+        "0ade58ae"
+      ]
+    },
+    "foodItems/Bernard Burger": {
+      "catalog": "foodItems",
+      "identity": "Bernard Burger",
+      "path": [
+        "foodItems",
+        "Bernard Burger"
+      ],
+      "filenames": [
+        "Bernard Burger"
+      ],
+      "hashes": []
+    },
+    "foodItems/Blow-Up Pop": {
+      "catalog": "foodItems",
+      "identity": "Blow-Up Pop",
+      "path": [
+        "foodItems",
+        "Blow-Up Pop"
+      ],
+      "filenames": [
+        "Blow Up Pop"
+      ],
+      "hashes": []
+    },
+    "foodItems/Blowfish": {
+      "catalog": "foodItems",
+      "identity": "Blowfish",
+      "path": [
+        "foodItems",
+        "Blowfish"
+      ],
+      "filenames": [
+        "Blowfish"
+      ],
+      "hashes": []
+    },
+    "foodItems/Blueberry Blast Jelly Beans": {
+      "catalog": "foodItems",
+      "identity": "Blueberry Blast Jelly Beans",
+      "path": [
+        "foodItems",
+        "Blueberry Blast Jelly Beans"
+      ],
+      "filenames": [
+        "Blueberry Blast Jelly Beans"
+      ],
+      "hashes": []
+    },
+    "foodItems/Bottle of Coke": {
+      "catalog": "foodItems",
+      "identity": "Bottle of Coke",
+      "path": [
+        "foodItems",
+        "Bottle of Coke"
+      ],
+      "filenames": [
+        "Bottle of Coke"
+      ],
+      "hashes": [
+        "64f5e861"
+      ]
+    },
+    "foodItems/Brains": {
+      "catalog": "foodItems",
+      "identity": "Brains",
+      "path": [
+        "foodItems",
+        "Brains"
+      ],
+      "filenames": [
+        "Brains"
+      ],
+      "hashes": []
+    },
+    "foodItems/Butlerfinger": {
+      "catalog": "foodItems",
+      "identity": "Butlerfinger",
+      "path": [
+        "foodItems",
+        "Butlerfinger"
+      ],
+      "filenames": [
+        "Butlerfinger"
+      ],
+      "hashes": []
+    },
+    "foodItems/Can of Coke": {
+      "catalog": "foodItems",
+      "identity": "Can of Coke",
+      "path": [
+        "foodItems",
+        "Can of Coke"
+      ],
+      "filenames": [
+        "Can of Coke"
+      ],
+      "hashes": [
+        "a7302819"
+      ]
+    },
+    "foodItems/Can of Pepsi": {
+      "catalog": "foodItems",
+      "identity": "Can of Pepsi",
+      "path": [
+        "foodItems",
+        "Can of Pepsi"
+      ],
+      "filenames": [
+        "Can of Pepsi"
+      ],
+      "hashes": [
+        "e48149ba"
+      ]
+    },
+    "foodItems/Can of Whipped Cream": {
+      "catalog": "foodItems",
+      "identity": "Can of Whipped Cream",
+      "path": [
+        "foodItems",
+        "Can of Whipped Cream"
+      ],
+      "filenames": [
+        "Can of Whipped Cream"
+      ],
+      "hashes": [
+        "297b3db0",
+        "5d32e457",
+        "aef7f56c"
+      ]
+    },
+    "foodItems/Candy Cigarette": {
+      "catalog": "foodItems",
+      "identity": "Candy Cigarette",
+      "path": [
+        "foodItems",
+        "Candy Cigarette"
+      ],
+      "filenames": [
+        "Candy Cigarette"
+      ],
+      "hashes": [
+        "4a65c4c4"
+      ]
+    },
+    "foodItems/Candycorn": {
+      "catalog": "foodItems",
+      "identity": "Candycorn",
+      "path": [
+        "foodItems",
+        "Candycorn"
+      ],
+      "filenames": [
+        "Candycorn"
+      ],
+      "hashes": []
+    },
+    "foodItems/Catfish": {
+      "catalog": "foodItems",
+      "identity": "Catfish",
+      "path": [
+        "foodItems",
+        "Catfish"
+      ],
+      "filenames": [
+        "Catfish"
+      ],
+      "hashes": []
+    },
+    "foodItems/Caulipop": {
+      "catalog": "foodItems",
+      "identity": "Caulipop",
+      "path": [
+        "foodItems",
+        "Caulipop"
+      ],
+      "filenames": [
+        "Caulipop"
+      ],
+      "hashes": []
+    },
+    "foodItems/Chewed Chicken Leg": {
+      "catalog": "foodItems",
+      "identity": "Chewed Chicken Leg",
+      "path": [
+        "foodItems",
+        "Chewed Chicken Leg"
+      ],
+      "filenames": [
+        "Chewed Chicken Leg"
+      ],
+      "hashes": []
+    },
+    "foodItems/Chili Pepper": {
+      "catalog": "foodItems",
+      "identity": "Chili Pepper",
+      "path": [
+        "foodItems",
+        "Chili Pepper"
+      ],
+      "filenames": [
+        "Chili Pepper"
+      ],
+      "hashes": [
+        "35c5064a",
+        "3b70ff58"
+      ]
+    },
+    "foodItems/Chocolate Ice Cream": {
+      "catalog": "foodItems",
+      "identity": "Chocolate Ice Cream",
+      "path": [
+        "foodItems",
+        "Chocolate Ice Cream"
+      ],
+      "filenames": [
+        "Chocolate Ice Cream"
+      ],
+      "hashes": [
+        "f5a5a55f"
+      ]
+    },
+    "foodItems/Chocolate Vanilla Swirl Ice Cream": {
+      "catalog": "foodItems",
+      "identity": "Chocolate Vanilla Swirl Ice Cream",
+      "path": [
+        "foodItems",
+        "Chocolate Vanilla Swirl Ice Cream"
+      ],
+      "filenames": [
+        "Chocolate Vanilla Swirl Ice Cream"
+      ],
+      "hashes": [
+        "ce84b5ec"
+      ]
+    },
+    "foodItems/Cinnamon Flavored Gum": {
+      "catalog": "foodItems",
+      "identity": "Cinnamon Flavored Gum",
+      "path": [
+        "foodItems",
+        "Cinnamon Flavored Gum"
+      ],
+      "filenames": [
+        "Cinnamon Flavored Gum"
+      ],
+      "hashes": [
+        "bae9b154"
+      ]
+    },
+    "foodItems/Cooked Chicken": {
+      "catalog": "foodItems",
+      "identity": "Cooked Chicken",
+      "path": [
+        "foodItems",
+        "Cooked Chicken"
+      ],
+      "filenames": [
+        "Cooked Chicken"
+      ],
+      "hashes": [
+        "4f228c62"
+      ]
+    },
+    "foodItems/Cream of Okra Soup": {
+      "catalog": "foodItems",
+      "identity": "Cream of Okra Soup",
+      "path": [
+        "foodItems",
+        "Cream of Okra Soup"
+      ],
+      "filenames": [
+        "Cream of Okra Soup"
+      ],
+      "hashes": []
+    },
+    "foodItems/Crystal Pepsi": {
+      "catalog": "foodItems",
+      "identity": "Crystal Pepsi",
+      "path": [
+        "foodItems",
+        "Crystal Pepsi"
+      ],
+      "filenames": [
+        "Crystal Pepsi"
+      ],
+      "hashes": []
+    },
+    "foodItems/Dalipop": {
+      "catalog": "foodItems",
+      "identity": "Dalipop",
+      "path": [
+        "foodItems",
+        "Dalipop"
+      ],
+      "filenames": [
+        "Dalipop"
+      ],
+      "hashes": []
+    },
+    "foodItems/Dark Chocolate Wonka Bar": {
+      "catalog": "foodItems",
+      "identity": "Dark Chocolate Wonka Bar",
+      "path": [
+        "foodItems",
+        "Dark Chocolate Wonka Bar"
+      ],
+      "filenames": [
+        "Dark Chocolate Wonka Bar"
+      ],
+      "hashes": []
+    },
+    "foodItems/Day Old Coffee Naan": {
+      "catalog": "foodItems",
+      "identity": "Day Old Coffee Naan",
+      "path": [
+        "foodItems",
+        "Day Old Coffee Naan"
+      ],
+      "filenames": [
+        "Day Old Coffee Naan"
+      ],
+      "hashes": []
+    },
+    "foodItems/Death By Chocolate": {
+      "catalog": "foodItems",
+      "identity": "Death By Chocolate",
+      "path": [
+        "foodItems",
+        "Death By Chocolate"
+      ],
+      "filenames": [
+        "Death By Chocolate"
+      ],
+      "hashes": []
+    },
+    "foodItems/Death Mints": {
+      "catalog": "foodItems",
+      "identity": "Death Mints",
+      "path": [
+        "foodItems",
+        "Death Mints"
+      ],
+      "filenames": [
+        "Death Mints"
+      ],
+      "hashes": []
+    },
+    "foodItems/Dippin Dots": {
+      "catalog": "foodItems",
+      "identity": "Dippin Dots",
+      "path": [
+        "foodItems",
+        "Dippin Dots"
+      ],
+      "filenames": [
+        "Dippin Dots"
+      ],
+      "hashes": []
+    },
+    "foodItems/Discarded Taco Naan": {
+      "catalog": "foodItems",
+      "identity": "Discarded Taco Naan",
+      "path": [
+        "foodItems",
+        "Discarded Taco Naan"
+      ],
+      "filenames": [
+        "Discarded Taco Naan"
+      ],
+      "hashes": []
+    },
+    "foodItems/Double Falcons": {
+      "catalog": "foodItems",
+      "identity": "Double Falcons",
+      "path": [
+        "foodItems",
+        "Double Falcons"
+      ],
+      "filenames": [
+        "Double Falcons"
+      ],
+      "hashes": []
+    },
+    "foodItems/Double Gorillas": {
+      "catalog": "foodItems",
+      "identity": "Double Gorillas",
+      "path": [
+        "foodItems",
+        "Double Gorillas"
+      ],
+      "filenames": [
+        "Double Gorillas"
+      ],
+      "hashes": []
+    },
+    "foodItems/Double Raptors": {
+      "catalog": "foodItems",
+      "identity": "Double Raptors",
+      "path": [
+        "foodItems",
+        "Double Raptors"
+      ],
+      "filenames": [
+        "Double Raptors"
+      ],
+      "hashes": []
+    },
+    "foodItems/Double-Double": {
+      "catalog": "foodItems",
+      "identity": "Double-Double",
+      "path": [
+        "foodItems",
+        "Double-Double"
+      ],
+      "filenames": [
+        "Double Double"
+      ],
+      "hashes": []
+    },
+    "foodItems/Faberge Cream Egg": {
+      "catalog": "foodItems",
+      "identity": "Faberge Cream Egg",
+      "path": [
+        "foodItems",
+        "Faberge Cream Egg"
+      ],
+      "filenames": [
+        "Faberge Cream Egg"
+      ],
+      "hashes": [
+        "20bb7e5f"
+      ]
+    },
+    "foodItems/Fighters Lunch": {
+      "catalog": "foodItems",
+      "identity": "Fighters Lunch",
+      "path": [
+        "foodItems",
+        "Fighters Lunch"
+      ],
+      "filenames": [
+        "Fighters Lunch",
+        "Nx20xFighters Lunch"
+      ],
+      "hashes": [
+        "521ced73"
+      ]
+    },
+    "foodItems/Fish Sticks": {
+      "catalog": "foodItems",
+      "identity": "Fish Sticks",
+      "path": [
+        "foodItems",
+        "Fish Sticks"
+      ],
+      "filenames": [
+        "Fish Sticks"
+      ],
+      "hashes": []
+    },
+    "foodItems/Fizzy Falling Soda": {
+      "catalog": "foodItems",
+      "identity": "Fizzy Falling Soda",
+      "path": [
+        "foodItems",
+        "Fizzy Falling Soda"
+      ],
+      "filenames": [
+        "Fizzy Falling Soda"
+      ],
+      "hashes": [
+        "48e373d7"
+      ]
+    },
+    "foodItems/Fizzy Lifting Soda": {
+      "catalog": "foodItems",
+      "identity": "Fizzy Lifting Soda",
+      "path": [
+        "foodItems",
+        "Fizzy Lifting Soda"
+      ],
+      "filenames": [
+        "Fizzy Lifting Soda"
+      ],
+      "hashes": [
+        "283673d8"
+      ]
+    },
+    "foodItems/Flying Dutchman": {
+      "catalog": "foodItems",
+      "identity": "Flying Dutchman",
+      "path": [
+        "foodItems",
+        "Flying Dutchman"
+      ],
+      "filenames": [
+        "Flying Dutchman"
+      ],
+      "hashes": [
+        "80edab0c"
+      ]
+    },
+    "foodItems/Forest Shroom": {
+      "catalog": "foodItems",
+      "identity": "Forest Shroom",
+      "path": [
+        "foodItems",
+        "Forest Shroom"
+      ],
+      "filenames": [
+        "Forest Shroom"
+      ],
+      "hashes": []
+    },
+    "foodItems/Freedom Fries": {
+      "catalog": "foodItems",
+      "identity": "Freedom Fries",
+      "path": [
+        "foodItems",
+        "Freedom Fries"
+      ],
+      "filenames": [
+        "Freedom Fries"
+      ],
+      "hashes": [
+        "ad1c42b0"
+      ]
+    },
+    "foodItems/Freeze-Packed Dippin Dots": {
+      "catalog": "foodItems",
+      "identity": "Freeze-Packed Dippin Dots",
+      "path": [
+        "foodItems",
+        "Freeze-Packed Dippin Dots"
+      ],
+      "filenames": [
+        "Freeze Packed Dippin Dots"
+      ],
+      "hashes": []
+    },
+    "foodItems/Fresh Apple": {
+      "catalog": "foodItems",
+      "identity": "Fresh Apple",
+      "path": [
+        "foodItems",
+        "Fresh Apple"
+      ],
+      "filenames": [
+        "Fresh Apple"
+      ],
+      "hashes": [
+        "2fe6f9eb"
+      ]
+    },
+    "foodItems/Fruit by the Furlong": {
+      "catalog": "foodItems",
+      "identity": "Fruit by the Furlong",
+      "path": [
+        "foodItems",
+        "Fruit by the Furlong"
+      ],
+      "filenames": [
+        "Fruit by the Furlong"
+      ],
+      "hashes": []
+    },
+    "foodItems/Garlic Clove": {
+      "catalog": "foodItems",
+      "identity": "Garlic Clove",
+      "path": [
+        "foodItems",
+        "Garlic Clove"
+      ],
+      "filenames": [
+        "Garlic Clove"
+      ],
+      "hashes": [
+        "ece180fe"
+      ]
+    },
+    "foodItems/Garlic Salmon Bisque": {
+      "catalog": "foodItems",
+      "identity": "Garlic Salmon Bisque",
+      "path": [
+        "foodItems",
+        "Garlic Salmon Bisque"
+      ],
+      "filenames": [
+        "Garlic Salmon Bisque"
+      ],
+      "hashes": [
+        "93bf9b1a"
+      ]
+    },
+    "foodItems/Gas Soaked Red Hots": {
+      "catalog": "foodItems",
+      "identity": "Gas Soaked Red Hots",
+      "path": [
+        "foodItems",
+        "Gas Soaked Red Hots"
+      ],
+      "filenames": [
+        "Gas Soaked Red Hots"
+      ],
+      "hashes": [
+        "699de353"
+      ]
+    },
+    "foodItems/Gingerbread Bum": {
+      "catalog": "foodItems",
+      "identity": "Gingerbread Bum",
+      "path": [
+        "foodItems",
+        "Gingerbread Bum"
+      ],
+      "filenames": [
+        "Gingerbread Bum"
+      ],
+      "hashes": []
+    },
+    "foodItems/Gummi Gorilla": {
+      "catalog": "foodItems",
+      "identity": "Gummi Gorilla",
+      "path": [
+        "foodItems",
+        "Gummi Gorilla"
+      ],
+      "filenames": [
+        "Gummi Gorilla"
+      ],
+      "hashes": []
+    },
+    "foodItems/Gummi Peregrine Falcon": {
+      "catalog": "foodItems",
+      "identity": "Gummi Peregrine Falcon",
+      "path": [
+        "foodItems",
+        "Gummi Peregrine Falcon"
+      ],
+      "filenames": [
+        "Gummi Peregrine Falcon"
+      ],
+      "hashes": []
+    },
+    "foodItems/Gummi Raptor": {
+      "catalog": "foodItems",
+      "identity": "Gummi Raptor",
+      "path": [
+        "foodItems",
+        "Gummi Raptor"
+      ],
+      "filenames": [
+        "Gummi Raptor"
+      ],
+      "hashes": []
+    },
+    "foodItems/Gummi Spaghetti Monster": {
+      "catalog": "foodItems",
+      "identity": "Gummi Spaghetti Monster",
+      "path": [
+        "foodItems",
+        "Gummi Spaghetti Monster"
+      ],
+      "filenames": [
+        "Gummi Spaghetti Monster"
+      ],
+      "hashes": []
+    },
+    "foodItems/Half a Donut": {
+      "catalog": "foodItems",
+      "identity": "Half a Donut",
+      "path": [
+        "foodItems",
+        "Half a Donut"
+      ],
+      "filenames": [
+        "Half a Donut"
+      ],
+      "hashes": []
+    },
+    "foodItems/Half a HotDog": {
+      "catalog": "foodItems",
+      "identity": "Half a HotDog",
+      "path": [
+        "foodItems",
+        "Half a HotDog"
+      ],
+      "filenames": [
+        "Half a HotDog"
+      ],
+      "hashes": []
+    },
+    "foodItems/Half a Sandwich Naan": {
+      "catalog": "foodItems",
+      "identity": "Half a Sandwich Naan",
+      "path": [
+        "foodItems",
+        "Half a Sandwich Naan"
+      ],
+      "filenames": [
+        "Half a Sandwich Naan"
+      ],
+      "hashes": []
+    },
+    "foodItems/Half Eaten Burger": {
+      "catalog": "foodItems",
+      "identity": "Half Eaten Burger",
+      "path": [
+        "foodItems",
+        "Half Eaten Burger"
+      ],
+      "filenames": [
+        "Half Eaten Burger"
+      ],
+      "hashes": []
+    },
+    "foodItems/Hangover Omelette": {
+      "catalog": "foodItems",
+      "identity": "Hangover Omelette",
+      "path": [
+        "foodItems",
+        "Hangover Omelette"
+      ],
+      "filenames": [
+        "Hangover Omelette"
+      ],
+      "hashes": []
+    },
+    "foodItems/Hobo Stew": {
+      "catalog": "foodItems",
+      "identity": "Hobo Stew",
+      "path": [
+        "foodItems",
+        "Hobo Stew"
+      ],
+      "filenames": [
+        "Hobo Stew"
+      ],
+      "hashes": []
+    },
+    "foodItems/Hobowarheads": {
+      "catalog": "foodItems",
+      "identity": "Hobowarheads",
+      "path": [
+        "foodItems",
+        "Hobowarheads"
+      ],
+      "filenames": [
+        "Hobowarheads"
+      ],
+      "hashes": []
+    },
+    "foodItems/HotDog": {
+      "catalog": "foodItems",
+      "identity": "HotDog",
+      "path": [
+        "foodItems",
+        "HotDog"
+      ],
+      "filenames": [
+        "HotDog"
+      ],
+      "hashes": []
+    },
+    "foodItems/ICPeanut Butter Cup": {
+      "catalog": "foodItems",
+      "identity": "ICPeanut Butter Cup",
+      "path": [
+        "foodItems",
+        "ICPeanut Butter Cup"
+      ],
+      "filenames": [
+        "ICPeanut Butter Cup"
+      ],
+      "hashes": []
+    },
+    "foodItems/Jugger-Nut": {
+      "catalog": "foodItems",
+      "identity": "Jugger-Nut",
+      "path": [
+        "foodItems",
+        "Jugger-Nut"
+      ],
+      "filenames": [
+        "Jugger Nut"
+      ],
+      "hashes": []
+    },
+    "foodItems/Junior Mints": {
+      "catalog": "foodItems",
+      "identity": "Junior Mints",
+      "path": [
+        "foodItems",
+        "Junior Mints"
+      ],
+      "filenames": [
+        "Junior Mints"
+      ],
+      "hashes": []
+    },
+    "foodItems/KFC Meal": {
+      "catalog": "foodItems",
+      "identity": "KFC Meal",
+      "path": [
+        "foodItems",
+        "KFC Meal"
+      ],
+      "filenames": [
+        "KFC Meal"
+      ],
+      "hashes": []
+    },
+    "foodItems/Kit Rat Bar": {
+      "catalog": "foodItems",
+      "identity": "Kit Rat Bar",
+      "path": [
+        "foodItems",
+        "Kit Rat Bar"
+      ],
+      "filenames": [
+        "Kit Rat Bar"
+      ],
+      "hashes": []
+    },
+    "foodItems/L&Ls": {
+      "catalog": "foodItems",
+      "identity": "L&Ls",
+      "path": [
+        "foodItems",
+        "L&Ls"
+      ],
+      "filenames": [
+        "L&Ls"
+      ],
+      "hashes": []
+    },
+    "foodItems/Life Savers": {
+      "catalog": "foodItems",
+      "identity": "Life Savers",
+      "path": [
+        "foodItems",
+        "Life Savers"
+      ],
+      "filenames": [
+        "Life Savers"
+      ],
+      "hashes": []
+    },
+    "foodItems/Longer-Lasting Gobstopper": {
+      "catalog": "foodItems",
+      "identity": "Longer-Lasting Gobstopper",
+      "path": [
+        "foodItems",
+        "Longer-Lasting Gobstopper"
+      ],
+      "filenames": [
+        "Longer Lasting Gobstopper"
+      ],
+      "hashes": []
+    },
+    "foodItems/Meat Pie": {
+      "catalog": "foodItems",
+      "identity": "Meat Pie",
+      "path": [
+        "foodItems",
+        "Meat Pie"
+      ],
+      "filenames": [
+        "Meat Pie"
+      ],
+      "hashes": []
+    },
+    "foodItems/Military Rations": {
+      "catalog": "foodItems",
+      "identity": "Military Rations",
+      "path": [
+        "foodItems",
+        "Military Rations"
+      ],
+      "filenames": [
+        "Military Rations"
+      ],
+      "hashes": [
+        "7c316a7c"
+      ]
+    },
+    "foodItems/Mop Rocks": {
+      "catalog": "foodItems",
+      "identity": "Mop Rocks",
+      "path": [
+        "foodItems",
+        "Mop Rocks"
+      ],
+      "filenames": [
+        "Mop Rocks"
+      ],
+      "hashes": []
+    },
+    "foodItems/Mountain Dew": {
+      "catalog": "foodItems",
+      "identity": "Mountain Dew",
+      "path": [
+        "foodItems",
+        "Mountain Dew"
+      ],
+      "filenames": [
+        "Mountain Dew"
+      ],
+      "hashes": [
+        "4263c6af",
+        "ac414a9d"
+      ]
+    },
+    "foodItems/Mountain Honeydew Melon": {
+      "catalog": "foodItems",
+      "identity": "Mountain Honeydew Melon",
+      "path": [
+        "foodItems",
+        "Mountain Honeydew Melon"
+      ],
+      "filenames": [
+        "Mountain Honeydew Melon"
+      ],
+      "hashes": [
+        "b8c347c9"
+      ]
+    },
+    "foodItems/Neapolitan Shake": {
+      "catalog": "foodItems",
+      "identity": "Neapolitan Shake",
+      "path": [
+        "foodItems",
+        "Neapolitan Shake"
+      ],
+      "filenames": [
+        "Neapolitan Shake"
+      ],
+      "hashes": []
+    },
+    "foodItems/New Pizza": {
+      "catalog": "foodItems",
+      "identity": "New Pizza",
+      "path": [
+        "foodItems",
+        "New Pizza"
+      ],
+      "filenames": [
+        "New Pizza"
+      ],
+      "hashes": [
+        "92d4a959"
+      ]
+    },
+    "foodItems/Octopus": {
+      "catalog": "foodItems",
+      "identity": "Octopus",
+      "path": [
+        "foodItems",
+        "Octopus"
+      ],
+      "filenames": [
+        "Octopus"
+      ],
+      "hashes": []
+    },
+    "foodItems/Okra": {
+      "catalog": "foodItems",
+      "identity": "Okra",
+      "path": [
+        "foodItems",
+        "Okra"
+      ],
+      "filenames": [
+        "Okra"
+      ],
+      "hashes": []
+    },
+    "foodItems/Pack of Candy Cigarettes": {
+      "catalog": "foodItems",
+      "identity": "Pack of Candy Cigarettes",
+      "path": [
+        "foodItems",
+        "Pack of Candy Cigarettes"
+      ],
+      "filenames": [
+        "Pack of Candy Cigarettes"
+      ],
+      "hashes": []
+    },
+    "foodItems/Packet of Fries": {
+      "catalog": "foodItems",
+      "identity": "Packet of Fries",
+      "path": [
+        "foodItems",
+        "Packet of Fries"
+      ],
+      "filenames": [
+        "Packet of Fries"
+      ],
+      "hashes": []
+    },
+    "foodItems/Pay Day": {
+      "catalog": "foodItems",
+      "identity": "Pay Day",
+      "path": [
+        "foodItems",
+        "Pay Day"
+      ],
+      "filenames": [
+        "Pay Day"
+      ],
+      "hashes": []
+    },
+    "foodItems/Peppermint Burger Patties": {
+      "catalog": "foodItems",
+      "identity": "Peppermint Burger Patties",
+      "path": [
+        "foodItems",
+        "Peppermint Burger Patties"
+      ],
+      "filenames": [
+        "Peppermint Burger Patties"
+      ],
+      "hashes": []
+    },
+    "foodItems/Piece of Bread": {
+      "catalog": "foodItems",
+      "identity": "Piece of Bread",
+      "path": [
+        "foodItems",
+        "Piece of Bread"
+      ],
+      "filenames": [
+        "Piece of Bread"
+      ],
+      "hashes": []
+    },
+    "foodItems/Piece of Pizza": {
+      "catalog": "foodItems",
+      "identity": "Piece of Pizza",
+      "path": [
+        "foodItems",
+        "Piece of Pizza"
+      ],
+      "filenames": [
+        "Piece of Pizza"
+      ],
+      "hashes": []
+    },
+    "foodItems/Pizza Del Mare": {
+      "catalog": "foodItems",
+      "identity": "Pizza Del Mare",
+      "path": [
+        "foodItems",
+        "Pizza Del Mare"
+      ],
+      "filenames": [
+        "Pizza Del Mare"
+      ],
+      "hashes": []
+    },
+    "foodItems/Polypop": {
+      "catalog": "foodItems",
+      "identity": "Polypop",
+      "path": [
+        "foodItems",
+        "Polypop"
+      ],
+      "filenames": [
+        "Polypop"
+      ],
+      "hashes": [
+        "594d52a8"
+      ]
+    },
+    "foodItems/Pre-Chewed Gum": {
+      "catalog": "foodItems",
+      "identity": "Pre-Chewed Gum",
+      "path": [
+        "foodItems",
+        "Pre-Chewed Gum"
+      ],
+      "filenames": [
+        "Pre Chewed Gum"
+      ],
+      "hashes": [
+        "4c8a7463",
+        "6d705182"
+      ]
+    },
+    "foodItems/Quantum Candy": {
+      "catalog": "foodItems",
+      "identity": "Quantum Candy",
+      "path": [
+        "foodItems",
+        "Quantum Candy"
+      ],
+      "filenames": [
+        "Quantum Candy"
+      ],
+      "hashes": [
+        "180f3457"
+      ]
+    },
+    "foodItems/Rainbow Balls": {
+      "catalog": "foodItems",
+      "identity": "Rainbow Balls",
+      "path": [
+        "foodItems",
+        "Rainbow Balls"
+      ],
+      "filenames": [
+        "Rainbow Balls"
+      ],
+      "hashes": []
+    },
+    "foodItems/Rainbow Drop": {
+      "catalog": "foodItems",
+      "identity": "Rainbow Drop",
+      "path": [
+        "foodItems",
+        "Rainbow Drop"
+      ],
+      "filenames": [
+        "Rainbow Drop"
+      ],
+      "hashes": []
+    },
+    "foodItems/Raw Chicken Leg": {
+      "catalog": "foodItems",
+      "identity": "Raw Chicken Leg",
+      "path": [
+        "foodItems",
+        "Raw Chicken Leg"
+      ],
+      "filenames": [
+        "Raw Chicken Leg"
+      ],
+      "hashes": []
+    },
+    "foodItems/Raw Potato": {
+      "catalog": "foodItems",
+      "identity": "Raw Potato",
+      "path": [
+        "foodItems",
+        "Raw Potato"
+      ],
+      "filenames": [
+        "Nx20xRaw Potato",
+        "Raw Potato"
+      ],
+      "hashes": [
+        "63c2e3c6"
+      ]
+    },
+    "foodItems/Red Hot Chili Pepper": {
+      "catalog": "foodItems",
+      "identity": "Red Hot Chili Pepper",
+      "path": [
+        "foodItems",
+        "Red Hot Chili Pepper"
+      ],
+      "filenames": [
+        "Red Hot Chili Pepper",
+        "xRed Hot Chili Pepper"
+      ],
+      "hashes": [
+        "1b0bebca",
+        "834ed41f"
+      ]
+    },
+    "foodItems/Red Hots": {
+      "catalog": "foodItems",
+      "identity": "Red Hots",
+      "path": [
+        "foodItems",
+        "Red Hots"
+      ],
+      "filenames": [
+        "Red Hots"
+      ],
+      "hashes": [
+        "a30ee9f2",
+        "b2e16dd8"
+      ]
+    },
+    "foodItems/Redder Hots": {
+      "catalog": "foodItems",
+      "identity": "Redder Hots",
+      "path": [
+        "foodItems",
+        "Redder Hots"
+      ],
+      "filenames": [
+        "Redder Hots"
+      ],
+      "hashes": []
+    },
+    "foodItems/Roast Beef": {
+      "catalog": "foodItems",
+      "identity": "Roast Beef",
+      "path": [
+        "foodItems",
+        "Roast Beef"
+      ],
+      "filenames": [
+        "Roast Beef"
+      ],
+      "hashes": [
+        "07ee53bc"
+      ]
+    },
+    "foodItems/Roast Beef Flavored Gum": {
+      "catalog": "foodItems",
+      "identity": "Roast Beef Flavored Gum",
+      "path": [
+        "foodItems",
+        "Roast Beef Flavored Gum"
+      ],
+      "filenames": [
+        "Roast Beef Flavored Gum"
+      ],
+      "hashes": [
+        "4aa68fd0"
+      ]
+    },
+    "foodItems/Rock Candy": {
+      "catalog": "foodItems",
+      "identity": "Rock Candy",
+      "path": [
+        "foodItems",
+        "Rock Candy"
+      ],
+      "filenames": [
+        "Rock Candy"
+      ],
+      "hashes": []
+    },
+    "foodItems/Rotten Fish": {
+      "catalog": "foodItems",
+      "identity": "Rotten Fish",
+      "path": [
+        "foodItems",
+        "Rotten Fish"
+      ],
+      "filenames": [
+        "Rotten Fish",
+        "xRotten Fish"
+      ],
+      "hashes": [
+        "a50377fd"
+      ]
+    },
+    "foodItems/Salmon": {
+      "catalog": "foodItems",
+      "identity": "Salmon",
+      "path": [
+        "foodItems",
+        "Salmon"
+      ],
+      "filenames": [
+        "Salmon"
+      ],
+      "hashes": [
+        "7d2ae822",
+        "b050da21"
+      ]
+    },
+    "foodItems/SARS Bar": {
+      "catalog": "foodItems",
+      "identity": "SARS Bar",
+      "path": [
+        "foodItems",
+        "SARS Bar"
+      ],
+      "filenames": [
+        "SARS Bar"
+      ],
+      "hashes": []
+    },
+    "foodItems/Semi-Lasting Gobstopper": {
+      "catalog": "foodItems",
+      "identity": "Semi-Lasting Gobstopper",
+      "path": [
+        "foodItems",
+        "Semi-Lasting Gobstopper"
+      ],
+      "filenames": [
+        "Semi Lasting Gobstopper"
+      ],
+      "hashes": []
+    },
+    "foodItems/Single-Single": {
+      "catalog": "foodItems",
+      "identity": "Single-Single",
+      "path": [
+        "foodItems",
+        "Single-Single"
+      ],
+      "filenames": [
+        "Single Single"
+      ],
+      "hashes": []
+    },
+    "foodItems/Smart Bread": {
+      "catalog": "foodItems",
+      "identity": "Smart Bread",
+      "path": [
+        "foodItems",
+        "Smart Bread"
+      ],
+      "filenames": [
+        "Smart Bread"
+      ],
+      "hashes": []
+    },
+    "foodItems/Smart Cookie": {
+      "catalog": "foodItems",
+      "identity": "Smart Cookie",
+      "path": [
+        "foodItems",
+        "Smart Cookie"
+      ],
+      "filenames": [
+        "Smart Cookie"
+      ],
+      "hashes": []
+    },
+    "foodItems/Sourpatch Bums": {
+      "catalog": "foodItems",
+      "identity": "Sourpatch Bums",
+      "path": [
+        "foodItems",
+        "Sourpatch Bums"
+      ],
+      "filenames": [
+        "Sourpatch Bums"
+      ],
+      "hashes": []
+    },
+    "foodItems/Special Brownie": {
+      "catalog": "foodItems",
+      "identity": "Special Brownie",
+      "path": [
+        "foodItems",
+        "Special Brownie"
+      ],
+      "filenames": [
+        "Special Brownie"
+      ],
+      "hashes": []
+    },
+    "foodItems/Spooky Biscuit": {
+      "catalog": "foodItems",
+      "identity": "Spooky Biscuit",
+      "path": [
+        "foodItems",
+        "Spooky Biscuit"
+      ],
+      "filenames": [
+        "Spooky Biscuit"
+      ],
+      "hashes": [
+        "acf0a288"
+      ]
+    },
+    "foodItems/Stomach Parasite": {
+      "catalog": "foodItems",
+      "identity": "Stomach Parasite",
+      "path": [
+        "foodItems",
+        "Stomach Parasite"
+      ],
+      "filenames": [
+        "Stomach Parasite"
+      ],
+      "hashes": []
+    },
+    "foodItems/Sugarfree Gum": {
+      "catalog": "foodItems",
+      "identity": "Sugarfree Gum",
+      "path": [
+        "foodItems",
+        "Sugarfree Gum"
+      ],
+      "filenames": [
+        "Sugarfree Gum"
+      ],
+      "hashes": []
+    },
+    "foodItems/Sweet Bomb": {
+      "catalog": "foodItems",
+      "identity": "Sweet Bomb",
+      "path": [
+        "foodItems",
+        "Sweet Bomb"
+      ],
+      "filenames": [
+        "Sweet Bomb"
+      ],
+      "hashes": []
+    },
+    "foodItems/Texas Fajita Soup": {
+      "catalog": "foodItems",
+      "identity": "Texas Fajita Soup",
+      "path": [
+        "foodItems",
+        "Texas Fajita Soup"
+      ],
+      "filenames": [
+        "Texas Fajita Soup"
+      ],
+      "hashes": [
+        "60acb1cc"
+      ]
+    },
+    "foodItems/Triple Dipps": {
+      "catalog": "foodItems",
+      "identity": "Triple Dipps",
+      "path": [
+        "foodItems",
+        "Triple Dipps"
+      ],
+      "filenames": [
+        "Triple Dipps"
+      ],
+      "hashes": []
+    },
+    "foodItems/Twozzlers": {
+      "catalog": "foodItems",
+      "identity": "Twozzlers",
+      "path": [
+        "foodItems",
+        "Twozzlers"
+      ],
+      "filenames": [
+        "Twozzlers"
+      ],
+      "hashes": []
+    },
+    "foodItems/Vanilla Ice Cream": {
+      "catalog": "foodItems",
+      "identity": "Vanilla Ice Cream",
+      "path": [
+        "foodItems",
+        "Vanilla Ice Cream"
+      ],
+      "filenames": [
+        "Vanilla Ice Cream"
+      ],
+      "hashes": [
+        "80428c3c",
+        "cc80977c"
+      ]
+    },
+    "foodItems/Volleypop": {
+      "catalog": "foodItems",
+      "identity": "Volleypop",
+      "path": [
+        "foodItems",
+        "Volleypop"
+      ],
+      "filenames": [
+        "Volleypop"
+      ],
+      "hashes": []
+    },
+    "foodItems/Walking Taco": {
+      "catalog": "foodItems",
+      "identity": "Walking Taco",
+      "path": [
+        "foodItems",
+        "Walking Taco"
+      ],
+      "filenames": [
+        "Walking Taco"
+      ],
+      "hashes": []
+    },
+    "foodItems/Wonka Bar": {
+      "catalog": "foodItems",
+      "identity": "Wonka Bar",
+      "path": [
+        "foodItems",
+        "Wonka Bar"
+      ],
+      "filenames": [
+        "Wonka Bar"
+      ],
+      "hashes": []
+    },
+    "foodItems/Wonka Quadra Candy Cane": {
+      "catalog": "foodItems",
+      "identity": "Wonka Quadra Candy Cane",
+      "path": [
+        "foodItems",
+        "Wonka Quadra Candy Cane"
+      ],
+      "filenames": [
+        "Wonka Quadra Candy Cane"
+      ],
+      "hashes": []
+    },
+    "foodItems/Wonka's Peppermint Spirits": {
+      "catalog": "foodItems",
+      "identity": "Wonka's Peppermint Spirits",
+      "path": [
+        "foodItems",
+        "Wonka's Peppermint Spirits"
+      ],
+      "filenames": [
+        "Wonka's Peppermint Spirits"
+      ],
+      "hashes": []
+    },
+    "foodItems/Wonka-stripe Candy Cane": {
+      "catalog": "foodItems",
+      "identity": "Wonka-stripe Candy Cane",
+      "path": [
+        "foodItems",
+        "Wonka-stripe Candy Cane"
+      ],
+      "filenames": [
+        "Wonka stripe Candy Cane"
+      ],
+      "hashes": []
+    },
+    "foodStorageItems/Extra Large Fry Basket": {
+      "catalog": "foodStorageItems",
+      "identity": "Extra Large Fry Basket",
+      "path": [
+        "foodStorageItems",
+        "Extra Large Fry Basket"
+      ],
+      "filenames": [
+        "Extra Large Fry Basket"
+      ],
+      "hashes": []
+    },
+    "foodStorageItems/Golden Trolly": {
+      "catalog": "foodStorageItems",
+      "identity": "Golden Trolly",
+      "path": [
+        "foodStorageItems",
+        "Golden Trolly"
+      ],
+      "filenames": [
+        "Golden Trolly"
+      ],
+      "hashes": [
+        "34e0a241"
+      ]
+    },
+    "foodStorageItems/Trolly": {
+      "catalog": "foodStorageItems",
+      "identity": "Trolly",
+      "path": [
+        "foodStorageItems",
+        "Trolly"
+      ],
+      "filenames": [
+        "Trolly"
+      ],
+      "hashes": []
+    },
+    "rats/Buddhism": {
+      "catalog": "rats",
+      "identity": "Buddhism",
+      "path": [
+        "rats",
+        "Buddhism"
+      ],
+      "filenames": [],
+      "hashes": [
+        "61972ff6",
+        "b5c75d77"
+      ]
+    },
+    "rats/Golden Rat": {
+      "catalog": "rats",
+      "identity": "Golden Rat",
+      "path": [
+        "rats",
+        "Golden Rat"
+      ],
+      "filenames": [
+        "Golden Rat"
+      ],
+      "hashes": []
+    },
+    "rats/Gumshoe Rat": {
+      "catalog": "rats",
+      "identity": "Gumshoe Rat",
+      "path": [
+        "rats",
+        "Gumshoe Rat"
+      ],
+      "filenames": [
+        "34x24xdetective 120"
+      ],
+      "hashes": [
+        "823673b8",
+        "c2a94f60"
+      ]
+    },
+    "rats/Lab Rat": {
+      "catalog": "rats",
+      "identity": "Lab Rat",
+      "path": [
+        "rats",
+        "Lab Rat"
+      ],
+      "filenames": [
+        "Lab rat"
+      ],
+      "hashes": []
+    },
+    "rats/Materialism": {
+      "catalog": "rats",
+      "identity": "Materialism",
+      "path": [
+        "rats",
+        "Materialism"
+      ],
+      "filenames": [
+        "18x18xmaterialist"
+      ],
+      "hashes": [
+        "fa8cf30a"
+      ]
+    },
+    "rats/Octo Rat": {
+      "catalog": "rats",
+      "identity": "Octo Rat",
+      "path": [
+        "rats",
+        "Octo Rat"
+      ],
+      "filenames": [
+        "120x80xocto"
+      ],
+      "hashes": []
+    },
+    "rats/Old Rat": {
+      "catalog": "rats",
+      "identity": "Old Rat",
+      "path": [
+        "rats",
+        "Old Rat"
+      ],
+      "filenames": [],
+      "hashes": [
+        "8c8400ef"
+      ]
+    },
+    "rats/Pincher Rat": {
+      "catalog": "rats",
+      "identity": "Pincher Rat",
+      "path": [
+        "rats",
+        "Pincher Rat"
+      ],
+      "filenames": [
+        "120x80xpincher"
+      ],
+      "hashes": []
+    },
+    "rats/Pirate Rat": {
+      "catalog": "rats",
+      "identity": "Pirate Rat",
+      "path": [
+        "rats",
+        "Pirate Rat"
+      ],
+      "filenames": [
+        "120x80xpirate"
+      ],
+      "hashes": []
+    },
+    "rats/Two-Headed Rat": {
+      "catalog": "rats",
+      "identity": "Two-Headed Rat",
+      "path": [
+        "rats",
+        "Two-Headed Rat"
+      ],
+      "filenames": [],
+      "hashes": [
+        "e3653759"
+      ]
+    },
+    "rats/Vegetarianism": {
+      "catalog": "rats",
+      "identity": "Vegetarianism",
+      "path": [
+        "rats",
+        "Vegetarianism"
+      ],
+      "filenames": [
+        "18x18xvegetarian"
+      ],
+      "hashes": [
+        "05128058",
+        "7c230841"
+      ]
+    },
+    "skills/Average": {
+      "catalog": "skills",
+      "identity": "Average",
+      "path": [
+        "skills",
+        "Average"
+      ],
+      "filenames": [
+        "Average"
+      ],
+      "hashes": []
+    },
+    "skills/Bite in Half": {
+      "catalog": "skills",
+      "identity": "Bite in Half",
+      "path": [
+        "skills",
+        "Bite in Half"
+      ],
+      "filenames": [
+        "Bite in Half"
+      ],
+      "hashes": []
+    },
+    "skills/Buff Rat": {
+      "catalog": "skills",
+      "identity": "Buff Rat",
+      "path": [
+        "skills",
+        "Buff Rat"
+      ],
+      "filenames": [
+        "Buff Rat"
+      ],
+      "hashes": []
+    },
+    "skills/Champion": {
+      "catalog": "skills",
+      "identity": "Champion",
+      "path": [
+        "skills",
+        "Champion"
+      ],
+      "filenames": [
+        "Champion"
+      ],
+      "hashes": []
+    },
+    "skills/Charm Rat": {
+      "catalog": "skills",
+      "identity": "Charm Rat",
+      "path": [
+        "skills",
+        "Charm Rat"
+      ],
+      "filenames": [
+        "Charm Rat"
+      ],
+      "hashes": []
+    },
+    "skills/Concentration": {
+      "catalog": "skills",
+      "identity": "Concentration",
+      "path": [
+        "skills",
+        "Concentration"
+      ],
+      "filenames": [
+        "Concentration"
+      ],
+      "hashes": []
+    },
+    "skills/Cripple": {
+      "catalog": "skills",
+      "identity": "Cripple",
+      "path": [
+        "skills",
+        "Cripple"
+      ],
+      "filenames": [
+        "Cripple"
+      ],
+      "hashes": []
+    },
+    "skills/Crowning Moment": {
+      "catalog": "skills",
+      "identity": "Crowning Moment",
+      "path": [
+        "skills",
+        "Crowning Moment"
+      ],
+      "filenames": [
+        "Crowning Moment"
+      ],
+      "hashes": []
+    },
+    "skills/Crush": {
+      "catalog": "skills",
+      "identity": "Crush",
+      "path": [
+        "skills",
+        "Crush"
+      ],
+      "filenames": [
+        "Crush"
+      ],
+      "hashes": []
+    },
+    "skills/Debuff": {
+      "catalog": "skills",
+      "identity": "Debuff",
+      "path": [
+        "skills",
+        "Debuff"
+      ],
+      "filenames": [
+        "Debuff"
+      ],
+      "hashes": []
+    },
+    "skills/Defend": {
+      "catalog": "skills",
+      "identity": "Defend",
+      "path": [
+        "skills",
+        "Defend"
+      ],
+      "filenames": [
+        "Defend"
+      ],
+      "hashes": []
+    },
+    "skills/Double Average": {
+      "catalog": "skills",
+      "identity": "Double Average",
+      "path": [
+        "skills",
+        "Double Average"
+      ],
+      "filenames": [
+        "Double Average"
+      ],
+      "hashes": []
+    },
+    "skills/Double Drain": {
+      "catalog": "skills",
+      "identity": "Double Drain",
+      "path": [
+        "skills",
+        "Double Drain"
+      ],
+      "filenames": [
+        "Double Drain"
+      ],
+      "hashes": []
+    },
+    "skills/Double Punch": {
+      "catalog": "skills",
+      "identity": "Double Punch",
+      "path": [
+        "skills",
+        "Double Punch"
+      ],
+      "filenames": [
+        "Double Punch"
+      ],
+      "hashes": []
+    },
+    "skills/Drain": {
+      "catalog": "skills",
+      "identity": "Drain",
+      "path": [
+        "skills",
+        "Drain"
+      ],
+      "filenames": [
+        "Drain"
+      ],
+      "hashes": []
+    },
+    "skills/Drunken Rage": {
+      "catalog": "skills",
+      "identity": "Drunken Rage",
+      "path": [
+        "skills",
+        "Drunken Rage"
+      ],
+      "filenames": [
+        "Drunken Rage"
+      ],
+      "hashes": []
+    },
+    "skills/Ear Chomp": {
+      "catalog": "skills",
+      "identity": "Ear Chomp",
+      "path": [
+        "skills",
+        "Ear Chomp"
+      ],
+      "filenames": [
+        "Ear Chomp"
+      ],
+      "hashes": []
+    },
+    "skills/Empower": {
+      "catalog": "skills",
+      "identity": "Empower",
+      "path": [
+        "skills",
+        "Empower"
+      ],
+      "filenames": [
+        "Empower"
+      ],
+      "hashes": []
+    },
+    "skills/Eradicate": {
+      "catalog": "skills",
+      "identity": "Eradicate",
+      "path": [
+        "skills",
+        "Eradicate"
+      ],
+      "filenames": [
+        "Eradicate"
+      ],
+      "hashes": []
+    },
+    "skills/Espresso Shot": {
+      "catalog": "skills",
+      "identity": "Espresso Shot",
+      "path": [
+        "skills",
+        "Espresso Shot"
+      ],
+      "filenames": [
+        "Espresso Shot"
+      ],
+      "hashes": []
+    },
+    "skills/Focus Punch": {
+      "catalog": "skills",
+      "identity": "Focus Punch",
+      "path": [
+        "skills",
+        "Focus Punch"
+      ],
+      "filenames": [
+        "Focus Punch"
+      ],
+      "hashes": []
+    },
+    "skills/Heal": {
+      "catalog": "skills",
+      "identity": "Heal",
+      "path": [
+        "skills",
+        "Heal"
+      ],
+      "filenames": [
+        "Heal"
+      ],
+      "hashes": []
+    },
+    "skills/Heal More": {
+      "catalog": "skills",
+      "identity": "Heal More",
+      "path": [
+        "skills",
+        "Heal More"
+      ],
+      "filenames": [
+        "Heal More"
+      ],
+      "hashes": []
+    },
+    "skills/Ignite": {
+      "catalog": "skills",
+      "identity": "Ignite",
+      "path": [
+        "skills",
+        "Ignite"
+      ],
+      "filenames": [
+        "Ignite"
+      ],
+      "hashes": []
+    },
+    "skills/Instant Karma": {
+      "catalog": "skills",
+      "identity": "Instant Karma",
+      "path": [
+        "skills",
+        "Instant Karma"
+      ],
+      "filenames": [
+        "Instant Karma"
+      ],
+      "hashes": []
+    },
+    "skills/Jello Shot": {
+      "catalog": "skills",
+      "identity": "Jello Shot",
+      "path": [
+        "skills",
+        "Jello Shot"
+      ],
+      "filenames": [
+        "Jello Shot"
+      ],
+      "hashes": []
+    },
+    "skills/Keg Stand": {
+      "catalog": "skills",
+      "identity": "Keg Stand",
+      "path": [
+        "skills",
+        "Keg Stand"
+      ],
+      "filenames": [
+        "Keg Stand"
+      ],
+      "hashes": []
+    },
+    "skills/Latter Day Pain": {
+      "catalog": "skills",
+      "identity": "Latter Day Pain",
+      "path": [
+        "skills",
+        "Latter Day Pain"
+      ],
+      "filenames": [
+        "Latter Day Pain"
+      ],
+      "hashes": []
+    },
+    "skills/Leap": {
+      "catalog": "skills",
+      "identity": "Leap",
+      "path": [
+        "skills",
+        "Leap"
+      ],
+      "filenames": [
+        "Leap"
+      ],
+      "hashes": []
+    },
+    "skills/Leap Frog": {
+      "catalog": "skills",
+      "identity": "Leap Frog",
+      "path": [
+        "skills",
+        "Leap Frog"
+      ],
+      "filenames": [
+        "Leap Frog"
+      ],
+      "hashes": []
+    },
+    "skills/Meditation": {
+      "catalog": "skills",
+      "identity": "Meditation",
+      "path": [
+        "skills",
+        "Meditation"
+      ],
+      "filenames": [
+        "Meditation"
+      ],
+      "hashes": []
+    },
+    "skills/Mighty": {
+      "catalog": "skills",
+      "identity": "Mighty",
+      "path": [
+        "skills",
+        "Mighty"
+      ],
+      "filenames": [
+        "Mighty"
+      ],
+      "hashes": []
+    },
+    "skills/Pacifism": {
+      "catalog": "skills",
+      "identity": "Pacifism",
+      "path": [
+        "skills",
+        "Pacifism"
+      ],
+      "filenames": [
+        "Pacifism"
+      ],
+      "hashes": []
+    },
+    "skills/Paralyze": {
+      "catalog": "skills",
+      "identity": "Paralyze",
+      "path": [
+        "skills",
+        "Paralyze"
+      ],
+      "filenames": [
+        "Paralyze"
+      ],
+      "hashes": []
+    },
+    "skills/Peace on Earth": {
+      "catalog": "skills",
+      "identity": "Peace on Earth",
+      "path": [
+        "skills",
+        "Peace on Earth"
+      ],
+      "filenames": [
+        "Peace on Earth"
+      ],
+      "hashes": []
+    },
+    "skills/Peon": {
+      "catalog": "skills",
+      "identity": "Peon",
+      "path": [
+        "skills",
+        "Peon"
+      ],
+      "filenames": [
+        "Peon"
+      ],
+      "hashes": []
+    },
+    "skills/Quad Punch": {
+      "catalog": "skills",
+      "identity": "Quad Punch",
+      "path": [
+        "skills",
+        "Quad Punch"
+      ],
+      "filenames": [
+        "Quad Punch"
+      ],
+      "hashes": []
+    },
+    "skills/Quint Punch": {
+      "catalog": "skills",
+      "identity": "Quint Punch",
+      "path": [
+        "skills",
+        "Quint Punch"
+      ],
+      "filenames": [
+        "Quint Punch"
+      ],
+      "hashes": []
+    },
+    "skills/Ram Jam": {
+      "catalog": "skills",
+      "identity": "Ram Jam",
+      "path": [
+        "skills",
+        "Ram Jam"
+      ],
+      "filenames": [
+        "Ram Jam"
+      ],
+      "hashes": []
+    },
+    "skills/Reduce": {
+      "catalog": "skills",
+      "identity": "Reduce",
+      "path": [
+        "skills",
+        "Reduce"
+      ],
+      "filenames": [
+        "Reduce"
+      ],
+      "hashes": []
+    },
+    "skills/Robo Hobo Slam": {
+      "catalog": "skills",
+      "identity": "Robo Hobo Slam",
+      "path": [
+        "skills",
+        "Robo Hobo Slam"
+      ],
+      "filenames": [
+        "Robo Hobo Slam"
+      ],
+      "hashes": []
+    },
+    "skills/Sissify": {
+      "catalog": "skills",
+      "identity": "Sissify",
+      "path": [
+        "skills",
+        "Sissify"
+      ],
+      "filenames": [
+        "Sissify"
+      ],
+      "hashes": []
+    },
+    "skills/Sleigh Hells": {
+      "catalog": "skills",
+      "identity": "Sleigh Hells",
+      "path": [
+        "skills",
+        "Sleigh Hells"
+      ],
+      "filenames": [
+        "Sleigh Hells"
+      ],
+      "hashes": []
+    },
+    "skills/Slow": {
+      "catalog": "skills",
+      "identity": "Slow",
+      "path": [
+        "skills",
+        "Slow"
+      ],
+      "filenames": [
+        "Slow"
+      ],
+      "hashes": []
+    },
+    "skills/Sprint": {
+      "catalog": "skills",
+      "identity": "Sprint",
+      "path": [
+        "skills",
+        "Sprint"
+      ],
+      "filenames": [
+        "Sprint"
+      ],
+      "hashes": []
+    },
+    "skills/Strengthen": {
+      "catalog": "skills",
+      "identity": "Strengthen",
+      "path": [
+        "skills",
+        "Strengthen"
+      ],
+      "filenames": [
+        "Strengthen"
+      ],
+      "hashes": []
+    },
+    "skills/Takedown": {
+      "catalog": "skills",
+      "identity": "Takedown",
+      "path": [
+        "skills",
+        "Takedown"
+      ],
+      "filenames": [
+        "Takedown"
+      ],
+      "hashes": []
+    },
+    "skills/Tiebreaker": {
+      "catalog": "skills",
+      "identity": "Tiebreaker",
+      "path": [
+        "skills",
+        "Tiebreaker"
+      ],
+      "filenames": [
+        "Tiebreaker"
+      ],
+      "hashes": []
+    },
+    "skills/Triple Drain": {
+      "catalog": "skills",
+      "identity": "Triple Drain",
+      "path": [
+        "skills",
+        "Triple Drain"
+      ],
+      "filenames": [
+        "Triple Drain"
+      ],
+      "hashes": []
+    },
+    "skills/Triple Punch": {
+      "catalog": "skills",
+      "identity": "Triple Punch",
+      "path": [
+        "skills",
+        "Triple Punch"
+      ],
+      "filenames": [
+        "Triple Punch"
+      ],
+      "hashes": []
+    },
+    "skills/Vampire Bite": {
+      "catalog": "skills",
+      "identity": "Vampire Bite",
+      "path": [
+        "skills",
+        "Vampire Bite"
+      ],
+      "filenames": [
+        "Vampire Bite"
+      ],
+      "hashes": []
+    },
+    "skills/Vooduplex": {
+      "catalog": "skills",
+      "identity": "Vooduplex",
+      "path": [
+        "skills",
+        "Vooduplex"
+      ],
+      "filenames": [
+        "Vooduplex"
+      ],
+      "hashes": []
+    },
+    "skills/Weaken": {
+      "catalog": "skills",
+      "identity": "Weaken",
+      "path": [
+        "skills",
+        "Weaken"
+      ],
+      "filenames": [
+        "Weaken"
+      ],
+      "hashes": []
+    },
+    "skills/Yoink": {
+      "catalog": "skills",
+      "identity": "Yoink",
+      "path": [
+        "skills",
+        "Yoink"
+      ],
+      "filenames": [
+        "Yoink"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Amish": {
+      "catalog": "statusEffects",
+      "identity": "Amish",
+      "path": [
+        "statusEffects",
+        "Amish"
+      ],
+      "filenames": [
+        "Amish"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Angry": {
+      "catalog": "statusEffects",
+      "identity": "Angry",
+      "path": [
+        "statusEffects",
+        "Angry"
+      ],
+      "filenames": [
+        "Angry"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Apple Breath": {
+      "catalog": "statusEffects",
+      "identity": "Apple Breath",
+      "path": [
+        "statusEffects",
+        "Apple Breath"
+      ],
+      "filenames": [
+        "Apple Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Bacon Breath": {
+      "catalog": "statusEffects",
+      "identity": "Bacon Breath",
+      "path": [
+        "statusEffects",
+        "Bacon Breath"
+      ],
+      "filenames": [
+        "Bacon Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Bawling like a baby": {
+      "catalog": "statusEffects",
+      "identity": "Bawling like a baby",
+      "path": [
+        "statusEffects",
+        "Bawling like a baby"
+      ],
+      "filenames": [
+        "Bawling like a baby"
+      ],
+      "hashes": [
+        "a2f64069"
+      ]
+    },
+    "statusEffects/Blind": {
+      "catalog": "statusEffects",
+      "identity": "Blind",
+      "path": [
+        "statusEffects",
+        "Blind"
+      ],
+      "filenames": [
+        "Blind"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Bludgeoner Breath": {
+      "catalog": "statusEffects",
+      "identity": "Bludgeoner Breath",
+      "path": [
+        "statusEffects",
+        "Bludgeoner Breath"
+      ],
+      "filenames": [
+        "Bludgeoner Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Blue Tongue": {
+      "catalog": "statusEffects",
+      "identity": "Blue Tongue",
+      "path": [
+        "statusEffects",
+        "Blue Tongue"
+      ],
+      "filenames": [
+        "Blue Tongue"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Blueberry Breath": {
+      "catalog": "statusEffects",
+      "identity": "Blueberry Breath",
+      "path": [
+        "statusEffects",
+        "Blueberry Breath"
+      ],
+      "filenames": [
+        "Blueberry Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Brainy": {
+      "catalog": "statusEffects",
+      "identity": "Brainy",
+      "path": [
+        "statusEffects",
+        "Brainy"
+      ],
+      "filenames": [
+        "Brainy"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Burning Belly": {
+      "catalog": "statusEffects",
+      "identity": "Burning Belly",
+      "path": [
+        "statusEffects",
+        "Burning Belly"
+      ],
+      "filenames": [
+        "Burning Belly"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Calcium Rich": {
+      "catalog": "statusEffects",
+      "identity": "Calcium Rich",
+      "path": [
+        "statusEffects",
+        "Calcium Rich"
+      ],
+      "filenames": [
+        "Calcium Rich"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Caulimorphous": {
+      "catalog": "statusEffects",
+      "identity": "Caulimorphous",
+      "path": [
+        "statusEffects",
+        "Caulimorphous"
+      ],
+      "filenames": [
+        "Caulimorphous"
+      ],
+      "hashes": [
+        "43ee80e1"
+      ]
+    },
+    "statusEffects/Chocorat": {
+      "catalog": "statusEffects",
+      "identity": "Chocorat",
+      "path": [
+        "statusEffects",
+        "Chocorat"
+      ],
+      "filenames": [
+        "Chocorat"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Cinnamon Breath": {
+      "catalog": "statusEffects",
+      "identity": "Cinnamon Breath",
+      "path": [
+        "statusEffects",
+        "Cinnamon Breath"
+      ],
+      "filenames": [
+        "Cinnamon Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Classy as Hell": {
+      "catalog": "statusEffects",
+      "identity": "Classy as Hell",
+      "path": [
+        "statusEffects",
+        "Classy as Hell"
+      ],
+      "filenames": [
+        "Classy as Hell"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Clever Beggar": {
+      "catalog": "statusEffects",
+      "identity": "Clever Beggar",
+      "path": [
+        "statusEffects",
+        "Clever Beggar"
+      ],
+      "filenames": [
+        "Clever Beggar"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Cream Whipped": {
+      "catalog": "statusEffects",
+      "identity": "Cream Whipped",
+      "path": [
+        "statusEffects",
+        "Cream Whipped"
+      ],
+      "filenames": [
+        "Cream Whipped"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Curious Strength": {
+      "catalog": "statusEffects",
+      "identity": "Curious Strength",
+      "path": [
+        "statusEffects",
+        "Curious Strength"
+      ],
+      "filenames": [
+        "Curious Strength"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Dalimorphous": {
+      "catalog": "statusEffects",
+      "identity": "Dalimorphous",
+      "path": [
+        "statusEffects",
+        "Dalimorphous"
+      ],
+      "filenames": [
+        "Dalimorphous"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Death Perception": {
+      "catalog": "statusEffects",
+      "identity": "Death Perception",
+      "path": [
+        "statusEffects",
+        "Death Perception"
+      ],
+      "filenames": [
+        "Death Perception"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Double Falcon Speed": {
+      "catalog": "statusEffects",
+      "identity": "Double Falcon Speed",
+      "path": [
+        "statusEffects",
+        "Double Falcon Speed"
+      ],
+      "filenames": [
+        "Double Falcon Speed"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Double Gorilla Strength": {
+      "catalog": "statusEffects",
+      "identity": "Double Gorilla Strength",
+      "path": [
+        "statusEffects",
+        "Double Gorilla Strength"
+      ],
+      "filenames": [
+        "Double Gorilla Strength"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Double Raptor Power": {
+      "catalog": "statusEffects",
+      "identity": "Double Raptor Power",
+      "path": [
+        "statusEffects",
+        "Double Raptor Power"
+      ],
+      "filenames": [
+        "Double Raptor Power"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Double You": {
+      "catalog": "statusEffects",
+      "identity": "Double You",
+      "path": [
+        "statusEffects",
+        "Double You"
+      ],
+      "filenames": [
+        "Double You",
+        "xDouble You"
+      ],
+      "hashes": [
+        "489504bc"
+      ]
+    },
+    "statusEffects/Emasculated": {
+      "catalog": "statusEffects",
+      "identity": "Emasculated",
+      "path": [
+        "statusEffects",
+        "Emasculated"
+      ],
+      "filenames": [
+        "Emasculated"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Enraged": {
+      "catalog": "statusEffects",
+      "identity": "Enraged",
+      "path": [
+        "statusEffects",
+        "Enraged"
+      ],
+      "filenames": [
+        "Enraged"
+      ],
+      "hashes": [
+        "922f6bcc"
+      ]
+    },
+    "statusEffects/Falcon Speed": {
+      "catalog": "statusEffects",
+      "identity": "Falcon Speed",
+      "path": [
+        "statusEffects",
+        "Falcon Speed"
+      ],
+      "filenames": [
+        "Falcon Speed"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Fizzy Floatiness": {
+      "catalog": "statusEffects",
+      "identity": "Fizzy Floatiness",
+      "path": [
+        "statusEffects",
+        "Fizzy Floatiness"
+      ],
+      "filenames": [
+        "Fizzy Floatiness"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Flame-tipped Spiked Hair": {
+      "catalog": "statusEffects",
+      "identity": "Flame-tipped Spiked Hair",
+      "path": [
+        "statusEffects",
+        "Flame-tipped Spiked Hair"
+      ],
+      "filenames": [
+        "Flame tipped Spiked Hair"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Gingerbread Breath": {
+      "catalog": "statusEffects",
+      "identity": "Gingerbread Breath",
+      "path": [
+        "statusEffects",
+        "Gingerbread Breath"
+      ],
+      "filenames": [
+        "Gingerbread Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Glampire": {
+      "catalog": "statusEffects",
+      "identity": "Glampire",
+      "path": [
+        "statusEffects",
+        "Glampire"
+      ],
+      "filenames": [
+        "Glampire"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Gorilla Strength": {
+      "catalog": "statusEffects",
+      "identity": "Gorilla Strength",
+      "path": [
+        "statusEffects",
+        "Gorilla Strength"
+      ],
+      "filenames": [
+        "Gorilla Strength"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Green Noser": {
+      "catalog": "statusEffects",
+      "identity": "Green Noser",
+      "path": [
+        "statusEffects",
+        "Green Noser"
+      ],
+      "filenames": [
+        "Green Noser"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Green Tongue": {
+      "catalog": "statusEffects",
+      "identity": "Green Tongue",
+      "path": [
+        "statusEffects",
+        "Green Tongue"
+      ],
+      "filenames": [
+        "Green Tongue"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Hobola": {
+      "catalog": "statusEffects",
+      "identity": "Hobola",
+      "path": [
+        "statusEffects",
+        "Hobola"
+      ],
+      "filenames": [
+        "Hobola"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Hobowarrior": {
+      "catalog": "statusEffects",
+      "identity": "Hobowarrior",
+      "path": [
+        "statusEffects",
+        "Hobowarrior"
+      ],
+      "filenames": [
+        "Hobowarrior"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Indigo Tongue": {
+      "catalog": "statusEffects",
+      "identity": "Indigo Tongue",
+      "path": [
+        "statusEffects",
+        "Indigo Tongue"
+      ],
+      "filenames": [
+        "Indigo Tongue"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Interdimensionality": {
+      "catalog": "statusEffects",
+      "identity": "Interdimensionality",
+      "path": [
+        "statusEffects",
+        "Interdimensionality"
+      ],
+      "filenames": [
+        "Interdimensionality"
+      ],
+      "hashes": [
+        "3c59ba65"
+      ]
+    },
+    "statusEffects/Jittery": {
+      "catalog": "statusEffects",
+      "identity": "Jittery",
+      "path": [
+        "statusEffects",
+        "Jittery"
+      ],
+      "filenames": [
+        "Jittery"
+      ],
+      "hashes": [
+        "46b10093"
+      ]
+    },
+    "statusEffects/Juggernutalicious": {
+      "catalog": "statusEffects",
+      "identity": "Juggernutalicious",
+      "path": [
+        "statusEffects",
+        "Juggernutalicious"
+      ],
+      "filenames": [
+        "Juggernutalicious"
+      ],
+      "hashes": [
+        "236c5b5b"
+      ]
+    },
+    "statusEffects/Kablooie": {
+      "catalog": "statusEffects",
+      "identity": "Kablooie",
+      "path": [
+        "statusEffects",
+        "Kablooie"
+      ],
+      "filenames": [
+        "Kablooie"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Kitten Pox": {
+      "catalog": "statusEffects",
+      "identity": "Kitten Pox",
+      "path": [
+        "statusEffects",
+        "Kitten Pox"
+      ],
+      "filenames": [
+        "Kitten Pox",
+        "xKitten Pox"
+      ],
+      "hashes": [
+        "79d47ad7"
+      ]
+    },
+    "statusEffects/Laid Back": {
+      "catalog": "statusEffects",
+      "identity": "Laid Back",
+      "path": [
+        "statusEffects",
+        "Laid Back"
+      ],
+      "filenames": [
+        "Laid Back"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Lead Heavy": {
+      "catalog": "statusEffects",
+      "identity": "Lead Heavy",
+      "path": [
+        "statusEffects",
+        "Lead Heavy"
+      ],
+      "filenames": [
+        "Lead Heavy"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Lightningy": {
+      "catalog": "statusEffects",
+      "identity": "Lightningy",
+      "path": [
+        "statusEffects",
+        "Lightningy"
+      ],
+      "filenames": [
+        "Lightningy"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Like A Rock": {
+      "catalog": "statusEffects",
+      "identity": "Like A Rock",
+      "path": [
+        "statusEffects",
+        "Like A Rock"
+      ],
+      "filenames": [
+        "Like A Rock"
+      ],
+      "hashes": [
+        "8681e455"
+      ]
+    },
+    "statusEffects/Longer-Lasting Energization": {
+      "catalog": "statusEffects",
+      "identity": "Longer-Lasting Energization",
+      "path": [
+        "statusEffects",
+        "Longer-Lasting Energization"
+      ],
+      "filenames": [
+        "Longer Lasting Energization"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Lubed Up": {
+      "catalog": "statusEffects",
+      "identity": "Lubed Up",
+      "path": [
+        "statusEffects",
+        "Lubed Up"
+      ],
+      "filenames": [
+        "Lubed Up"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Magnetism": {
+      "catalog": "statusEffects",
+      "identity": "Magnetism",
+      "path": [
+        "statusEffects",
+        "Magnetism"
+      ],
+      "filenames": [
+        "Magnetism"
+      ],
+      "hashes": [
+        "5dc03665"
+      ]
+    },
+    "statusEffects/Meleeria": {
+      "catalog": "statusEffects",
+      "identity": "Meleeria",
+      "path": [
+        "statusEffects",
+        "Meleeria"
+      ],
+      "filenames": [
+        "Meleeria"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Minty Beef Breath": {
+      "catalog": "statusEffects",
+      "identity": "Minty Beef Breath",
+      "path": [
+        "statusEffects",
+        "Minty Beef Breath"
+      ],
+      "filenames": [
+        "Minty Beef Breath"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Mop Head": {
+      "catalog": "statusEffects",
+      "identity": "Mop Head",
+      "path": [
+        "statusEffects",
+        "Mop Head"
+      ],
+      "filenames": [
+        "Mop Head"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Mummified": {
+      "catalog": "statusEffects",
+      "identity": "Mummified",
+      "path": [
+        "statusEffects",
+        "Mummified"
+      ],
+      "filenames": [
+        "Mummified"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Noodly Awesomeness": {
+      "catalog": "statusEffects",
+      "identity": "Noodly Awesomeness",
+      "path": [
+        "statusEffects",
+        "Noodly Awesomeness"
+      ],
+      "filenames": [
+        "Noodly Awesomeness"
+      ],
+      "hashes": []
+    },
+    "statusEffects/On Fire": {
+      "catalog": "statusEffects",
+      "identity": "On Fire",
+      "path": [
+        "statusEffects",
+        "On Fire"
+      ],
+      "filenames": [
+        "On Fire"
+      ],
+      "hashes": [
+        "d2553a76"
+      ]
+    },
+    "statusEffects/Patriotic": {
+      "catalog": "statusEffects",
+      "identity": "Patriotic",
+      "path": [
+        "statusEffects",
+        "Patriotic"
+      ],
+      "filenames": [
+        "Patriotic"
+      ],
+      "hashes": [
+        "33e3840d"
+      ]
+    },
+    "statusEffects/Pearly Whites": {
+      "catalog": "statusEffects",
+      "identity": "Pearly Whites",
+      "path": [
+        "statusEffects",
+        "Pearly Whites"
+      ],
+      "filenames": [
+        "Pearly Whites"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Polymorphous": {
+      "catalog": "statusEffects",
+      "identity": "Polymorphous",
+      "path": [
+        "statusEffects",
+        "Polymorphous"
+      ],
+      "filenames": [
+        "Polymorphous"
+      ],
+      "hashes": [
+        "add9fa63"
+      ]
+    },
+    "statusEffects/Puppy Power": {
+      "catalog": "statusEffects",
+      "identity": "Puppy Power",
+      "path": [
+        "statusEffects",
+        "Puppy Power"
+      ],
+      "filenames": [
+        "Puppy Power"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Quadra Jitters": {
+      "catalog": "statusEffects",
+      "identity": "Quadra Jitters",
+      "path": [
+        "statusEffects",
+        "Quadra Jitters"
+      ],
+      "filenames": [
+        "Quadra Jitters"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Rainbow Pox": {
+      "catalog": "statusEffects",
+      "identity": "Rainbow Pox",
+      "path": [
+        "statusEffects",
+        "Rainbow Pox"
+      ],
+      "filenames": [
+        "Rainbow Pox"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Raptor Power": {
+      "catalog": "statusEffects",
+      "identity": "Raptor Power",
+      "path": [
+        "statusEffects",
+        "Raptor Power"
+      ],
+      "filenames": [
+        "Raptor Power"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Raspberry Strength": {
+      "catalog": "statusEffects",
+      "identity": "Raspberry Strength",
+      "path": [
+        "statusEffects",
+        "Raspberry Strength"
+      ],
+      "filenames": [
+        "Raspberry Strength"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Real Ultimate Power": {
+      "catalog": "statusEffects",
+      "identity": "Real Ultimate Power",
+      "path": [
+        "statusEffects",
+        "Real Ultimate Power"
+      ],
+      "filenames": [
+        "Real Ultimate Power"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Red Tongue": {
+      "catalog": "statusEffects",
+      "identity": "Red Tongue",
+      "path": [
+        "statusEffects",
+        "Red Tongue"
+      ],
+      "filenames": [
+        "Red Tongue"
+      ],
+      "hashes": [
+        "05f9e122"
+      ]
+    },
+    "statusEffects/Roast Beef Fortification": {
+      "catalog": "statusEffects",
+      "identity": "Roast Beef Fortification",
+      "path": [
+        "statusEffects",
+        "Roast Beef Fortification"
+      ],
+      "filenames": [
+        "Roast Beef Fortification"
+      ],
+      "hashes": []
+    },
+    "statusEffects/SARS": {
+      "catalog": "statusEffects",
+      "identity": "SARS",
+      "path": [
+        "statusEffects",
+        "SARS"
+      ],
+      "filenames": [
+        "SARS"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Semi-Lasting Energization": {
+      "catalog": "statusEffects",
+      "identity": "Semi-Lasting Energization",
+      "path": [
+        "statusEffects",
+        "Semi-Lasting Energization"
+      ],
+      "filenames": [
+        "Semi Lasting Energization"
+      ],
+      "hashes": [
+        "b9a6c4f1"
+      ]
+    },
+    "statusEffects/Semi-Transparency": {
+      "catalog": "statusEffects",
+      "identity": "Semi-Transparency",
+      "path": [
+        "statusEffects",
+        "Semi-Transparency"
+      ],
+      "filenames": [
+        "Semi Transparency"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Shoegazer": {
+      "catalog": "statusEffects",
+      "identity": "Shoegazer",
+      "path": [
+        "statusEffects",
+        "Shoegazer"
+      ],
+      "filenames": [
+        "Shoegazer"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Sorrowful": {
+      "catalog": "statusEffects",
+      "identity": "Sorrowful",
+      "path": [
+        "statusEffects",
+        "Sorrowful"
+      ],
+      "filenames": [
+        "Sorrowful"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Spiked Hair": {
+      "catalog": "statusEffects",
+      "identity": "Spiked Hair",
+      "path": [
+        "statusEffects",
+        "Spiked Hair"
+      ],
+      "filenames": [
+        "Spiked Hair"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Stickier Colder Hands": {
+      "catalog": "statusEffects",
+      "identity": "Stickier Colder Hands",
+      "path": [
+        "statusEffects",
+        "Stickier Colder Hands"
+      ],
+      "filenames": [
+        "Stickier Colder Hands"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Sticky Cold Hands": {
+      "catalog": "statusEffects",
+      "identity": "Sticky Cold Hands",
+      "path": [
+        "statusEffects",
+        "Sticky Cold Hands"
+      ],
+      "filenames": [
+        "Sticky Cold Hands"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Sweetness": {
+      "catalog": "statusEffects",
+      "identity": "Sweetness",
+      "path": [
+        "statusEffects",
+        "Sweetness"
+      ],
+      "filenames": [
+        "Sweetness"
+      ],
+      "hashes": [
+        "5538c217"
+      ]
+    },
+    "statusEffects/Time Displacement": {
+      "catalog": "statusEffects",
+      "identity": "Time Displacement",
+      "path": [
+        "statusEffects",
+        "Time Displacement"
+      ],
+      "filenames": [
+        "Time Displacement"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Tranquilized": {
+      "catalog": "statusEffects",
+      "identity": "Tranquilized",
+      "path": [
+        "statusEffects",
+        "Tranquilized"
+      ],
+      "filenames": [
+        "Tranquilized"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Under the Bridge": {
+      "catalog": "statusEffects",
+      "identity": "Under the Bridge",
+      "path": [
+        "statusEffects",
+        "Under the Bridge"
+      ],
+      "filenames": [
+        "Under the Bridge",
+        "xUnder the Bridge"
+      ],
+      "hashes": [
+        "f43d9101"
+      ]
+    },
+    "statusEffects/Uranium Enriched": {
+      "catalog": "statusEffects",
+      "identity": "Uranium Enriched",
+      "path": [
+        "statusEffects",
+        "Uranium Enriched"
+      ],
+      "filenames": [
+        "Uranium Enriched"
+      ],
+      "hashes": [
+        "fc3f120d"
+      ]
+    },
+    "statusEffects/Volleymorphous": {
+      "catalog": "statusEffects",
+      "identity": "Volleymorphous",
+      "path": [
+        "statusEffects",
+        "Volleymorphous"
+      ],
+      "filenames": [
+        "Volleymorphous"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Warwolf": {
+      "catalog": "statusEffects",
+      "identity": "Warwolf",
+      "path": [
+        "statusEffects",
+        "Warwolf"
+      ],
+      "filenames": [
+        "Warwolf"
+      ],
+      "hashes": []
+    },
+    "statusEffects/Wonka Spirit": {
+      "catalog": "statusEffects",
+      "identity": "Wonka Spirit",
+      "path": [
+        "statusEffects",
+        "Wonka Spirit"
+      ],
+      "filenames": [
+        "Wonka Spirit"
+      ],
+      "hashes": [
+        "d554b27c"
+      ]
+    },
+    "statusEffects/Zombified": {
+      "catalog": "statusEffects",
+      "identity": "Zombified",
+      "path": [
+        "statusEffects",
+        "Zombified"
+      ],
+      "filenames": [
+        "Zombified"
+      ],
+      "hashes": []
+    },
+    "tattoos/Arena Badass": {
+      "catalog": "tattoos",
+      "identity": "Arena Badass",
+      "path": [
+        "tattoos",
+        "Arena Badass"
+      ],
+      "filenames": [
+        "Arena Badass 1",
+        "Arena Badass 2",
+        "Arena Badass 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Beggars Paradise": {
+      "catalog": "tattoos",
+      "identity": "Beggars Paradise",
+      "path": [
+        "tattoos",
+        "Beggars Paradise"
+      ],
+      "filenames": [
+        "Beggars Paradise 1",
+        "Beggars Paradise 2",
+        "Beggars Paradise 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Boozaholic": {
+      "catalog": "tattoos",
+      "identity": "Boozaholic",
+      "path": [
+        "tattoos",
+        "Boozaholic"
+      ],
+      "filenames": [
+        "Boozaholic 1",
+        "Boozaholic 2",
+        "Boozaholic 3",
+        "Nx45xBoozaholic 3",
+        "xBoozaholic 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Cantastic": {
+      "catalog": "tattoos",
+      "identity": "Cantastic",
+      "path": [
+        "tattoos",
+        "Cantastic"
+      ],
+      "filenames": [
+        "Cantastic 1",
+        "Cantastic 2",
+        "Cantastic 3",
+        "xCantastic 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Liberty Cycle": {
+      "catalog": "tattoos",
+      "identity": "Liberty Cycle",
+      "path": [
+        "tattoos",
+        "Liberty Cycle"
+      ],
+      "filenames": [
+        "Liberty Cycle 1",
+        "Liberty Cycle 2",
+        "Liberty Cycle 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Middle Earth Rock": {
+      "catalog": "tattoos",
+      "identity": "Middle Earth Rock",
+      "path": [
+        "tattoos",
+        "Middle Earth Rock"
+      ],
+      "filenames": [
+        "Middle Earth Rock 1",
+        "Middle Earth Rock 2",
+        "Middle Earth Rock 3",
+        "xMiddle Earth Rock 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Packin Sasquatch": {
+      "catalog": "tattoos",
+      "identity": "Packin Sasquatch",
+      "path": [
+        "tattoos",
+        "Packin Sasquatch"
+      ],
+      "filenames": [
+        "Packin Sasquatch 1",
+        "Packin Sasquatch 2",
+        "Packin Sasquatch 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Rattoo": {
+      "catalog": "tattoos",
+      "identity": "Rattoo",
+      "path": [
+        "tattoos",
+        "Rattoo"
+      ],
+      "filenames": [
+        "Rattoo 1",
+        "Rattoo 2",
+        "Rattoo 3",
+        "xRattoo 3"
+      ],
+      "hashes": []
+    },
+    "tattoos/Skull-Pot": {
+      "catalog": "tattoos",
+      "identity": "Skull-Pot",
+      "path": [
+        "tattoos",
+        "Skull-Pot"
+      ],
+      "filenames": [
+        "Skull Pot 1",
+        "Skull Pot 2",
+        "Skull Pot 3",
+        "xSkull Pot 3"
+      ],
+      "hashes": []
+    }
+  }
+}

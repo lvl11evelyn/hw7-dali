@@ -50,11 +50,6 @@ If an association has already been rejected, please do not recreate the same pro
 
 Repeatedly resubmitting an unchanged rejected association only creates duplicate review work.
 
-## Do not submit already-rejected associations as new submissions
-
-If an association has already been rejected, please do not recreate the same proposal as a new submission unless you have materially new evidence that changes the case.
-
-Repeatedly resubmitting an unchanged rejected association only creates duplicate review work.
 
 ## Approval authority
 

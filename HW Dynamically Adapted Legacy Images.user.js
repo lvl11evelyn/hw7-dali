@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.10
+// @version      2.11
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -971,7 +971,51 @@
         setTimeout(() => URL.revokeObjectURL(url), 0);
     }
 
+    const PENDING_EXPORT_LOCK_KEY = 'hw-dali-pending-export-lock-v1';
+    const PENDING_EXPORT_LOCK_MS = 1500;
+
+    function acquirePendingExportLock() {
+        const now = Date.now();
+
+        try {
+            const previous = Number.parseInt(
+                localStorage.getItem(PENDING_EXPORT_LOCK_KEY) || '0',
+                10
+            );
+
+            if (Number.isFinite(previous) && now - previous < PENDING_EXPORT_LOCK_MS) {
+                return false;
+            }
+
+            localStorage.setItem(PENDING_EXPORT_LOCK_KEY, String(now));
+            return true;
+        } catch {
+            /*
+             * localStorage can be unavailable in unusually restricted page
+             * contexts. Fall back to this userscript instance's timestamp.
+             */
+            if (
+                exportPendingAssociations.lastExportAt &&
+                now - exportPendingAssociations.lastExportAt < PENDING_EXPORT_LOCK_MS
+            ) {
+                return false;
+            }
+
+            exportPendingAssociations.lastExportAt = now;
+            return true;
+        }
+    }
+
     function exportPendingAssociations(keys = null) {
+        /*
+         * One physical click must produce exactly one download. The shared
+         * localStorage lock also suppresses duplicate invocations if more than
+         * one DALI userscript context happens to be alive on the same page.
+         */
+        if (!acquirePendingExportLock()) {
+            return;
+        }
+
         const payload = pendingExportObject(keys);
         const stamp = new Date().toISOString().replace(/[:.]/g, '-');
         downloadJson(`dali-pending-associations-${stamp}.json`, payload);
@@ -1114,10 +1158,16 @@
 
         const controls = document.createElement('div');
         const exportButton = document.createElement('button');
+        exportButton.type = 'button';
         exportButton.textContent = 'Export All Pending';
-        exportButton.onclick = () => exportPendingAssociations();
+        exportButton.onclick = event => {
+            event.preventDefault();
+            event.stopPropagation();
+            exportPendingAssociations();
+        };
 
         const closeButton = document.createElement('button');
+        closeButton.type = 'button';
         closeButton.textContent = 'Close';
         closeButton.style.marginLeft = '8px';
         closeButton.onclick = () => overlay.remove();
@@ -1221,15 +1271,22 @@
             buttons.style.marginTop = '8px';
 
             const copySource = document.createElement('button');
+            copySource.type = 'button';
             copySource.textContent = 'Copy Native src';
             copySource.onclick = () => copyPendingSource(proposal);
 
             const exportOne = document.createElement('button');
+            exportOne.type = 'button';
             exportOne.textContent = 'Export';
             exportOne.style.marginLeft = '8px';
-            exportOne.onclick = () => exportPendingAssociations([key]);
+            exportOne.onclick = event => {
+                event.preventDefault();
+                event.stopPropagation();
+                exportPendingAssociations([key]);
+            };
 
             const reject = document.createElement('button');
+            reject.type = 'button';
             reject.textContent = 'Reject';
             reject.style.marginLeft = '8px';
             reject.onclick = () => {

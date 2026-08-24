@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.7
+// @version      2.8
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -10,6 +10,9 @@
 // @updateURL    https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
 // @downloadURL  https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/HW%20Dynamically%20Adapted%20Legacy%20Images.user.js
 // @grant        GM_xmlhttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
 // @connect      raw.githubusercontent.com
 // ==/UserScript==
 
@@ -31,6 +34,23 @@
     const ASSET_MAP_CACHE_KEY =
         'hw-dali-asset-map-cache-v1';
 
+    const ID_REGISTRY_URL =
+        'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-id-registry.json';
+
+    const SVG_CATALOG_URL =
+        'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-svg-catalog.json';
+
+    const REMOTE_AUX_TTL_MS = 12 * 60 * 60 * 1000;
+
+    const ID_REGISTRY_CACHE_KEY =
+        'hw-dali-id-registry-cache-v1';
+
+    const SVG_CATALOG_CACHE_KEY =
+        'hw-dali-svg-catalog-cache-v1';
+
+    const LEARNING_STORAGE_KEY =
+        'hw-dali-learning-state-v1';
+
     let REPLACEMENTS = null;
     let ASSET_MAP_SIGNATURE = '';
     let CATALOG_GENERATION = 0;
@@ -48,6 +68,17 @@
      * Unknown or ambiguous imagery is left untouched.
      */
     let CATALOG_IDENTITY_INDEX = new Map();
+
+    let ID_REGISTRY = null;
+    let ID_REGISTRY_SIGNATURE = '';
+    let ID_REGISTRY_READY = false;
+    let ID_FILENAME_INDEX = new Map();
+    let ID_HASH_INDEX = new Map();
+
+    let SVG_CATALOG = null;
+    let SVG_CATALOG_SIGNATURE = '';
+
+    let LEARNING_STATE = loadLearningState();
 
     /*
      * DALI starts immediately. The network is never on the critical path.
@@ -191,6 +222,859 @@
             console.warn('[DALI] Cached asset map is invalid.', error);
             return null;
         }
+    }
+
+    // ------------------------------------------------------------------------
+    // DETERMINISTIC ID REGISTRY / SVG CATALOG
+    // ------------------------------------------------------------------------
+
+    function fetchRemoteJson(url, label) {
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: `${url}?dali=${Date.now()}`,
+                timeout: 10000,
+
+                onload(response) {
+                    if (response.status < 200 || response.status >= 300) {
+                        reject(new Error(`${label} request returned HTTP ${response.status}.`));
+                        return;
+                    }
+
+                    try {
+                        resolve(JSON.parse(response.responseText));
+                    } catch (error) {
+                        reject(new Error(`${label} is not valid JSON: ${error.message}`));
+                    }
+                },
+
+                onerror() {
+                    reject(new Error(`${label} network request failed.`));
+                },
+
+                ontimeout() {
+                    reject(new Error(`${label} network request timed out.`));
+                }
+            });
+        });
+    }
+
+    function readTimedCache(key, validate) {
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return null;
+
+            const wrapper = JSON.parse(raw);
+            if (!wrapper || typeof wrapper !== 'object') return null;
+
+            validate(wrapper.data);
+
+            return {
+                data: wrapper.data,
+                fetchedAt: Number(wrapper.fetchedAt) || 0
+            };
+        } catch (error) {
+            console.warn(`[DALI] Cached ${key} is invalid.`, error);
+            return null;
+        }
+    }
+
+    function writeTimedCache(key, data) {
+        try {
+            localStorage.setItem(
+                key,
+                JSON.stringify({
+                    fetchedAt: Date.now(),
+                    data
+                })
+            );
+        } catch (error) {
+            console.warn(`[DALI] Unable to cache ${key}.`, error);
+        }
+    }
+
+    function cacheIsFresh(cached) {
+        return Boolean(
+            cached &&
+            cached.fetchedAt > 0 &&
+            Date.now() - cached.fetchedAt < REMOTE_AUX_TTL_MS
+        );
+    }
+
+    function validateIdRegistry(registry) {
+        if (!registry || typeof registry !== 'object' || Array.isArray(registry)) {
+            throw new Error('ID registry root is not a JSON object.');
+        }
+
+        if (registry.schema !== 1) {
+            throw new Error(`Unsupported ID registry schema: ${registry.schema}.`);
+        }
+
+        if (!registry.sourceCounts || typeof registry.sourceCounts !== 'object') {
+            throw new Error('ID registry is missing sourceCounts.');
+        }
+
+        if (!registry.identities || typeof registry.identities !== 'object' || Array.isArray(registry.identities)) {
+            throw new Error('ID registry is missing identities.');
+        }
+
+        let identityCount = 0;
+        let filenameCount = 0;
+        let fnvCount = 0;
+        const filenames = new Map();
+        const hashes = new Map();
+
+        for (const [registryKey, entry] of Object.entries(registry.identities)) {
+            if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+                throw new Error(`Invalid ID registry entry: ${registryKey}.`);
+            }
+
+            if (
+                typeof entry.catalog !== 'string' || !entry.catalog ||
+                typeof entry.identity !== 'string' || !entry.identity ||
+                !Array.isArray(entry.path) || entry.path.length < 2 ||
+                !Array.isArray(entry.filenames) ||
+                !Array.isArray(entry.hashes)
+            ) {
+                throw new Error(`Malformed ID registry entry: ${registryKey}.`);
+            }
+
+            identityCount += 1;
+
+            for (const filename of entry.filenames) {
+                const key = normalizeIdentityKey(filename);
+                if (!key) throw new Error(`Blank filename authority in ${registryKey}.`);
+
+                const existing = filenames.get(key);
+                if (existing && existing !== registryKey) {
+                    throw new Error(`Conflicting filename authority: ${filename}.`);
+                }
+
+                filenames.set(key, registryKey);
+                filenameCount += 1;
+            }
+
+            for (const hash of entry.hashes) {
+                const key = String(hash || '').trim().toLowerCase();
+                if (!/^[0-9a-f]{8}$/.test(key)) {
+                    throw new Error(`Invalid FNV authority in ${registryKey}: ${hash}.`);
+                }
+
+                const existing = hashes.get(key);
+                if (existing && existing !== registryKey) {
+                    throw new Error(`Conflicting FNV authority: ${key}.`);
+                }
+
+                hashes.set(key, registryKey);
+                fnvCount += 1;
+            }
+        }
+
+        const actual = {
+            identity: identityCount,
+            filename: filenameCount,
+            fnv: fnvCount,
+            total: filenameCount + fnvCount
+        };
+
+        for (const field of ['identity', 'filename', 'fnv', 'total']) {
+            if (Number(registry.sourceCounts[field]) !== actual[field]) {
+                throw new Error(
+                    `ID registry self-count mismatch for ${field}: declared ${registry.sourceCounts[field]}, actual ${actual[field]}.`
+                );
+            }
+        }
+
+        return registry;
+    }
+
+    function applyIdRegistry(registry) {
+        validateIdRegistry(registry);
+
+        const signature = JSON.stringify(registry);
+        if (signature === ID_REGISTRY_SIGNATURE) {
+            ID_REGISTRY_READY = true;
+            return false;
+        }
+
+        const filenameIndex = new Map();
+        const hashIndex = new Map();
+
+        for (const [registryKey, entry] of Object.entries(registry.identities)) {
+            for (const filename of entry.filenames) {
+                filenameIndex.set(normalizeIdentityKey(filename), registryKey);
+            }
+
+            for (const hash of entry.hashes) {
+                hashIndex.set(String(hash).toLowerCase(), registryKey);
+            }
+        }
+
+        ID_REGISTRY = registry;
+        ID_REGISTRY_SIGNATURE = signature;
+        ID_FILENAME_INDEX = filenameIndex;
+        ID_HASH_INDEX = hashIndex;
+        ID_REGISTRY_READY = true;
+        CATALOG_GENERATION += 1;
+
+        prunePendingAgainstRegistry();
+        return true;
+    }
+
+    async function refreshRemoteIdRegistry(force = false) {
+        const cached = readTimedCache(ID_REGISTRY_CACHE_KEY, validateIdRegistry);
+
+        if (!force && cacheIsFresh(cached)) {
+            return;
+        }
+
+        try {
+            const registry = await fetchRemoteJson(ID_REGISTRY_URL, 'ID registry');
+
+            /*
+             * IMPORTANT: acceptance compares the freshly downloaded file's
+             * declared counters against counts independently calculated from
+             * that same fresh body. The existing cache is never the comparator.
+             */
+            validateIdRegistry(registry);
+            writeTimedCache(ID_REGISTRY_CACHE_KEY, registry);
+
+            if (applyIdRegistry(registry)) {
+                scan(document);
+            }
+        } catch (error) {
+            console.warn(
+                '[DALI] Remote ID registry rejected/unavailable; retaining last known-good copy.',
+                error
+            );
+        }
+    }
+
+    function validateSvgCatalog(catalog) {
+        if (!catalog || typeof catalog !== 'object' || Array.isArray(catalog)) {
+            throw new Error('SVG catalog root is not a JSON object.');
+        }
+
+        if (catalog.schema !== 1) {
+            throw new Error(`Unsupported SVG catalog schema: ${catalog.schema}.`);
+        }
+
+        if (!catalog.sourceCounts || typeof catalog.sourceCounts !== 'object') {
+            throw new Error('SVG catalog is missing sourceCounts.');
+        }
+
+        if (!catalog.svgs || typeof catalog.svgs !== 'object' || Array.isArray(catalog.svgs)) {
+            throw new Error('SVG catalog is missing svgs.');
+        }
+
+        let count = 0;
+
+        for (const [identity, svg] of Object.entries(catalog.svgs)) {
+            if (
+                !identity ||
+                typeof svg !== 'string' ||
+                !/^\s*<svg\b/i.test(svg) ||
+                !/<\/svg>\s*$/i.test(svg)
+            ) {
+                throw new Error(`Malformed SVG catalog entry: ${identity}.`);
+            }
+
+            count += 1;
+        }
+
+        if (Number(catalog.sourceCounts.svg) !== count) {
+            throw new Error(
+                `SVG catalog self-count mismatch: declared ${catalog.sourceCounts.svg}, actual ${count}.`
+            );
+        }
+
+        return catalog;
+    }
+
+    function applySvgCatalog(catalog) {
+        validateSvgCatalog(catalog);
+
+        const signature = JSON.stringify(catalog);
+        if (signature === SVG_CATALOG_SIGNATURE) {
+            return false;
+        }
+
+        SVG_CATALOG = catalog;
+        SVG_CATALOG_SIGNATURE = signature;
+        CATALOG_GENERATION += 1;
+        return true;
+    }
+
+    async function refreshRemoteSvgCatalog(force = false) {
+        const cached = readTimedCache(SVG_CATALOG_CACHE_KEY, validateSvgCatalog);
+
+        if (!force && cacheIsFresh(cached)) {
+            return;
+        }
+
+        try {
+            const catalog = await fetchRemoteJson(SVG_CATALOG_URL, 'SVG catalog');
+            validateSvgCatalog(catalog);
+            writeTimedCache(SVG_CATALOG_CACHE_KEY, catalog);
+
+            if (applySvgCatalog(catalog)) {
+                scan(document);
+            }
+        } catch (error) {
+            console.warn(
+                '[DALI] Remote SVG catalog rejected/unavailable; retaining last known-good copy.',
+                error
+            );
+        }
+    }
+
+    function getCatalogEntryByPath(path) {
+        if (!REPLACEMENTS || !Array.isArray(path) || path.length < 2) {
+            return null;
+        }
+
+        let node = REPLACEMENTS;
+
+        for (const segment of path) {
+            if (
+                !node ||
+                typeof node !== 'object' ||
+                !Object.prototype.hasOwnProperty.call(node, segment)
+            ) {
+                return null;
+            }
+
+            node = node[segment];
+        }
+
+        if (node !== null && typeof node !== 'string') {
+            return null;
+        }
+
+        return {
+            name: path[path.length - 1],
+            catalog: path[0],
+            path: [...path],
+            url: typeof node === 'string' && node.trim()
+                ? node.trim()
+                : null
+        };
+    }
+
+    function describeNativeSource(src) {
+        const value = String(src || '');
+        if (!value) return null;
+
+        if (/^data:image\/svg\+xml/i.test(value)) {
+            return null;
+        }
+
+        if (value.startsWith('data:image/')) {
+            const hash = dataSrcHash(value);
+            if (!hash) return null;
+
+            return {
+                sourceType: 'data-image',
+                key: `fnv:${hash}`,
+                fnvHash: hash,
+                filename: '',
+                normalizedFilename: ''
+            };
+        }
+
+        let filename = value
+            .split(/[?#]/)[0]
+            .split('/')
+            .pop() || '';
+
+        try {
+            filename = decodeURIComponent(filename);
+        } catch (error) {
+            // Preserve undecoded filename.
+        }
+
+        const normalizedFilename = normalizeAssetName(filename);
+        const key = normalizeIdentityKey(normalizedFilename);
+
+        if (!key) return null;
+
+        return {
+            sourceType: 'url',
+            key: `filename:${key}`,
+            fnvHash: '',
+            filename,
+            normalizedFilename
+        };
+    }
+
+    function lookupRegistryEntryForSource(src) {
+        if (!ID_REGISTRY_READY || !ID_REGISTRY) {
+            return null;
+        }
+
+        const descriptor = describeNativeSource(src);
+        if (!descriptor) return null;
+
+        const registryKey = descriptor.sourceType === 'data-image'
+            ? ID_HASH_INDEX.get(descriptor.fnvHash)
+            : ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename));
+
+        if (!registryKey) return null;
+
+        return {
+            registryKey,
+            descriptor,
+            registryEntry: ID_REGISTRY.identities[registryKey] || null
+        };
+    }
+
+    function processDeterministicRegistryImage(image) {
+        const src = image.getAttribute('src') || '';
+        const hit = lookupRegistryEntryForSource(src);
+
+        if (!hit?.registryEntry) {
+            return false;
+        }
+
+        const entry = getCatalogEntryByPath(hit.registryEntry.path);
+        if (!entry) {
+            console.warn(
+                `[DALI] ID registry points to an asset-map path that does not exist: ${hit.registryKey}`
+            );
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry,
+            { skipLearning: true, resolution: 'id-registry' }
+        );
+    }
+
+    // ------------------------------------------------------------------------
+    // DYNAMIC LEARNING / HUMAN REVIEW
+    // ------------------------------------------------------------------------
+
+    function newLearningState() {
+        return {
+            schema: 1,
+            pending: {},
+            rejections: {}
+        };
+    }
+
+    function loadLearningState() {
+        try {
+            const raw = GM_getValue(LEARNING_STORAGE_KEY, '');
+            const parsed = raw ? JSON.parse(raw) : null;
+
+            if (
+                parsed &&
+                parsed.schema === 1 &&
+                parsed.pending && typeof parsed.pending === 'object' &&
+                parsed.rejections && typeof parsed.rejections === 'object'
+            ) {
+                return parsed;
+            }
+        } catch (error) {
+            console.warn('[DALI] Local learning state could not be read.', error);
+        }
+
+        return newLearningState();
+    }
+
+    function saveLearningState() {
+        try {
+            GM_setValue(LEARNING_STORAGE_KEY, JSON.stringify(LEARNING_STATE));
+        } catch (error) {
+            console.warn('[DALI] Local learning state could not be saved.', error);
+        }
+    }
+
+    function proposalKey(descriptor, entry) {
+        return `${descriptor.key}\u0000${entry.path.join('/')}`;
+    }
+
+    function compactText(value, limit = 350) {
+        return String(value || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, limit);
+    }
+
+    function addEvidenceValue(array, value, limit = 10) {
+        const text = compactText(value);
+        if (!text || array.includes(text) || array.length >= limit) return;
+        array.push(text);
+    }
+
+    function collectLearningEvidence(image, entry, descriptor) {
+        const alt = image.getAttribute('alt') || '';
+        const title = image.getAttribute('title') || '';
+        const ariaLabel = image.getAttribute('aria-label') || '';
+        const anchor = image.closest('a[href]');
+        const container = image.closest('td, center, li, div, a');
+        const containerText = compactText(container?.textContent || '');
+        const identityKey = normalizeIdentityKey(entry.name);
+        const cues = [];
+
+        if (
+            descriptor.sourceType === 'url' &&
+            normalizeIdentityKey(descriptor.normalizedFilename) === identityKey
+        ) {
+            cues.push('exact-native-filename');
+        }
+
+        for (const [label, value] of [
+            ['exact-alt', alt],
+            ['exact-title', title],
+            ['exact-aria-label', ariaLabel]
+        ]) {
+            if (normalizeIdentityKey(value) === identityKey) {
+                cues.push(label);
+            }
+        }
+
+        const normalizedContainer = normalizeAssetName(containerText).toLowerCase();
+        const normalizedIdentity = normalizeAssetName(entry.name).toLowerCase();
+
+        if (
+            normalizedContainer === normalizedIdentity ||
+            normalizedContainer.startsWith(`${normalizedIdentity} `) ||
+            normalizedContainer.startsWith(`${normalizedIdentity}(`)
+        ) {
+            cues.push('container-prefix');
+        } else if (
+            normalizedIdentity &&
+            normalizedContainer.includes(normalizedIdentity)
+        ) {
+            cues.push('container-contains');
+        }
+
+        if (image.closest('td.ratcell[id^="ratimg-"]')) {
+            cues.push('rat-structure');
+        }
+
+        if (/^choose_tool_\d+$/.test(image.id || '') && image.closest('td[id^="tool_"]')) {
+            cues.push('mining-tool-structure');
+        }
+
+        if (entry.catalog === 'tattoos' && /-(1|2|3)(?:\.|$)/i.test(alt || image.getAttribute('src') || '')) {
+            cues.push('tattoo-stage-structure');
+        }
+
+        let confidence = 0.55;
+
+        if (cues.includes('exact-native-filename')) confidence = Math.max(confidence, 0.995);
+        if (cues.some(cue => /^exact-(alt|title|aria-label)$/.test(cue))) confidence = Math.max(confidence, 0.985);
+        if (cues.includes('rat-structure') || cues.includes('mining-tool-structure')) confidence = Math.max(confidence, 0.90);
+        if (cues.includes('container-prefix')) confidence = Math.max(confidence, 0.84);
+        if (cues.includes('container-contains')) confidence = Math.max(confidence, 0.68);
+
+        return {
+            pageHref: String(location.href || ''),
+            anchorHref: anchor?.href || '',
+            alt,
+            title,
+            ariaLabel,
+            containerText,
+            cues,
+            baseConfidence: confidence
+        };
+    }
+
+    function recordPendingAssociation(image, entry) {
+        if (!ID_REGISTRY_READY || !entry?.path) {
+            return;
+        }
+
+        const nativeSrc =
+            image.getAttribute('data-dali-original-src') ||
+            image.getAttribute('src') ||
+            '';
+
+        if (!nativeSrc || /^data:image\/svg\+xml/i.test(nativeSrc)) {
+            return;
+        }
+
+        const descriptor = describeNativeSource(nativeSrc);
+        if (!descriptor) return;
+
+        /* Already in core memory: no proposal is needed. */
+        if (lookupRegistryEntryForSource(nativeSrc)) {
+            return;
+        }
+
+        const key = proposalKey(descriptor, entry);
+
+        /* Users may reject locally, but never approve locally. */
+        if (LEARNING_STATE.rejections[key]) {
+            return;
+        }
+
+        const evidence = collectLearningEvidence(image, entry, descriptor);
+        const now = Date.now();
+        let proposal = LEARNING_STATE.pending[key];
+
+        if (!proposal) {
+            proposal = {
+                schema: 1,
+                source: {
+                    sourceType: descriptor.sourceType,
+                    fnvHash: descriptor.fnvHash,
+                    filename: descriptor.filename,
+                    normalizedFilename: descriptor.normalizedFilename,
+                    src: nativeSrc
+                },
+                proposedIdentity: {
+                    identity: entry.name,
+                    catalog: entry.catalog,
+                    path: [...entry.path]
+                },
+                confidence: evidence.baseConfidence,
+                observations: 0,
+                firstSeen: now,
+                lastSeen: now,
+                evidence: {
+                    pageHrefs: [],
+                    anchorHrefs: [],
+                    alt: [],
+                    title: [],
+                    ariaLabel: [],
+                    containerText: [],
+                    cues: []
+                }
+            };
+
+            LEARNING_STATE.pending[key] = proposal;
+            console.info(
+                `[DALI] New pending identity association: ${descriptor.key} -> ${entry.path.join('/')}`
+            );
+        }
+
+        proposal.observations += 1;
+        proposal.lastSeen = now;
+
+        const repetitionBonus = Math.min(
+            0.04,
+            Math.max(0, Math.log2(Math.max(1, proposal.observations))) * 0.01
+        );
+
+        proposal.confidence = Number(
+            Math.min(0.999, Math.max(proposal.confidence, evidence.baseConfidence) + repetitionBonus)
+                .toFixed(3)
+        );
+
+        addEvidenceValue(proposal.evidence.pageHrefs, evidence.pageHref, 12);
+        addEvidenceValue(proposal.evidence.anchorHrefs, evidence.anchorHref, 12);
+        addEvidenceValue(proposal.evidence.alt, evidence.alt, 8);
+        addEvidenceValue(proposal.evidence.title, evidence.title, 8);
+        addEvidenceValue(proposal.evidence.ariaLabel, evidence.ariaLabel, 8);
+        addEvidenceValue(proposal.evidence.containerText, evidence.containerText, 8);
+
+        for (const cue of evidence.cues) {
+            addEvidenceValue(proposal.evidence.cues, cue, 20);
+        }
+
+        saveLearningState();
+    }
+
+    function prunePendingAgainstRegistry() {
+        let changed = false;
+
+        for (const [key, proposal] of Object.entries(LEARNING_STATE.pending)) {
+            const src = proposal?.source?.src || '';
+            if (src && lookupRegistryEntryForSource(src)) {
+                delete LEARNING_STATE.pending[key];
+                changed = true;
+            }
+        }
+
+        if (changed) saveLearningState();
+    }
+
+    function rejectPendingAssociation(key) {
+        const proposal = LEARNING_STATE.pending[key];
+        if (!proposal) return;
+
+        LEARNING_STATE.rejections[key] = {
+            rejectedAt: Date.now(),
+            source: proposal.source,
+            proposedIdentity: proposal.proposedIdentity
+        };
+
+        delete LEARNING_STATE.pending[key];
+        saveLearningState();
+    }
+
+    function pendingExportObject(keys = null) {
+        const selected = keys
+            ? keys.map(key => LEARNING_STATE.pending[key]).filter(Boolean)
+            : Object.values(LEARNING_STATE.pending);
+
+        return {
+            schema: 1,
+            type: 'dali-pending-associations',
+            exportedAt: Date.now(),
+            count: selected.length,
+            associations: selected
+        };
+    }
+
+    function downloadJson(filename, value) {
+        const blob = new Blob(
+            [JSON.stringify(value, null, 2) + '\n'],
+            { type: 'application/json;charset=utf-8' }
+        );
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = filename;
+        (document.body || document.documentElement).appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    function exportPendingAssociations(keys = null) {
+        const payload = pendingExportObject(keys);
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+        downloadJson(`dali-pending-associations-${stamp}.json`, payload);
+    }
+
+    function openPendingReview() {
+        document.getElementById('dali-pending-review')?.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'dali-pending-review';
+        Object.assign(overlay.style, {
+            position: 'fixed',
+            inset: '0',
+            zIndex: '2147483647',
+            background: 'rgba(0,0,0,.72)',
+            padding: '24px',
+            overflow: 'auto',
+            font: '14px/1.4 Arial, sans-serif'
+        });
+
+        const panel = document.createElement('div');
+        Object.assign(panel.style, {
+            maxWidth: '980px',
+            margin: '0 auto',
+            background: '#f4f4f4',
+            color: '#111',
+            border: '2px solid #333',
+            borderRadius: '8px',
+            padding: '16px'
+        });
+
+        const header = document.createElement('div');
+        header.style.display = 'flex';
+        header.style.justifyContent = 'space-between';
+        header.style.gap = '12px';
+        header.style.alignItems = 'center';
+
+        const title = document.createElement('strong');
+        title.textContent = `DALI Pending Associations (${Object.keys(LEARNING_STATE.pending).length})`;
+
+        const controls = document.createElement('div');
+        const exportButton = document.createElement('button');
+        exportButton.textContent = 'Export All Pending';
+        exportButton.onclick = () => exportPendingAssociations();
+
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.style.marginLeft = '8px';
+        closeButton.onclick = () => overlay.remove();
+
+        controls.append(exportButton, closeButton);
+        header.append(title, controls);
+        panel.appendChild(header);
+
+        const note = document.createElement('p');
+        note.textContent = 'Pending associations may be exported or rejected here. DALI intentionally provides no local approval control; authoritative promotion occurs only in the core ID registry.';
+        panel.appendChild(note);
+
+        const entries = Object.entries(LEARNING_STATE.pending)
+            .sort((a, b) => (b[1]?.confidence || 0) - (a[1]?.confidence || 0));
+
+        if (!entries.length) {
+            const empty = document.createElement('p');
+            empty.textContent = 'No pending associations.';
+            panel.appendChild(empty);
+        }
+
+        for (const [key, proposal] of entries) {
+            const card = document.createElement('div');
+            Object.assign(card.style, {
+                borderTop: '1px solid #aaa',
+                marginTop: '12px',
+                paddingTop: '12px'
+            });
+
+            const heading = document.createElement('div');
+            heading.innerHTML = `<strong>${escapeHtml(proposal.proposedIdentity.path.join('/'))}</strong> — confidence ${(proposal.confidence * 100).toFixed(1)}% — ${proposal.observations} observation(s)`;
+
+            const source = document.createElement('code');
+            source.style.display = 'block';
+            source.style.whiteSpace = 'pre-wrap';
+            source.style.wordBreak = 'break-all';
+            source.style.margin = '6px 0';
+            source.textContent = proposal.source.fnvHash
+                ? `FNV ${proposal.source.fnvHash}`
+                : proposal.source.normalizedFilename;
+
+            const cues = document.createElement('div');
+            cues.textContent = `Cues: ${proposal.evidence.cues.join(', ') || 'none recorded'}`;
+
+            const page = document.createElement('div');
+            page.textContent = `Seen: ${proposal.evidence.pageHrefs[0] || 'unknown page'}`;
+            page.style.wordBreak = 'break-all';
+
+            const buttons = document.createElement('div');
+            buttons.style.marginTop = '8px';
+
+            const exportOne = document.createElement('button');
+            exportOne.textContent = 'Export';
+            exportOne.onclick = () => exportPendingAssociations([key]);
+
+            const reject = document.createElement('button');
+            reject.textContent = 'Reject';
+            reject.style.marginLeft = '8px';
+            reject.onclick = () => {
+                if (!confirm(`Reject pending association for ${proposal.proposedIdentity.path.join('/')}?`)) return;
+                rejectPendingAssociation(key);
+                openPendingReview();
+            };
+
+            buttons.append(exportOne, reject);
+            card.append(heading, source, cues, page, buttons);
+            panel.appendChild(card);
+        }
+
+        overlay.appendChild(panel);
+        (document.body || document.documentElement).appendChild(overlay);
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function installLearningMenuCommands() {
+        GM_registerMenuCommand(
+            'DALI: Review pending associations',
+            openPendingReview
+        );
+
+        GM_registerMenuCommand(
+            'DALI: Export pending associations',
+            () => exportPendingAssociations()
+        );
     }
 
     function buildLookupTables() {
@@ -591,9 +1475,13 @@
         };
     }
 
-    function applyResolvedCatalogEntry(image, entry) {
+    function applyResolvedCatalogEntry(image, entry, options = null) {
         if (!entry) {
             return false;
+        }
+
+        if (!options?.skipLearning) {
+            recordPendingAssociation(image, entry);
         }
     
         if (!entry.url) {
@@ -850,6 +1738,14 @@
         }
 
         /*
+         * Primary deterministic authority. Native filename/FNV identity is
+         * resolved before any contextual or semantic inference is attempted.
+         */
+        if (processDeterministicRegistryImage(image)) {
+            return;
+        }
+
+        /*
          * KKC+/Grail variants need payload/state logic that is stronger than
          * their ordinary displayed name. Resolve these before the global
          * catalog index so a KKC+ cannot be downgraded to the base cup by alt.
@@ -1059,7 +1955,7 @@ function svgDataUrl(svg) {
 
 
 // ------------------------------------------------------------------------
-// ASSET-MAP INLINE SVG POINTERS
+// ASSET-MAP SVG POINTERS / REMOTE SVG CATALOG
 // ------------------------------------------------------------------------
 
 const DALI_SVG_POINTER_PREFIX = 'dali-svg://';
@@ -1080,353 +1976,16 @@ function resolveReplacementPointer(pointer) {
         .trim()
         .toLowerCase();
 
-    const svg = renderInlineAssetSvg(identity);
+    const svg = SVG_CATALOG?.svgs?.[identity];
 
     if (!svg) {
         console.warn(
-            `[DALI] Unknown inline SVG pointer: ${value}`
+            `[DALI] SVG pointer is not currently available in the SVG catalog: ${value}`
         );
         return null;
     }
 
     return svgDataUrl(svg);
-}
-
-function renderInlineAssetSvg(identity) {
-    switch (identity) {
-        case 'dynamite-stick':
-            return makeDynamiteStickSvg();
-
-        case 'bundle-of-dynamite':
-            return makeBundleOfDynamiteSvg();
-
-        case 'bomb':
-            return makeBombSvg();
-
-        case 'tnt':
-            return makeTntSvg();
-
-        case 'plastic-explosives':
-            return makePlasticExplosivesSvg();
-
-        case 'ore-green':
-            return makeOreHexSvg('#2fd249', '#166f29', '#9cf7a8');
-
-        case 'ore-white':
-            return makeOreHexSvg('#d8dde3', '#8a949d', '#ffffff');
-
-        case 'ore-yellow':
-            return makeOreHexSvg('#e6db1f', '#9a8f12', '#fff37a');
-
-        case 'ore-orange':
-            return makeOreHexSvg('#ef9a2d', '#a65c17', '#ffd08a');
-
-        case 'ore-red':
-            return makeOreHexSvg('#e14a36', '#8f2318', '#ff8a78');
-
-        case 'ore-purple':
-            return makeOreHexSvg('#bf56eb', '#6b2390', '#e3a1ff');
-
-        case 'ore-black':
-            return makeOreHexSvg('#3a3a3a', '#111111', '#7a7a7a');
-
-        case 'hobalt-shard':
-            return makeHobaltShardSvg();
-
-        default:
-            return null;
-    }
-}
-
-function makeMiningToolSvg(body) {
-    return `
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 100 100"
-            width="100"
-            height="100"
-        >
-            ${body}
-        </svg>
-    `;
-}
-
-function fuseSvg(path, sparkX, sparkY) {
-    return `
-        <path
-            d="${path}"
-            fill="none"
-            stroke="#363636"
-            stroke-width="7"
-            stroke-linecap="round"
-        />
-        <path
-            d="${path}"
-            fill="none"
-            stroke="#b18b4f"
-            stroke-width="3.2"
-            stroke-linecap="round"
-        />
-        <g transform="translate(${sparkX} ${sparkY})">
-            <path
-                d="M0 -8 L0 -14 M6 -5 L11 -10 M8 1 L15 1 M-6 -5 L-11 -10"
-                fill="none"
-                stroke="#f3b632"
-                stroke-width="3"
-                stroke-linecap="round"
-            />
-            <circle cx="0" cy="0" r="4.3" fill="#ff7a19"/>
-            <circle cx="0" cy="0" r="1.8" fill="#fff4aa"/>
-        </g>
-    `;
-}
-
-function makeDynamiteStickSvg() {
-    return makeMiningToolSvg(`
-        ${fuseSvg('M57 24 C61 13 72 13 76 6', 76, 6)}
-        <rect
-            x="34"
-            y="21"
-            width="32"
-            height="69"
-            rx="8"
-            fill="#c9312f"
-            stroke="#6e1718"
-            stroke-width="4"
-        />
-        <ellipse
-            cx="50"
-            cy="22"
-            rx="15"
-            ry="5"
-            fill="#e7524e"
-            stroke="#6e1718"
-            stroke-width="3"
-        />
-        <rect x="37" y="39" width="26" height="7" rx="2" fill="#382b29"/>
-        <rect x="37" y="65" width="26" height="7" rx="2" fill="#382b29"/>
-        <path
-            d="M40 30 C43 27 47 27 50 27"
-            fill="none"
-            stroke="#f17a70"
-            stroke-width="3"
-            stroke-linecap="round"
-            opacity=".65"
-        />
-    `);
-}
-
-function makeBundleOfDynamiteSvg() {
-    return makeMiningToolSvg(`
-        ${fuseSvg('M54 23 C58 14 68 13 72 5', 72, 5)}
-        <g stroke="#6e1718" stroke-width="3.5">
-            <rect x="20" y="26" width="24" height="59" rx="7" fill="#ba2a2a"/>
-            <rect x="38" y="19" width="25" height="69" rx="7" fill="#d33a36"/>
-            <rect x="57" y="27" width="24" height="58" rx="7" fill="#b92727"/>
-        </g>
-        <rect x="17" y="43" width="67" height="10" rx="3" fill="#2d2927"/>
-        <rect x="18" y="66" width="65" height="10" rx="3" fill="#2d2927"/>
-        <path
-            d="M43 27 C47 24 52 24 55 25"
-            fill="none"
-            stroke="#f17a70"
-            stroke-width="3"
-            stroke-linecap="round"
-            opacity=".7"
-        />
-    `);
-}
-
-function makeBombSvg() {
-    return makeMiningToolSvg(`
-        ${fuseSvg('M62 28 C66 17 76 15 80 7', 80, 7)}
-        <path
-            d="M44 31 L56 31 L60 39 L40 39 Z"
-            fill="#656565"
-            stroke="#282828"
-            stroke-width="4"
-            stroke-linejoin="round"
-        />
-        <circle
-            cx="50"
-            cy="61"
-            r="30"
-            fill="#777a7c"
-            stroke="#262626"
-            stroke-width="5"
-        />
-        <path
-            d="M31 45 C37 37 48 33 57 34"
-            fill="none"
-            stroke="#b7b9ba"
-            stroke-width="5"
-            stroke-linecap="round"
-            opacity=".7"
-        />
-        <ellipse cx="55" cy="81" rx="17" ry="5" fill="#505355" opacity=".4"/>
-    `);
-}
-
-function makeTntSvg() {
-    return makeMiningToolSvg(`
-        ${fuseSvg('M55 20 C60 11 70 11 74 4', 74, 4)}
-        <rect
-            x="27"
-            y="20"
-            width="46"
-            height="70"
-            rx="9"
-            fill="#c92f2c"
-            stroke="#681718"
-            stroke-width="4"
-        />
-        <ellipse
-            cx="50"
-            cy="21"
-            rx="21"
-            ry="6"
-            fill="#e34a45"
-            stroke="#681718"
-            stroke-width="3"
-        />
-        <rect x="28" y="42" width="44" height="24" fill="#f2e3c7"/>
-        <text
-            x="50"
-            y="60"
-            text-anchor="middle"
-            font-family="Arial, sans-serif"
-            font-size="22"
-            font-weight="900"
-            fill="#2b2522"
-        >TNT</text>
-        <path d="M34 31 L34 38" stroke="#f16d66" stroke-width="4" stroke-linecap="round"/>
-    `);
-}
-
-function makePlasticExplosivesSvg() {
-    return makeMiningToolSvg(`
-        <path
-            d="M18 35 L27 23 L77 20 L86 31 L82 78 L70 87 L24 84 L14 73 Z"
-            fill="#879566"
-            stroke="#343a2c"
-            stroke-width="4"
-            stroke-linejoin="round"
-        />
-        <path
-            d="M27 31 L72 28 L76 34 L72 75 L29 77 L23 69 Z"
-            fill="#aab68a"
-            opacity=".72"
-        />
-        <rect
-            x="37"
-            y="45"
-            width="28"
-            height="20"
-            rx="2"
-            fill="#52594a"
-            stroke="#292d26"
-            stroke-width="3"
-        />
-        <circle cx="44" cy="55" r="3" fill="#d8cf65"/>
-        <circle cx="58" cy="55" r="3" fill="#b44a42"/>
-        <path
-            d="M45 45 C38 33 37 23 42 15"
-            fill="none"
-            stroke="#a82f2c"
-            stroke-width="3.5"
-            stroke-linecap="round"
-        />
-        <path
-            d="M57 45 C64 34 69 24 66 14"
-            fill="none"
-            stroke="#2f383b"
-            stroke-width="3.5"
-            stroke-linecap="round"
-        />
-    `);
-}
-
-
-function makeOreHexSvg(fill, stroke, shine) {
-    return makeMiningToolSvg(`
-        <polygon
-            points="50,3 95,26 95,73 50,97 5,73 5,26"
-            fill="${fill}"
-            stroke="${stroke}"
-            stroke-width="5"
-            stroke-linejoin="round"
-        />
-        <polygon
-            points="50,12 86,31 86,68 50,87 13,68 13,31"
-            fill="${fill}"
-            opacity=".45"
-        />
-        <path
-            d="M11 28 L50 8 L88 28"
-            fill="none"
-            stroke="${shine}"
-            stroke-width="4"
-            stroke-linecap="round"
-            opacity=".85"
-        />
-        <path
-            d="M9 29 L9 71 L50 92"
-            fill="none"
-            stroke="#ffffff"
-            stroke-width="3"
-            stroke-linecap="round"
-            opacity=".18"
-        />
-        <path
-            d="M90 29 L90 71 L51 92"
-            fill="none"
-            stroke="#000000"
-            stroke-width="3"
-            stroke-linecap="round"
-            opacity=".18"
-        />
-        <path
-            d="M7 27 L47 6"
-            fill="none"
-            stroke="#ffffff"
-            stroke-width="1"
-            stroke-linecap="round"
-            opacity=".22"
-        />
-    `);
-}
-
-function makeHobaltShardSvg() {
-    return makeMiningToolSvg(`
-        <path
-            d="M42 8 L62 18 L66 39 L56 86 L34 73 L28 35 Z"
-            fill="#2da6ff"
-            stroke="#0b4f8a"
-            stroke-width="5"
-            stroke-linejoin="round"
-        />
-        <path
-            d="M43 16 L56 22 L58 38 L50 72 L37 63 L33 36 Z"
-            fill="#7fd0ff"
-            opacity=".75"
-        />
-        <path
-            d="M44 14 L53 21 L47 67"
-            fill="none"
-            stroke="#d8f4ff"
-            stroke-width="4"
-            stroke-linecap="round"
-            opacity=".9"
-        />
-        <path
-            d="M55 23 L61 39 L54 79"
-            fill="none"
-            stroke="#0a3561"
-            stroke-width="3"
-            stroke-linecap="round"
-            opacity=".4"
-        />
-    `);
 }
 
 // ------------------------------------------------------------------------
@@ -3097,6 +3656,28 @@ function barSvg(x, y, scale = 1) {
         applyAssetMap(cachedAssetMap);
     }
 
+    const cachedIdRegistry = readTimedCache(
+        ID_REGISTRY_CACHE_KEY,
+        validateIdRegistry
+    );
+
+    if (cachedIdRegistry) {
+        applyIdRegistry(cachedIdRegistry.data);
+    }
+
+    const cachedSvgCatalog = readTimedCache(
+        SVG_CATALOG_CACHE_KEY,
+        validateSvgCatalog
+    );
+
+    if (cachedSvgCatalog) {
+        applySvgCatalog(cachedSvgCatalog.data);
+    }
+
+    installLearningMenuCommands();
     initializeDali();
+
     refreshRemoteAssetMap();
+    refreshRemoteIdRegistry();
+    refreshRemoteSvgCatalog();
 })();

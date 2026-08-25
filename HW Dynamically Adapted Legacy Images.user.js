@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.11
+// @version      2.12
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -84,6 +84,22 @@
     let ID_REGISTRY_READY = false;
     let ID_FILENAME_INDEX = new Map();
     let ID_HASH_INDEX = new Map();
+
+    /*
+     * Optional local runtime identity authorities are deliberately isolated
+     * from DALI's canonical registry state. They exist only in memory for the
+     * current page session and can never write the remote registry, its cache,
+     * revision, or sourceCounts. Canonical authority always wins on conflict.
+     */
+    const LOCAL_IDENTITY_REGISTER_EVENT = 'dali:register-local-identities';
+    const LOCAL_IDENTITY_READY_EVENT = 'dali:local-identity-channel-ready';
+    const PENDING_SNAPSHOT_REQUEST_EVENT = 'dali:request-pending-snapshot';
+    const PENDING_SNAPSHOT_EVENT = 'dali:pending-snapshot';
+    const REVIEW_OPENED_EVENT = 'dali:review-opened';
+    const REVIEW_CLOSED_EVENT = 'dali:review-closed';
+
+    let LOCAL_FILENAME_INDEX = new Map();
+    let LOCAL_HASH_INDEX = new Map();
 
     let SVG_CATALOG = null;
     let SVG_CATALOG_SIGNATURE = '';
@@ -617,6 +633,236 @@
         };
     }
 
+    function canonicalRegistryKeyForDescriptor(descriptor) {
+        if (!descriptor || !ID_REGISTRY_READY || !ID_REGISTRY) {
+            return null;
+        }
+
+        return descriptor.sourceType === 'data-image'
+            ? ID_HASH_INDEX.get(descriptor.fnvHash) || null
+            : ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename)) || null;
+    }
+
+    function localRuntimeKeyForDescriptor(descriptor) {
+        if (!descriptor) return '';
+
+        return descriptor.sourceType === 'data-image'
+            ? String(descriptor.fnvHash || '').toLowerCase()
+            : normalizeIdentityKey(descriptor.normalizedFilename);
+    }
+
+    function lookupLocalIdentityForSource(src) {
+        /*
+         * Local authority waits until a valid canonical registry is loaded so
+         * a first-run local mapping can never win merely because canonical
+         * authority has not arrived yet.
+         */
+        if (!ID_REGISTRY_READY || !ID_REGISTRY) {
+            return null;
+        }
+
+        const descriptor = describeNativeSource(src);
+        if (!descriptor) return null;
+
+        /* Canonical authority is immutable from the local extension channel. */
+        if (canonicalRegistryKeyForDescriptor(descriptor)) {
+            return null;
+        }
+
+        const key = localRuntimeKeyForDescriptor(descriptor);
+        const local = descriptor.sourceType === 'data-image'
+            ? LOCAL_HASH_INDEX.get(key)
+            : LOCAL_FILENAME_INDEX.get(key);
+
+        if (!local) return null;
+
+        return { descriptor, local };
+    }
+
+    function validateLocalIdentityMapping(mapping) {
+        if (!mapping || typeof mapping !== 'object' || Array.isArray(mapping)) {
+            throw new Error('Local identity mapping must be an object.');
+        }
+
+        const source = mapping.source;
+        const proposedIdentity = mapping.proposedIdentity || mapping.identity;
+
+        if (!source || typeof source !== 'object' || Array.isArray(source)) {
+            throw new Error('Local identity mapping is missing source.');
+        }
+
+        if (!proposedIdentity || typeof proposedIdentity !== 'object' || Array.isArray(proposedIdentity)) {
+            throw new Error('Local identity mapping is missing proposedIdentity.');
+        }
+
+        const path = proposedIdentity.path;
+        if (
+            !Array.isArray(path) ||
+            path.length < 2 ||
+            path.some(segment => typeof segment !== 'string' || !segment.trim()) ||
+            proposedIdentity.catalog !== path[0] ||
+            proposedIdentity.identity !== path[path.length - 1]
+        ) {
+            throw new Error('Local identity mapping has an invalid catalog path.');
+        }
+
+        let descriptor;
+
+        if (source.sourceType === 'data-image') {
+            const hash = String(source.fnvHash || '').trim().toLowerCase();
+            if (!/^[0-9a-f]{8}$/.test(hash)) {
+                throw new Error('Local data-image mapping has an invalid FNV hash.');
+            }
+
+            descriptor = {
+                sourceType: 'data-image',
+                key: `fnv:${hash}`,
+                fnvHash: hash,
+                filename: '',
+                normalizedFilename: ''
+            };
+        } else if (source.sourceType === 'url') {
+            const normalizedFilename = normalizeAssetName(
+                source.normalizedFilename || source.filename || ''
+            );
+            const normalizedKey = normalizeIdentityKey(normalizedFilename);
+
+            if (!normalizedKey) {
+                throw new Error('Local URL mapping has no usable filename authority.');
+            }
+
+            descriptor = {
+                sourceType: 'url',
+                key: `filename:${normalizedKey}`,
+                fnvHash: '',
+                filename: String(source.filename || ''),
+                normalizedFilename
+            };
+        } else {
+            throw new Error(`Unsupported local sourceType: ${source.sourceType}.`);
+        }
+
+        return {
+            descriptor,
+            entry: {
+                name: proposedIdentity.identity,
+                catalog: proposedIdentity.catalog,
+                path: [...path]
+            }
+        };
+    }
+
+    function registerLocalIdentities(payload) {
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            throw new Error('Local identity payload must be an object.');
+        }
+
+        if (payload.schema !== 1 || !Array.isArray(payload.mappings)) {
+            throw new Error('Unsupported local identity payload.');
+        }
+
+        let added = 0;
+
+        for (const mapping of payload.mappings) {
+            const { descriptor, entry } = validateLocalIdentityMapping(mapping);
+
+            /*
+             * A local mapping may supplement unknown native signatures, but
+             * it may never replace or shadow a canonical source authority.
+             */
+            if (canonicalRegistryKeyForDescriptor(descriptor)) {
+                continue;
+            }
+
+            const key = localRuntimeKeyForDescriptor(descriptor);
+            const index = descriptor.sourceType === 'data-image'
+                ? LOCAL_HASH_INDEX
+                : LOCAL_FILENAME_INDEX;
+            const existing = index.get(key);
+
+            if (existing) {
+                const samePath = existing.path.join('\u0000') === entry.path.join('\u0000');
+                if (!samePath) {
+                    console.warn(
+                        `[DALI] Ignoring conflicting local identity authority for ${descriptor.key}.`
+                    );
+                }
+                continue;
+            }
+
+            index.set(key, entry);
+            added += 1;
+        }
+
+        if (added > 0) {
+            CATALOG_GENERATION += 1;
+            prunePendingAgainstLocalIdentities();
+            scan(document);
+
+            if (document.getElementById('dali-pending-review')) {
+                openPendingReview();
+            }
+        }
+
+        return added;
+    }
+
+    function processLocalIdentityImage(image) {
+        const nativeSrc = getImageExamination(image).src;
+        const hit = lookupLocalIdentityForSource(nativeSrc);
+
+        if (!hit?.local) {
+            return false;
+        }
+
+        const entry = getCatalogEntryByPath(hit.local.path);
+        if (!entry) {
+            console.warn(
+                `[DALI] Local identity points to an asset-map path that does not exist: ${hit.local.path.join('/')}`
+            );
+            return false;
+        }
+
+        return applyResolvedCatalogEntry(
+            image,
+            entry,
+            { skipLearning: true, resolution: 'local-runtime' }
+        );
+    }
+
+    function parseLocalIdentityEventDetail(detail) {
+        if (typeof detail === 'string') {
+            return JSON.parse(detail);
+        }
+
+        if (detail && typeof detail === 'object') {
+            return detail;
+        }
+
+        throw new Error('Local identity event has no usable payload.');
+    }
+
+    function installLocalIdentityBridge() {
+        document.addEventListener(LOCAL_IDENTITY_REGISTER_EVENT, event => {
+            try {
+                registerLocalIdentities(
+                    parseLocalIdentityEventDetail(event.detail)
+                );
+            } catch (error) {
+                console.warn('[DALI] Local identity extension payload rejected.', error);
+            }
+        });
+
+        document.addEventListener(
+            PENDING_SNAPSHOT_REQUEST_EVENT,
+            () => dispatchPendingSnapshot()
+        );
+
+        queueMicrotask(() => {
+            document.dispatchEvent(new CustomEvent(LOCAL_IDENTITY_READY_EVENT));
+        });
+    }
+
     function lookupRegistryEntryForSource(src) {
         if (!ID_REGISTRY_READY || !ID_REGISTRY) {
             return null;
@@ -835,8 +1081,11 @@
         const descriptor = describeNativeSource(nativeSrc);
         if (!descriptor) return;
 
-        /* Already in core memory: no proposal is needed. */
-        if (lookupRegistryEntryForSource(nativeSrc)) {
+        /* Already deterministic in core or local runtime memory: no proposal is needed. */
+        if (
+            lookupRegistryEntryForSource(nativeSrc) ||
+            lookupLocalIdentityForSource(nativeSrc)
+        ) {
             return;
         }
 
@@ -928,6 +1177,20 @@
         if (changed) saveLearningState();
     }
 
+    function prunePendingAgainstLocalIdentities() {
+        let changed = false;
+
+        for (const [key, proposal] of Object.entries(LEARNING_STATE.pending)) {
+            const src = proposal?.source?.src || '';
+            if (src && lookupLocalIdentityForSource(src)) {
+                delete LEARNING_STATE.pending[key];
+                changed = true;
+            }
+        }
+
+        if (changed) saveLearningState();
+    }
+
     function rejectPendingAssociation(key) {
         const proposal = LEARNING_STATE.pending[key];
         if (!proposal) return;
@@ -940,6 +1203,30 @@
 
         delete LEARNING_STATE.pending[key];
         saveLearningState();
+    }
+
+    function pendingToken(key) {
+        return encodeURIComponent(String(key || ''));
+    }
+
+    function pendingSnapshotObject() {
+        return {
+            schema: 1,
+            type: 'dali-pending-snapshot',
+            generatedAt: Date.now(),
+            associations: Object.entries(LEARNING_STATE.pending).map(([key, proposal]) => ({
+                token: pendingToken(key),
+                proposal
+            }))
+        };
+    }
+
+    function dispatchPendingSnapshot() {
+        document.dispatchEvent(
+            new CustomEvent(PENDING_SNAPSHOT_EVENT, {
+                detail: JSON.stringify(pendingSnapshotObject())
+            })
+        );
     }
 
     function pendingExportObject(keys = null) {
@@ -1121,11 +1408,25 @@
         }
     }
 
+    function closePendingReview() {
+        const overlay = document.getElementById('dali-pending-review');
+        if (!overlay) return;
+
+        const keyHandler = overlay.__daliDocumentKeyHandler;
+        if (keyHandler) {
+            document.removeEventListener('keydown', keyHandler, true);
+        }
+
+        overlay.remove();
+        document.dispatchEvent(new CustomEvent(REVIEW_CLOSED_EVENT));
+    }
+
     function openPendingReview() {
-        document.getElementById('dali-pending-review')?.remove();
+        closePendingReview();
 
         const overlay = document.createElement('div');
         overlay.id = 'dali-pending-review';
+        overlay.dataset.daliReview = 'pending-associations';
         Object.assign(overlay.style, {
             position: 'fixed',
             inset: '0',
@@ -1137,6 +1438,7 @@
         });
 
         const panel = document.createElement('div');
+        panel.id = 'dali-pending-review-panel';
         Object.assign(panel.style, {
             maxWidth: '1100px',
             margin: '0 auto',
@@ -1160,6 +1462,7 @@
         const exportButton = document.createElement('button');
         exportButton.type = 'button';
         exportButton.textContent = 'Export All Pending';
+        exportButton.dataset.daliAction = 'export-all';
         exportButton.onclick = event => {
             event.preventDefault();
             event.stopPropagation();
@@ -1169,8 +1472,9 @@
         const closeButton = document.createElement('button');
         closeButton.type = 'button';
         closeButton.textContent = 'Close';
+        closeButton.dataset.daliAction = 'close';
         closeButton.style.marginLeft = '8px';
-        closeButton.onclick = () => overlay.remove();
+        closeButton.onclick = closePendingReview;
 
         controls.append(exportButton, closeButton);
         header.append(title, controls);
@@ -1191,6 +1495,8 @@
 
         for (const [key, proposal] of entries) {
             const card = document.createElement('div');
+            card.dataset.daliPendingToken = pendingToken(key);
+            card.dataset.daliPendingIdentity = proposal.proposedIdentity.path.join('/');
             Object.assign(card.style, {
                 borderTop: '1px solid #aaa',
                 marginTop: '16px',
@@ -1267,17 +1573,28 @@
             page.style.wordBreak = 'break-all';
             card.appendChild(page);
 
+            const anchorTarget = proposal.evidence.anchorHrefs?.[0] || '';
+            if (anchorTarget) {
+                const linkTarget = document.createElement('div');
+                linkTarget.textContent = `Link target: ${anchorTarget}`;
+                linkTarget.style.wordBreak = 'break-all';
+                card.appendChild(linkTarget);
+            }
+
             const buttons = document.createElement('div');
+            buttons.dataset.daliReviewActions = '1';
             buttons.style.marginTop = '8px';
 
             const copySource = document.createElement('button');
             copySource.type = 'button';
             copySource.textContent = 'Copy Native src';
+            copySource.dataset.daliAction = 'copy-source';
             copySource.onclick = () => copyPendingSource(proposal);
 
             const exportOne = document.createElement('button');
             exportOne.type = 'button';
             exportOne.textContent = 'Export';
+            exportOne.dataset.daliAction = 'export-one';
             exportOne.style.marginLeft = '8px';
             exportOne.onclick = event => {
                 event.preventDefault();
@@ -1288,6 +1605,8 @@
             const reject = document.createElement('button');
             reject.type = 'button';
             reject.textContent = 'Reject';
+            reject.dataset.daliAction = 'reject';
+            reject.dataset.daliPendingToken = pendingToken(key);
             reject.style.marginLeft = '8px';
             reject.onclick = () => {
                 if (!confirm(`Reject pending association for ${proposal.proposedIdentity.path.join('/')}?`)) return;
@@ -1302,6 +1621,27 @@
 
         overlay.appendChild(panel);
         (document.body || document.documentElement).appendChild(overlay);
+
+        const onDocumentKeyDown = event => {
+            if (event.key !== 'Escape') return;
+            if (!document.getElementById('dali-pending-review')) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+            closePendingReview();
+        };
+
+        overlay.__daliDocumentKeyHandler = onDocumentKeyDown;
+        document.addEventListener('keydown', onDocumentKeyDown, true);
+
+        dispatchPendingSnapshot();
+        document.dispatchEvent(new CustomEvent(REVIEW_OPENED_EVENT));
+
+        requestAnimationFrame(() => {
+            if (!panel.contains(document.activeElement)) {
+                panel.querySelector('[data-dali-action="reject"]')?.focus();
+            }
+        });
     }
 
     function escapeHtml(value) {
@@ -2001,6 +2341,15 @@
          * resolved before any contextual or semantic inference is attempted.
          */
         if (processDeterministicRegistryImage(image)) {
+            return;
+        }
+
+        /*
+         * Optional user-supplied local deterministic authority is evaluated
+         * only after the canonical registry. It is session-local, cannot
+         * shadow canonical source authority, and never mutates core cache.
+         */
+        if (processLocalIdentityImage(image)) {
             return;
         }
 
@@ -3943,6 +4292,7 @@ function barSvg(x, y, scale = 1) {
         applySvgCatalog(cachedSvgCatalog.data);
     }
 
+    installLocalIdentityBridge();
     installLearningMenuCommands();
     initializeDali();
 

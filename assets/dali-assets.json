@@ -143,10 +143,10 @@
         "School ID": "https://i.imgur.com/yvNMRD7.png",
         "Care Package": "https://i.imgur.com/2JKw0ca.png",
         "Cardboard Box": "https://i.imgur.com/DQPaaTa.png",
-        "Hobo Grail (Depleted)": "https://i.imgur.com/BEX1ls6.png",
-        "Hobo Grail (Full)": "https://i.imgur.com/2Lz5HCc.png",
-        "King's Kiddie Cup": "https://i.imgur.com/qCxDIVc.png",
-        "King's Kiddie Cup+": "https://i.imgur.com/yueUd7n.png",
+        "Hobo Grail (Depleted)": "dali-svg://hobo-grail-depleted",
+        "Hobo Grail (Full)": "dali-svg://hobo-grail-full",
+        "King's Kiddie Cup": "dali-svg://kings-kiddie-cup",
+        "King's Kiddie Cup+": "dali-svg://kings-kiddie-cup-plus",
         "Adventure Items": {
             "Locker": null,
             "Bartender Guide": null,
@@ -478,7 +478,7 @@
     },
     "foodStorageItems": {
         "Trolly": null,
-        "Golden Trolly": null,
+        "Golden Trolly": "dali-svg://golden-trolley",
         "Extra Large Fry Basket": null
     },
     "rats": {

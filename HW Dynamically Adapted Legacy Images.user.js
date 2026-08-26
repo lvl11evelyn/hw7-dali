@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.14
+// @version      2.15
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2446,6 +2446,17 @@
         };
     }
 
+
+    function isCanvasMapImage(image) {
+        return Boolean(image && String(image.id || '') === 'canvasImg');
+    }
+
+    function isDaliControlSurfaceImage(image) {
+        return Boolean(
+            image?.closest?.('#dali-pending-review, #dali-rejection-review')
+        );
+    }
+
     function getSourceIdentityCandidates(src) {
         if (!src || src.startsWith('data:')) {
             return [];
@@ -2487,10 +2498,15 @@
     }
 
     function resolveDirectCatalogImage(image) {
+        const suppressSemanticIdentity = isCanvasMapImage(image);
         const rawCandidates = [
-            image.getAttribute('alt'),
-            image.getAttribute('title'),
-            image.getAttribute('aria-label'),
+            ...(suppressSemanticIdentity
+                ? []
+                : [
+                    image.getAttribute('alt'),
+                    image.getAttribute('title'),
+                    image.getAttribute('aria-label')
+                ]),
             ...getSourceIdentityCandidates(
                 image.getAttribute('src') || ''
             )
@@ -2506,10 +2522,12 @@
             rawCandidates.push(tattooCandidate);
         }
 
-        const currencyCandidates = [
-            image.getAttribute('alt'),
-            image.getAttribute('title')
-        ];
+        const currencyCandidates = suppressSemanticIdentity
+            ? []
+            : [
+                image.getAttribute('alt'),
+                image.getAttribute('title')
+            ];
 
         for (const raw of currencyCandidates) {
             const currencyIdentity = findCurrencyMatch(raw);
@@ -2778,7 +2796,7 @@
                 return;
             }
 
-        if (image.dataset.daliReviewPreview === '1') {
+        if (isDaliControlSurfaceImage(image)) {
             return;
         }
 
@@ -4018,6 +4036,10 @@ function barSvg(x, y, scale = 1) {
     }
 
     function identifyBackpackItem(image) {
+        if (isCanvasMapImage(image)) {
+            return null;
+        }
+
         const candidates = [
             image.getAttribute('alt'),
             image.getAttribute('title'),

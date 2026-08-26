@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.2
+// @version      1.3
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -547,15 +547,33 @@
         return identities;
     }
 
+    function sanitizeApprovalForGitHubSubmission(approval) {
+        const out = structuredCloneSafe(approval);
+        const source = out?.source;
+
+        if (!source || typeof source !== 'object') {
+            return out;
+        }
+
+        if (source.sourceType === 'data-image') {
+            delete source.src;
+            source.submittedSourceAuthority = `fnv:${String(source.fnvHash || '').toLowerCase()}`;
+        }
+
+        return out;
+    }
+
     function githubSubmissionPayload(approvals) {
+        const sanitizedApprovals = approvals.map(sanitizeApprovalForGitHubSubmission);
+
         return {
             schema: 1,
             type: 'dali-canonical-identity-submission',
             submittedAt: Date.now(),
             source: 'HW DALI Local Approval Extension',
             repository: `${GITHUB_OWNER}/${GITHUB_REPO}`,
-            count: approvals.length,
-            associations: approvals.map(approval => structuredCloneSafe(approval)),
+            count: sanitizedApprovals.length,
+            associations: sanitizedApprovals,
             registryMerge: registryMergeForApprovals(approvals)
         };
     }
@@ -595,12 +613,22 @@
                     }
 
                     let message = '';
+                    let details = '';
+
                     try {
-                        message = JSON.parse(response.responseText || '{}').message || '';
+                        const parsed = JSON.parse(response.responseText || '{}');
+                        message = parsed.message || '';
+
+                        if (Array.isArray(parsed.errors) && parsed.errors.length) {
+                            details = '\n' + parsed.errors.map(error => {
+                                if (typeof error === 'string') return error;
+                                return JSON.stringify(error);
+                            }).join('\n');
+                        }
                     } catch {}
 
                     reject(new Error(
-                        `GitHub issue request failed with HTTP ${response.status}${message ? `: ${message}` : '.'}`
+                        `GitHub issue request failed with HTTP ${response.status}${message ? `: ${message}` : '.'}${details}`
                     ));
                 },
                 onerror() {

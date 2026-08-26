@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 1,
+  "revision": 2,
   "sourceCounts": {
     "identity": 601,
-    "filename": 656,
-    "fnv": 300,
-    "total": 956
+    "filename": 696,
+    "fnv": 343,
+    "total": 1039
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -45,6 +45,7 @@
         "Atlas"
       ],
       "filenames": [
+        "25x25xAtlas",
         "Atlas"
       ],
       "hashes": [
@@ -119,6 +120,7 @@
         "Canbodia Map"
       ],
       "filenames": [
+        "25x25xCanbodia Map",
         "Canbodia Map"
       ],
       "hashes": [
@@ -191,6 +193,7 @@
         "Dossier"
       ],
       "filenames": [
+        "25x25xDossier",
         "Dossier"
       ],
       "hashes": [
@@ -281,6 +284,7 @@
         "Hoburbia Map"
       ],
       "filenames": [
+        "25x25xHoburbia Map",
         "Hoburbia Map"
       ],
       "hashes": [
@@ -653,6 +657,7 @@
         "Stack of Drivers Licenses"
       ],
       "filenames": [
+        "25x25xStack of Drivers Licenses",
         "Stack of Drivers Licenses"
       ],
       "hashes": [
@@ -669,6 +674,7 @@
         "Tattoo Flash Book"
       ],
       "filenames": [
+        "25x25xTattoo Flash Book",
         "Tattoo Flash Book"
       ],
       "hashes": [
@@ -791,6 +797,7 @@
         "Yiff Whistle"
       ],
       "filenames": [
+        "25x25xYiff Whistle",
         "Yiff Whistle"
       ],
       "hashes": [
@@ -835,6 +842,7 @@
         "Cardboard Box"
       ],
       "filenames": [
+        "25x25xCardboard Box",
         "Cardboard Box"
       ],
       "hashes": [
@@ -891,6 +899,7 @@
         "Bath Salts"
       ],
       "filenames": [
+        "25x25xBath Salts",
         "Bath Salts"
       ],
       "hashes": [
@@ -1031,6 +1040,7 @@
         "Olive"
       ],
       "filenames": [
+        "25x25xOlive",
         "Olive"
       ],
       "hashes": [
@@ -1199,6 +1209,7 @@
         "Dynamite Stick"
       ],
       "filenames": [
+        "25x25xDynamite Stick",
         "Dynamite Stick"
       ],
       "hashes": [
@@ -1215,6 +1226,7 @@
         "Pickaxe"
       ],
       "filenames": [
+        "25x25xPickaxe",
         "Pickaxe"
       ],
       "hashes": [
@@ -1259,7 +1271,9 @@
       "filenames": [
         "8 Ball"
       ],
-      "hashes": []
+      "hashes": [
+        "a27f53c2"
+      ]
     },
     "backpackItems/Misc/Abandoned Motor": {
       "catalog": "backpackItems",
@@ -1270,7 +1284,8 @@
         "Abandoned Motor"
       ],
       "filenames": [
-        "Abandoned Motor"
+        "Abandoned Motor",
+        "xAbandoned Motor"
       ],
       "hashes": [
         "6df95306",
@@ -1326,6 +1341,7 @@
         "Bar of Lead"
       ],
       "filenames": [
+        "25x25xBar of Lead",
         "Bar of Lead"
       ],
       "hashes": [
@@ -1432,7 +1448,9 @@
       "filenames": [
         "Bottle of Lye"
       ],
-      "hashes": []
+      "hashes": [
+        "acd9c9f5"
+      ]
     },
     "backpackItems/Misc/Bowling Trophy": {
       "catalog": "backpackItems",
@@ -1512,9 +1530,12 @@
         "Crystal Skull"
       ],
       "filenames": [
-        "Crystal Skull"
+        "Crystal Skull",
+        "Nx30xCrystal Skull"
       ],
-      "hashes": []
+      "hashes": [
+        "cfb6bf9a"
+      ]
     },
     "backpackItems/Misc/Disappearing Ink": {
       "catalog": "backpackItems",
@@ -1527,7 +1548,9 @@
       "filenames": [
         "Disappearing Ink"
       ],
-      "hashes": []
+      "hashes": [
+        "391f020c"
+      ]
     },
     "backpackItems/Misc/Empty Keg": {
       "catalog": "backpackItems",
@@ -1597,6 +1620,7 @@
         "Fake ID"
       ],
       "filenames": [
+        "25x25xFake ID",
         "Fake ID"
       ],
       "hashes": [
@@ -1613,9 +1637,13 @@
         "Fancy Rims"
       ],
       "filenames": [
+        "25x25xFancy Rims",
         "Fancy Rims"
       ],
-      "hashes": []
+      "hashes": [
+        "05f6f049",
+        "13cf1e9e"
+      ]
     },
     "backpackItems/Misc/Flaming Bag of Something Awful": {
       "catalog": "backpackItems",
@@ -1668,6 +1696,7 @@
         "Full Access Evil Security Badge"
       ],
       "filenames": [
+        "25x25xFull Access Evil Security Badge",
         "Full Access Evil Security Badge"
       ],
       "hashes": [
@@ -1684,6 +1713,7 @@
         "Garden Shears"
       ],
       "filenames": [
+        "25x25xGarden Shears",
         "Garden Shears"
       ],
       "hashes": [
@@ -1852,7 +1882,9 @@
       "filenames": [
         "I Love You Bracelet"
       ],
-      "hashes": []
+      "hashes": [
+        "593b5215"
+      ]
     },
     "backpackItems/Misc/Incriminating Photographs": {
       "catalog": "backpackItems",
@@ -1876,6 +1908,7 @@
         "Lucky Screwdriver"
       ],
       "filenames": [
+        "25x25xLucky Screwdriver",
         "Lucky Screwdriver"
       ],
       "hashes": [
@@ -1959,6 +1992,7 @@
         "Old Can of Soup Stock"
       ],
       "filenames": [
+        "25x25xOld Can of Soup Stock",
         "Old Can of Soup Stock"
       ],
       "hashes": [
@@ -2021,6 +2055,7 @@
         "Pink Lawn Flamingo"
       ],
       "filenames": [
+        "25x25xPink Lawn Flamingo",
         "Pink Lawn Flamingo"
       ],
       "hashes": [
@@ -2051,6 +2086,7 @@
         "Prize-Winning Yorkshire Terrier"
       ],
       "filenames": [
+        "25x25xPrize Winning Yorkshire Terrier",
         "Prize Winning Yorkshire Terrier"
       ],
       "hashes": [
@@ -2212,9 +2248,14 @@
         "Signed Basketball"
       ],
       "filenames": [
-        "Signed Basketball"
+        "25x25xSigned Basketball",
+        "Signed Basketball",
+        "xSigned Basketball"
       ],
-      "hashes": []
+      "hashes": [
+        "127ec95f",
+        "ff2c0a0e"
+      ]
     },
     "backpackItems/Misc/Skateboard": {
       "catalog": "backpackItems",
@@ -2288,6 +2329,7 @@
         "Surveillance Tape"
       ],
       "filenames": [
+        "25x25xSurveillance Tape",
         "Surveillance Tape"
       ],
       "hashes": [
@@ -2358,9 +2400,12 @@
         "VCR"
       ],
       "filenames": [
+        "25x25xVCR",
         "VCR"
       ],
-      "hashes": []
+      "hashes": [
+        "a8473844"
+      ]
     },
     "backpackItems/Misc/Venti Key": {
       "catalog": "backpackItems",
@@ -2384,7 +2429,9 @@
         "Walkman"
       ],
       "filenames": [
-        "Walkman"
+        "25x25xWalkman",
+        "Walkman",
+        "xWalkman"
       ],
       "hashes": [
         "842309ee",
@@ -2544,6 +2591,7 @@
         "Dungeon Security Clearance Badge"
       ],
       "filenames": [
+        "25x25xDungeon Security Clearance Badge",
         "Dungeon Security Clearance Badge"
       ],
       "hashes": [
@@ -2649,6 +2697,7 @@
         "Pockets"
       ],
       "filenames": [
+        "25x25xPockets",
         "Pockets"
       ],
       "hashes": [
@@ -3016,7 +3065,10 @@
       "filenames": [
         "Blaster"
       ],
-      "hashes": []
+      "hashes": [
+        "4683b908",
+        "ce20cb9d"
+      ]
     },
     "equipment/Bling Necklace": {
       "catalog": "equipment",
@@ -3028,7 +3080,9 @@
       "filenames": [
         "Bling Necklace"
       ],
-      "hashes": []
+      "hashes": [
+        "b014a078"
+      ]
     },
     "equipment/Bloody Knife": {
       "catalog": "equipment",
@@ -3248,7 +3302,10 @@
       "filenames": [
         "Eagle Shirt"
       ],
-      "hashes": []
+      "hashes": [
+        "6d69be0a",
+        "908e7f25"
+      ]
     },
     "equipment/Engagement Ring": {
       "catalog": "equipment",
@@ -3261,6 +3318,7 @@
         "Engagement Ring"
       ],
       "hashes": [
+        "74be7fba",
         "b169321d"
       ]
     },
@@ -3274,7 +3332,10 @@
       "filenames": [
         "Excalibur"
       ],
-      "hashes": []
+      "hashes": [
+        "b63c8717",
+        "df8a2ae7"
+      ]
     },
     "equipment/Fat Suit": {
       "catalog": "equipment",
@@ -3498,7 +3559,10 @@
       "filenames": [
         "Iron Man Armor"
       ],
-      "hashes": []
+      "hashes": [
+        "1afb405a",
+        "64cac52d"
+      ]
     },
     "equipment/Jacket": {
       "catalog": "equipment",
@@ -3682,7 +3746,8 @@
         "xMHGA Sign"
       ],
       "hashes": [
-        "54d4817e"
+        "54d4817e",
+        "8504d1ec"
       ]
     },
     "equipment/Mithril Garbage Bin": {
@@ -3760,6 +3825,7 @@
         "Onion Ring"
       ],
       "hashes": [
+        "cee7b41b",
         "dbd634cb"
       ]
     },
@@ -3888,7 +3954,10 @@
       "filenames": [
         "Power Glove"
       ],
-      "hashes": []
+      "hashes": [
+        "0505f165",
+        "2fb0218f"
+      ]
     },
     "equipment/Rags": {
       "catalog": "equipment",
@@ -3925,6 +3994,7 @@
         "Respect Ring"
       ],
       "hashes": [
+        "6889ab53",
         "fe58635a"
       ]
     },
@@ -3987,6 +4057,7 @@
         "Rodent Ring"
       ],
       "hashes": [
+        "bfd9cbaf",
         "e4081765"
       ]
     },
@@ -4086,7 +4157,10 @@
       "filenames": [
         "Symbiote"
       ],
-      "hashes": []
+      "hashes": [
+        "7f7d7da5",
+        "fc1b93c1"
+      ]
     },
     "equipment/T-Shirt": {
       "catalog": "equipment",
@@ -4120,9 +4194,12 @@
         "Toothpuff Ring"
       ],
       "filenames": [
-        "Toothpuff Ring"
+        "Toothpuff Ring",
+        "xToothpuff Ring"
       ],
-      "hashes": []
+      "hashes": [
+        "821922e6"
+      ]
     },
     "equipment/Tron Armor": {
       "catalog": "equipment",
@@ -4323,7 +4400,9 @@
       "filenames": [
         "Apple Core"
       ],
-      "hashes": []
+      "hashes": [
+        "94111c6d"
+      ]
     },
     "foodItems/Apple Flavored Gum": {
       "catalog": "foodItems",
@@ -4510,6 +4589,7 @@
         "Can of Pepsi"
       ],
       "hashes": [
+        "50c2affe",
         "e48149ba"
       ]
     },
@@ -4521,7 +4601,8 @@
         "Can of Whipped Cream"
       ],
       "filenames": [
-        "Can of Whipped Cream"
+        "Can of Whipped Cream",
+        "xCan of Whipped Cream"
       ],
       "hashes": [
         "297b3db0",
@@ -4684,7 +4765,9 @@
       "filenames": [
         "Crystal Pepsi"
       ],
-      "hashes": []
+      "hashes": [
+        "8ad065c9"
+      ]
     },
     "foodItems/Dalipop": {
       "catalog": "foodItems",
@@ -5089,7 +5172,9 @@
       "filenames": [
         "Half a HotDog"
       ],
-      "hashes": []
+      "hashes": [
+        "396aa466"
+      ]
     },
     "foodItems/Half a Sandwich Naan": {
       "catalog": "foodItems",
@@ -5101,7 +5186,9 @@
       "filenames": [
         "Half a Sandwich Naan"
       ],
-      "hashes": []
+      "hashes": [
+        "c0340046"
+      ]
     },
     "foodItems/Half Eaten Burger": {
       "catalog": "foodItems",
@@ -5197,7 +5284,9 @@
       "filenames": [
         "Junior Mints"
       ],
-      "hashes": []
+      "hashes": [
+        "d41b8f2f"
+      ]
     },
     "foodItems/KFC Meal": {
       "catalog": "foodItems",
@@ -5209,7 +5298,9 @@
       "filenames": [
         "KFC Meal"
       ],
-      "hashes": []
+      "hashes": [
+        "9d49d010"
+      ]
     },
     "foodItems/Kit Rat Bar": {
       "catalog": "foodItems",
@@ -5279,7 +5370,8 @@
         "Military Rations"
       ],
       "filenames": [
-        "Military Rations"
+        "Military Rations",
+        "xMilitary Rations"
       ],
       "hashes": [
         "7c316a7c"
@@ -5386,7 +5478,9 @@
       "filenames": [
         "Pack of Candy Cigarettes"
       ],
-      "hashes": []
+      "hashes": [
+        "f2c6dad7"
+      ]
     },
     "foodItems/Packet of Fries": {
       "catalog": "foodItems",
@@ -5482,6 +5576,7 @@
         "Pre-Chewed Gum"
       ],
       "filenames": [
+        "Nx20xPre Chewed Gum",
         "Pre Chewed Gum"
       ],
       "hashes": [
@@ -5537,7 +5632,9 @@
       "filenames": [
         "Raw Chicken Leg"
       ],
-      "hashes": []
+      "hashes": [
+        "e1f81cf2"
+      ]
     },
     "foodItems/Raw Potato": {
       "catalog": "foodItems",
@@ -5562,6 +5659,7 @@
         "Red Hot Chili Pepper"
       ],
       "filenames": [
+        "Nx20xRed Hot Chili Pepper",
         "Red Hot Chili Pepper",
         "xRed Hot Chili Pepper"
       ],
@@ -5874,9 +5972,12 @@
         "Walking Taco"
       ],
       "filenames": [
+        "Nx20xWalking Taco",
         "Walking Taco"
       ],
-      "hashes": []
+      "hashes": [
+        "77818068"
+      ]
     },
     "foodItems/Wonka Bar": {
       "catalog": "foodItems",
@@ -5971,7 +6072,9 @@
         "rats",
         "Buddhism"
       ],
-      "filenames": [],
+      "filenames": [
+        "18x18xbuddhist"
+      ],
       "hashes": [
         "61972ff6",
         "b5c75d77"
@@ -6085,7 +6188,9 @@
         "rats",
         "Two-Headed Rat"
       ],
-      "filenames": [],
+      "filenames": [
+        "120x80xtwoheaded"
+      ],
       "hashes": [
         "e3653759"
       ]
@@ -6849,7 +6954,9 @@
       "filenames": [
         "Blue Tongue"
       ],
-      "hashes": []
+      "hashes": [
+        "d47465d2"
+      ]
     },
     "statusEffects/Blueberry Breath": {
       "catalog": "statusEffects",
@@ -7108,7 +7215,9 @@
       "filenames": [
         "Fizzy Floatiness"
       ],
-      "hashes": []
+      "hashes": [
+        "4f4dc5f3"
+      ]
     },
     "statusEffects/Flame-tipped Spiked Hair": {
       "catalog": "statusEffects",
@@ -7297,7 +7406,9 @@
       "filenames": [
         "Laid Back"
       ],
-      "hashes": []
+      "hashes": [
+        "597c8b83"
+      ]
     },
     "statusEffects/Lead Heavy": {
       "catalog": "statusEffects",
@@ -7774,7 +7885,9 @@
       "filenames": [
         "Warwolf"
       ],
-      "hashes": []
+      "hashes": [
+        "b7c80647"
+      ]
     },
     "statusEffects/Wonka Spirit": {
       "catalog": "statusEffects",
@@ -7826,7 +7939,8 @@
       "filenames": [
         "Beggars Paradise 1",
         "Beggars Paradise 2",
-        "Beggars Paradise 3"
+        "Beggars Paradise 3",
+        "xBeggars Paradise 3"
       ],
       "hashes": []
     },

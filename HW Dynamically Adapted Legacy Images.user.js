@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.12
+// @version      2.13
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -37,6 +37,9 @@
     const ID_REGISTRY_URL =
         'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-id-registry.json';
 
+    const REJECTION_REGISTRY_URL =
+        'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-rejection-registry.json';
+
     const SVG_CATALOG_URL =
         'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-svg-catalog.json';
 
@@ -44,6 +47,9 @@
 
     const ID_REGISTRY_CACHE_KEY =
         'hw-dali-id-registry-cache-v1';
+
+    const REJECTION_REGISTRY_CACHE_KEY =
+        'hw-dali-rejection-registry-cache-v1';
 
     const SVG_CATALOG_CACHE_KEY =
         'hw-dali-svg-catalog-cache-v1';
@@ -84,6 +90,12 @@
     let ID_REGISTRY_READY = false;
     let ID_FILENAME_INDEX = new Map();
     let ID_HASH_INDEX = new Map();
+
+    let REJECTION_REGISTRY = null;
+    let REJECTION_REGISTRY_SIGNATURE = '';
+    let REJECTION_INDEX = new Set();
+
+    const REJECTION_CANON_CONFIDENCE_MIN = 0.75;
 
     /*
      * Optional local runtime identity authorities are deliberately isolated
@@ -443,6 +455,11 @@
         ID_REGISTRY_READY = true;
         CATALOG_GENERATION += 1;
 
+        if (REJECTION_REGISTRY) {
+            REJECTION_REGISTRY_SIGNATURE = '';
+            applyRejectionRegistry(REJECTION_REGISTRY);
+        }
+
         prunePendingAgainstRegistry();
         return true;
     }
@@ -474,6 +491,202 @@
                 error
             );
         }
+    }
+
+    function validateRejectionRegistry(registry) {
+        if (!registry || typeof registry !== 'object' || Array.isArray(registry)) {
+            throw new Error('Rejection registry root is not a JSON object.');
+        }
+
+        if (registry.schema !== 1) {
+            throw new Error(`Unsupported rejection registry schema: ${registry.schema}.`);
+        }
+
+        if (!Number.isInteger(registry.revision) || registry.revision < 0) {
+            throw new Error('Rejection registry revision must be a non-negative integer.');
+        }
+
+        if (!registry.sourceCounts || typeof registry.sourceCounts !== 'object') {
+            throw new Error('Rejection registry is missing sourceCounts.');
+        }
+
+        if (!registry.rejections || typeof registry.rejections !== 'object' || Array.isArray(registry.rejections)) {
+            throw new Error('Rejection registry is missing rejections.');
+        }
+
+        let rejectionCount = 0;
+        const pairs = new Set();
+
+        for (const [sourceKey, entries] of Object.entries(registry.rejections)) {
+            const fnvMatch = sourceKey.match(/^fnv:([0-9a-f]{8})$/i);
+            const filenameMatch = sourceKey.match(/^filename:(.+)$/i);
+
+            if (!fnvMatch && !filenameMatch) {
+                throw new Error(`Invalid rejection source authority: ${sourceKey}.`);
+            }
+
+            if (fnvMatch && sourceKey !== `fnv:${fnvMatch[1].toLowerCase()}`) {
+                throw new Error(`Non-canonical rejection FNV key: ${sourceKey}.`);
+            }
+
+            if (filenameMatch) {
+                const canonicalFilenameKey = normalizeIdentityKey(filenameMatch[1]);
+                if (!canonicalFilenameKey || sourceKey !== `filename:${canonicalFilenameKey}`) {
+                    throw new Error(`Non-canonical rejection filename key: ${sourceKey}.`);
+                }
+            }
+
+            if (!Array.isArray(entries)) {
+                throw new Error(`Rejection source ${sourceKey} must contain an array.`);
+            }
+
+            for (const entry of entries) {
+                if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+                    throw new Error(`Malformed rejection entry under ${sourceKey}.`);
+                }
+
+                if (
+                    typeof entry.catalog !== 'string' || !entry.catalog ||
+                    typeof entry.identity !== 'string' || !entry.identity ||
+                    !Array.isArray(entry.path) || entry.path.length < 2 ||
+                    entry.path[0] !== entry.catalog ||
+                    entry.path[entry.path.length - 1] !== entry.identity
+                ) {
+                    throw new Error(`Malformed rejection identity under ${sourceKey}.`);
+                }
+
+                const confidence = Number(entry.confidence);
+                if (
+                    !Number.isFinite(confidence) ||
+                    confidence < REJECTION_CANON_CONFIDENCE_MIN ||
+                    confidence > 1
+                ) {
+                    throw new Error(
+                        `Canonical rejection confidence under ${sourceKey} must be ${REJECTION_CANON_CONFIDENCE_MIN}–1.`
+                    );
+                }
+
+                const pairKey = `${sourceKey}\u0000${entry.path.join('/')}`;
+                if (pairs.has(pairKey)) {
+                    throw new Error(`Duplicate canonical rejection pair: ${pairKey}.`);
+                }
+
+                pairs.add(pairKey);
+                rejectionCount += 1;
+            }
+        }
+
+        if (Number(registry.sourceCounts.rejections) !== rejectionCount) {
+            throw new Error(
+                `Rejection registry self-count mismatch: declared ${registry.sourceCounts.rejections}, actual ${rejectionCount}.`
+            );
+        }
+
+        return registry;
+    }
+
+    function canonicalPositiveExistsForSourceKey(sourceKey) {
+        if (!ID_REGISTRY_READY || !ID_REGISTRY || typeof sourceKey !== 'string') {
+            return false;
+        }
+
+        if (sourceKey.startsWith('fnv:')) {
+            return ID_HASH_INDEX.has(sourceKey.slice(4).toLowerCase());
+        }
+
+        if (sourceKey.startsWith('filename:')) {
+            return ID_FILENAME_INDEX.has(sourceKey.slice(9));
+        }
+
+        return false;
+    }
+
+    function applyRejectionRegistry(registry) {
+        validateRejectionRegistry(registry);
+
+        const signature = JSON.stringify(registry);
+        if (signature === REJECTION_REGISTRY_SIGNATURE) {
+            return false;
+        }
+
+        const nextIndex = new Set();
+        let retired = 0;
+
+        for (const [sourceKey, entries] of Object.entries(registry.rejections)) {
+            /*
+             * Positive canonical identity is stronger authority than negative
+             * inference memory. Once a source is deterministically known, its
+             * old rejection pairs can no longer be reached and are obsolete.
+             */
+            if (canonicalPositiveExistsForSourceKey(sourceKey)) {
+                retired += entries.length;
+                continue;
+            }
+
+            for (const entry of entries) {
+                nextIndex.add(`${sourceKey}\u0000${entry.path.join('/')}`);
+            }
+        }
+
+        REJECTION_REGISTRY = registry;
+        REJECTION_REGISTRY_SIGNATURE = signature;
+        REJECTION_INDEX = nextIndex;
+        CATALOG_GENERATION += 1;
+
+        if (retired > 0) {
+            console.info(
+                `[DALI] ${retired} canonical rejection entr${retired === 1 ? 'y is' : 'ies are'} obsolete because positive canonical identity now exists.`
+            );
+        }
+
+        prunePendingAgainstCanonicalRejections();
+        return true;
+    }
+
+    async function refreshRemoteRejectionRegistry(force = false) {
+        const cached = readTimedCache(
+            REJECTION_REGISTRY_CACHE_KEY,
+            validateRejectionRegistry
+        );
+
+        if (!force && cacheIsFresh(cached)) {
+            return;
+        }
+
+        try {
+            const registry = await fetchRemoteJson(
+                REJECTION_REGISTRY_URL,
+                'Rejection registry'
+            );
+
+            validateRejectionRegistry(registry);
+            writeTimedCache(REJECTION_REGISTRY_CACHE_KEY, registry);
+
+            if (applyRejectionRegistry(registry)) {
+                scan(document);
+            }
+        } catch (error) {
+            console.warn(
+                '[DALI] Remote rejection registry rejected/unavailable; retaining last known-good copy.',
+                error
+            );
+        }
+    }
+
+    function canonicalRejectionPairKey(descriptor, entry) {
+        if (!descriptor || !entry?.path) return '';
+        return `${descriptor.key}\u0000${entry.path.join('/')}`;
+    }
+
+    function isCanonicallyRejected(descriptor, entry) {
+        if (!descriptor || !entry?.path) return false;
+
+        /* Positive canon always retires negative authority for this source. */
+        if (canonicalRegistryKeyForDescriptor(descriptor)) {
+            return false;
+        }
+
+        return REJECTION_INDEX.has(canonicalRejectionPairKey(descriptor, entry));
     }
 
     function validateSvgCatalog(catalog) {
@@ -993,6 +1206,38 @@
         return examination;
     }
 
+    function anchorHrefIsDiscriminative(image, anchorHref) {
+        if (!anchorHref) return false;
+
+        let scope = image.parentElement;
+        let hrefs = [];
+
+        while (scope && scope !== document.documentElement) {
+            hrefs = [];
+
+            for (const peer of scope.querySelectorAll('img')) {
+                const href = peer.closest('a[href]')?.href || '';
+                if (href) hrefs.push(href);
+            }
+
+            if (hrefs.length >= 2) break;
+            scope = scope.parentElement;
+        }
+
+        if (hrefs.length < 2) return false;
+
+        /*
+         * Shared destinations carry no identity information. Macro Check is
+         * the canonical example: every candidate image points to one href, so
+         * that href remains recorded evidence but contributes zero confidence.
+         */
+        const distinct = new Set(hrefs);
+        if (distinct.size < 2) return false;
+
+        const occurrences = hrefs.filter(href => href === anchorHref).length;
+        return occurrences > 0 && occurrences < hrefs.length;
+    }
+
     function collectLearningEvidence(image, entry, descriptor, examination) {
         const alt = examination.alt;
         const title = examination.title;
@@ -1046,13 +1291,35 @@
             cues.push('tattoo-stage-structure');
         }
 
-        let confidence = 0.55;
+        if (anchorHrefIsDiscriminative(image, examination.anchorHref)) {
+            cues.push('discriminative-anchor-href');
+        }
 
-        if (cues.includes('exact-native-filename')) confidence = Math.max(confidence, 0.995);
-        if (cues.some(cue => /^exact-(alt|title|aria-label)$/.test(cue))) confidence = Math.max(confidence, 0.985);
-        if (cues.includes('rat-structure') || cues.includes('mining-tool-structure')) confidence = Math.max(confidence, 0.90);
-        if (cues.includes('container-prefix')) confidence = Math.max(confidence, 0.84);
-        if (cues.includes('container-contains')) confidence = Math.max(confidence, 0.68);
+        /*
+         * Confidence is cumulative rather than a single-cue maximum. Exact
+         * labels remain strong, while structural/container/href evidence adds
+         * proportionately smaller support. Repetition is applied separately.
+         */
+        let confidence = 0.38;
+
+        const weights = {
+            'exact-native-filename': 0.50,
+            'exact-alt': 0.42,
+            'exact-title': 0.38,
+            'exact-aria-label': 0.40,
+            'rat-structure': 0.22,
+            'mining-tool-structure': 0.22,
+            'tattoo-stage-structure': 0.12,
+            'container-prefix': 0.24,
+            'container-contains': 0.16,
+            'discriminative-anchor-href': 0.08
+        };
+
+        for (const cue of cues) {
+            confidence += weights[cue] || 0;
+        }
+
+        confidence = Math.min(0.985, confidence);
 
         return {
             pageHref: examination.pageHref,
@@ -1093,6 +1360,10 @@
 
         /* Users may reject locally, but never approve locally. */
         if (LEARNING_STATE.rejections[key]) {
+            return;
+        }
+
+        if (isCanonicallyRejected(descriptor, entry)) {
             return;
         }
 
@@ -1177,6 +1448,24 @@
         if (changed) saveLearningState();
     }
 
+    function prunePendingAgainstCanonicalRejections() {
+        let changed = false;
+
+        for (const [key, proposal] of Object.entries(LEARNING_STATE.pending)) {
+            const descriptor = describeNativeSource(proposal?.source?.src || '');
+            const path = proposal?.proposedIdentity?.path;
+
+            if (!descriptor || !Array.isArray(path)) continue;
+
+            if (REJECTION_INDEX.has(`${descriptor.key}\u0000${path.join('/')}`)) {
+                delete LEARNING_STATE.pending[key];
+                changed = true;
+            }
+        }
+
+        if (changed) saveLearningState();
+    }
+
     function prunePendingAgainstLocalIdentities() {
         let changed = false;
 
@@ -1198,7 +1487,11 @@
         LEARNING_STATE.rejections[key] = {
             rejectedAt: Date.now(),
             source: proposal.source,
-            proposedIdentity: proposal.proposedIdentity
+            proposedIdentity: proposal.proposedIdentity,
+            confidence: Number(proposal.confidence) || 0,
+            canonicalEligible: Number(proposal.confidence) >= REJECTION_CANON_CONFIDENCE_MIN,
+            observations: Number(proposal.observations) || 0,
+            evidence: proposal.evidence
         };
 
         delete LEARNING_STATE.pending[key];
@@ -4283,6 +4576,15 @@ function barSvg(x, y, scale = 1) {
         applyIdRegistry(cachedIdRegistry.data);
     }
 
+    const cachedRejectionRegistry = readTimedCache(
+        REJECTION_REGISTRY_CACHE_KEY,
+        validateRejectionRegistry
+    );
+
+    if (cachedRejectionRegistry) {
+        applyRejectionRegistry(cachedRejectionRegistry.data);
+    }
+
     const cachedSvgCatalog = readTimedCache(
         SVG_CATALOG_CACHE_KEY,
         validateSvgCatalog
@@ -4298,5 +4600,6 @@ function barSvg(x, y, scale = 1) {
 
     refreshRemoteAssetMap();
     refreshRemoteIdRegistry();
+    refreshRemoteRejectionRegistry();
     refreshRemoteSvgCatalog();
 })();

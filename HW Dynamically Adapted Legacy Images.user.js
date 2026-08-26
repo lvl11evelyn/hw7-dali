@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.13
+// @version      2.14
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -1498,6 +1498,62 @@
         saveLearningState();
     }
 
+    function restoreRejectedAssociation(key) {
+        const rejection = LEARNING_STATE.rejections[key];
+        if (!rejection?.source || !rejection?.proposedIdentity) {
+            return false;
+        }
+
+        const rejectedAt = Number(rejection.rejectedAt) || Date.now();
+
+        LEARNING_STATE.pending[key] = {
+            schema: 1,
+            source: rejection.source,
+            proposedIdentity: rejection.proposedIdentity,
+            confidence: Number(rejection.confidence) || 0,
+            observations: Number(rejection.observations) || 0,
+            firstSeen: rejectedAt,
+            lastSeen: Date.now(),
+            evidence: rejection.evidence || {
+                pageHrefs: [],
+                anchorHrefs: [],
+                alt: [],
+                title: [],
+                ariaLabel: [],
+                containerText: [],
+                cues: []
+            }
+        };
+
+        delete LEARNING_STATE.rejections[key];
+        saveLearningState();
+        CATALOG_GENERATION += 1;
+        scan(document);
+        dispatchPendingSnapshot();
+        return true;
+    }
+
+    function latestRejectedAssociationKey() {
+        let latestKey = '';
+        let latestTime = -1;
+
+        for (const [key, rejection] of Object.entries(LEARNING_STATE.rejections)) {
+            const rejectedAt = Number(rejection?.rejectedAt) || 0;
+            if (rejectedAt > latestTime) {
+                latestTime = rejectedAt;
+                latestKey = key;
+            }
+        }
+
+        return latestKey;
+    }
+
+    function undoLastRejection() {
+        const key = latestRejectedAssociationKey();
+        if (!key) return false;
+        return restoreRejectedAssociation(key);
+    }
+
     function pendingToken(key) {
         return encodeURIComponent(String(key || ''));
     }
@@ -1752,6 +1808,21 @@
         title.textContent = `DALI Pending Associations (${Object.keys(LEARNING_STATE.pending).length})`;
 
         const controls = document.createElement('div');
+
+        const undoRejectButton = document.createElement('button');
+        undoRejectButton.type = 'button';
+        undoRejectButton.textContent = 'Undo Last Reject';
+        undoRejectButton.dataset.daliAction = 'undo-reject';
+        undoRejectButton.disabled = !latestRejectedAssociationKey();
+        undoRejectButton.title = 'Keyboard: Ctrl+Z / Cmd+Z';
+        undoRejectButton.onclick = event => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (undoLastRejection()) {
+                openPendingReview();
+            }
+        };
+
         const exportButton = document.createElement('button');
         exportButton.type = 'button';
         exportButton.textContent = 'Export All Pending';
@@ -1769,7 +1840,8 @@
         closeButton.style.marginLeft = '8px';
         closeButton.onclick = closePendingReview;
 
-        controls.append(exportButton, closeButton);
+        controls.append(undoRejectButton, exportButton, closeButton);
+        exportButton.style.marginLeft = '8px';
         header.append(title, controls);
         panel.appendChild(header);
 
@@ -1916,8 +1988,22 @@
         (document.body || document.documentElement).appendChild(overlay);
 
         const onDocumentKeyDown = event => {
-            if (event.key !== 'Escape') return;
             if (!document.getElementById('dali-pending-review')) return;
+
+            if (
+                event.key.toLowerCase() === 'z' &&
+                (event.ctrlKey || event.metaKey) &&
+                !event.altKey
+            ) {
+                if (undoLastRejection()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openPendingReview();
+                }
+                return;
+            }
+
+            if (event.key !== 'Escape') return;
 
             event.preventDefault();
             event.stopPropagation();
@@ -1934,6 +2020,115 @@
             if (!panel.contains(document.activeElement)) {
                 panel.querySelector('[data-dali-action="reject"]')?.focus();
             }
+        });
+    }
+
+    function closeRejectedReview() {
+        document.getElementById('dali-rejected-review')?.remove();
+    }
+
+    function openRejectedReview() {
+        closeRejectedReview();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'dali-rejected-review';
+        Object.assign(overlay.style, {
+            position: 'fixed',
+            inset: '0',
+            zIndex: '2147483647',
+            background: 'rgba(0,0,0,.72)',
+            padding: '24px',
+            overflow: 'auto',
+            font: '14px/1.4 Arial, sans-serif'
+        });
+
+        const panel = document.createElement('div');
+        Object.assign(panel.style, {
+            maxWidth: '900px',
+            margin: '0 auto',
+            background: '#f4f4f4',
+            color: '#111',
+            border: '2px solid #333',
+            borderRadius: '8px',
+            padding: '16px'
+        });
+
+        const header = document.createElement('div');
+        Object.assign(header.style, {
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '12px',
+            alignItems: 'center'
+        });
+
+        const title = document.createElement('strong');
+        const entries = Object.entries(LEARNING_STATE.rejections)
+            .sort((a, b) => (Number(b[1]?.rejectedAt) || 0) - (Number(a[1]?.rejectedAt) || 0));
+        title.textContent = `DALI Rejected Associations (${entries.length})`;
+
+        const closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.textContent = 'Close';
+        closeButton.onclick = closeRejectedReview;
+
+        header.append(title, closeButton);
+        panel.appendChild(header);
+
+        const note = document.createElement('p');
+        note.textContent = 'Restore removes the local rejection and returns that association to the pending review queue.';
+        panel.appendChild(note);
+
+        if (!entries.length) {
+            const empty = document.createElement('p');
+            empty.textContent = 'No locally rejected associations.';
+            panel.appendChild(empty);
+        }
+
+        for (const [key, rejection] of entries) {
+            const card = document.createElement('div');
+            Object.assign(card.style, {
+                borderTop: '1px solid #aaa',
+                marginTop: '12px',
+                paddingTop: '12px'
+            });
+
+            const identity = rejection?.proposedIdentity?.path?.join('/') || 'Unknown identity';
+            const heading = document.createElement('div');
+            heading.innerHTML = `<strong>${escapeHtml(identity)}</strong>`;
+            card.appendChild(heading);
+
+            const sourceSummary = document.createElement('code');
+            const parts = [];
+            if (rejection?.source?.fnvHash) parts.push(`FNV: ${rejection.source.fnvHash}`);
+            if (rejection?.source?.filename) parts.push(`Filename: ${rejection.source.filename}`);
+            sourceSummary.textContent = parts.join(' | ') || 'No compact source fingerprint recorded';
+            sourceSummary.style.display = 'block';
+            sourceSummary.style.margin = '6px 0';
+            card.appendChild(sourceSummary);
+
+            const restore = document.createElement('button');
+            restore.type = 'button';
+            restore.textContent = 'Restore to Pending';
+            restore.onclick = () => {
+                if (!restoreRejectedAssociation(key)) return;
+                openRejectedReview();
+            };
+            card.appendChild(restore);
+            panel.appendChild(card);
+        }
+
+        overlay.appendChild(panel);
+        (document.body || document.documentElement).appendChild(overlay);
+
+        overlay.addEventListener('keydown', event => {
+            if (event.key !== 'Escape') return;
+            event.preventDefault();
+            event.stopPropagation();
+            closeRejectedReview();
+        }, true);
+
+        requestAnimationFrame(() => {
+            panel.querySelector('button:not(:disabled)')?.focus();
         });
     }
 
@@ -1955,6 +2150,20 @@
         GM_registerMenuCommand(
             'DALI: Export pending associations',
             () => exportPendingAssociations()
+        );
+
+        GM_registerMenuCommand(
+            'DALI: Review rejected associations',
+            openRejectedReview
+        );
+
+        GM_registerMenuCommand(
+            'DALI: Undo last rejection',
+            () => {
+                if (!undoLastRejection()) {
+                    alert('DALI has no local rejection to undo.');
+                }
+            }
         );
     }
 

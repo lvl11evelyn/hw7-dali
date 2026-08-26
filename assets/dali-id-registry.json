@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 2,
+  "revision": 4,
   "sourceCounts": {
-    "identity": 601,
-    "filename": 696,
-    "fnv": 343,
-    "total": 1039
+    "identity": 607,
+    "filename": 700,
+    "fnv": 355,
+    "total": 1055
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1955,7 +1955,9 @@
       "filenames": [
         "Ming Vase"
       ],
-      "hashes": []
+      "hashes": [
+        "9c654443"
+      ]
     },
     "backpackItems/Misc/Mirror Shard": {
       "catalog": "backpackItems",
@@ -2969,6 +2971,30 @@
       ],
       "hashes": []
     },
+    "equipment/BB-Gun": {
+      "catalog": "equipment",
+      "identity": "BB-Gun",
+      "path": [
+        "equipment",
+        "BB-Gun"
+      ],
+      "filenames": [
+        "BB Gun"
+      ],
+      "hashes": []
+    },
+    "equipment/BFG": {
+      "catalog": "equipment",
+      "identity": "BFG",
+      "path": [
+        "equipment",
+        "BFG"
+      ],
+      "filenames": [
+        "BFG"
+      ],
+      "hashes": []
+    },
     "equipment/Bad to the Bone T-Shirt": {
       "catalog": "equipment",
       "identity": "Bad to the Bone T-Shirt",
@@ -2995,18 +3021,6 @@
         "bfa588ec"
       ]
     },
-    "equipment/BB-Gun": {
-      "catalog": "equipment",
-      "identity": "BB-Gun",
-      "path": [
-        "equipment",
-        "BB-Gun"
-      ],
-      "filenames": [
-        "BB Gun"
-      ],
-      "hashes": []
-    },
     "equipment/Beggar Ring": {
       "catalog": "equipment",
       "identity": "Beggar Ring",
@@ -3028,18 +3042,6 @@
       ],
       "filenames": [
         "Beggars Bludgeon"
-      ],
-      "hashes": []
-    },
-    "equipment/BFG": {
-      "catalog": "equipment",
-      "identity": "BFG",
-      "path": [
-        "equipment",
-        "BFG"
-      ],
-      "filenames": [
-        "BFG"
       ],
       "hashes": []
     },
@@ -3188,9 +3190,12 @@
         "Chewing Gum Ring"
       ],
       "filenames": [
+        "60x60xChewing Gum Ring",
         "Chewing Gum Ring"
       ],
-      "hashes": []
+      "hashes": [
+        "817851ae"
+      ]
     },
     "equipment/Coffee-Soaked Mop": {
       "catalog": "equipment",
@@ -3473,6 +3478,18 @@
       ],
       "hashes": []
     },
+    "equipment/HK G11": {
+      "catalog": "equipment",
+      "identity": "HK G11",
+      "path": [
+        "equipment",
+        "HK G11"
+      ],
+      "filenames": [
+        "HK G11"
+      ],
+      "hashes": []
+    },
     "equipment/Hackeysack": {
       "catalog": "equipment",
       "identity": "Hackeysack",
@@ -3534,18 +3551,6 @@
       ],
       "filenames": [
         "Hi Tech Tuxedo"
-      ],
-      "hashes": []
-    },
-    "equipment/HK G11": {
-      "catalog": "equipment",
-      "identity": "HK G11",
-      "path": [
-        "equipment",
-        "HK G11"
-      ],
-      "filenames": [
-        "HK G11"
       ],
       "hashes": []
     },
@@ -3662,6 +3667,34 @@
       ],
       "hashes": []
     },
+    "equipment/MHGA Hat": {
+      "catalog": "equipment",
+      "identity": "MHGA Hat",
+      "path": [
+        "equipment",
+        "MHGA Hat"
+      ],
+      "filenames": [
+        "MHGA Hat"
+      ],
+      "hashes": []
+    },
+    "equipment/MHGA Sign": {
+      "catalog": "equipment",
+      "identity": "MHGA Sign",
+      "path": [
+        "equipment",
+        "MHGA Sign"
+      ],
+      "filenames": [
+        "MHGA Sign",
+        "xMHGA Sign"
+      ],
+      "hashes": [
+        "54d4817e",
+        "8504d1ec"
+      ]
+    },
     "equipment/Mac-10": {
       "catalog": "equipment",
       "identity": "Mac-10",
@@ -3721,34 +3754,6 @@
         "Metal Shield"
       ],
       "hashes": []
-    },
-    "equipment/MHGA Hat": {
-      "catalog": "equipment",
-      "identity": "MHGA Hat",
-      "path": [
-        "equipment",
-        "MHGA Hat"
-      ],
-      "filenames": [
-        "MHGA Hat"
-      ],
-      "hashes": []
-    },
-    "equipment/MHGA Sign": {
-      "catalog": "equipment",
-      "identity": "MHGA Sign",
-      "path": [
-        "equipment",
-        "MHGA Sign"
-      ],
-      "filenames": [
-        "MHGA Sign",
-        "xMHGA Sign"
-      ],
-      "hashes": [
-        "54d4817e",
-        "8504d1ec"
-      ]
     },
     "equipment/Mithril Garbage Bin": {
       "catalog": "equipment",
@@ -4684,7 +4689,8 @@
       ],
       "hashes": [
         "35c5064a",
-        "3b70ff58"
+        "3b70ff58",
+        "53bee903"
       ]
     },
     "foodItems/Chocolate Ice Cream": {
@@ -5150,6 +5156,18 @@
       ],
       "hashes": []
     },
+    "foodItems/Half Eaten Burger": {
+      "catalog": "foodItems",
+      "identity": "Half Eaten Burger",
+      "path": [
+        "foodItems",
+        "Half Eaten Burger"
+      ],
+      "filenames": [
+        "Half Eaten Burger"
+      ],
+      "hashes": []
+    },
     "foodItems/Half a Donut": {
       "catalog": "foodItems",
       "identity": "Half a Donut",
@@ -5189,18 +5207,6 @@
       "hashes": [
         "c0340046"
       ]
-    },
-    "foodItems/Half Eaten Burger": {
-      "catalog": "foodItems",
-      "identity": "Half Eaten Burger",
-      "path": [
-        "foodItems",
-        "Half Eaten Burger"
-      ],
-      "filenames": [
-        "Half Eaten Burger"
-      ],
-      "hashes": []
     },
     "foodItems/Hangover Omelette": {
       "catalog": "foodItems",
@@ -5750,6 +5756,18 @@
         "a50377fd"
       ]
     },
+    "foodItems/SARS Bar": {
+      "catalog": "foodItems",
+      "identity": "SARS Bar",
+      "path": [
+        "foodItems",
+        "SARS Bar"
+      ],
+      "filenames": [
+        "SARS Bar"
+      ],
+      "hashes": []
+    },
     "foodItems/Salmon": {
       "catalog": "foodItems",
       "identity": "Salmon",
@@ -5764,18 +5782,6 @@
         "7d2ae822",
         "b050da21"
       ]
-    },
-    "foodItems/SARS Bar": {
-      "catalog": "foodItems",
-      "identity": "SARS Bar",
-      "path": [
-        "foodItems",
-        "SARS Bar"
-      ],
-      "filenames": [
-        "SARS Bar"
-      ],
-      "hashes": []
     },
     "foodItems/Semi-Lasting Gobstopper": {
       "catalog": "foodItems",
@@ -5873,7 +5879,9 @@
       "filenames": [
         "Stomach Parasite"
       ],
-      "hashes": []
+      "hashes": [
+        "f89a55d1"
+      ]
     },
     "foodItems/Sugarfree Gum": {
       "catalog": "foodItems",
@@ -6208,6 +6216,84 @@
       "hashes": [
         "05128058",
         "7c230841"
+      ]
+    },
+    "shots/Buttery Nipple": {
+      "catalog": "shots",
+      "identity": "Buttery Nipple",
+      "path": [
+        "shots",
+        "Buttery Nipple"
+      ],
+      "filenames": [
+        "Buttery Nipple"
+      ],
+      "hashes": [
+        "9e7ea535"
+      ]
+    },
+    "shots/Canadian Flag": {
+      "catalog": "shots",
+      "identity": "Canadian Flag",
+      "path": [
+        "shots",
+        "Canadian Flag"
+      ],
+      "filenames": [],
+      "hashes": [
+        "f6496db5"
+      ]
+    },
+    "shots/Five Star General": {
+      "catalog": "shots",
+      "identity": "Five Star General",
+      "path": [
+        "shots",
+        "Five Star General"
+      ],
+      "filenames": [],
+      "hashes": [
+        "c1a160e9"
+      ]
+    },
+    "shots/Lemon Drop": {
+      "catalog": "shots",
+      "identity": "Lemon Drop",
+      "path": [
+        "shots",
+        "Lemon Drop"
+      ],
+      "filenames": [],
+      "hashes": [
+        "eb841ff7"
+      ]
+    },
+    "shots/Rainbow Road": {
+      "catalog": "shots",
+      "identity": "Rainbow Road",
+      "path": [
+        "shots",
+        "Rainbow Road"
+      ],
+      "filenames": [
+        "Rainbow Road"
+      ],
+      "hashes": [
+        "a2b89d33"
+      ]
+    },
+    "shots/The CMYK": {
+      "catalog": "shots",
+      "identity": "The CMYK",
+      "path": [
+        "shots",
+        "The CMYK"
+      ],
+      "filenames": [
+        "The CMYK"
+      ],
+      "hashes": [
+        "039975f5"
       ]
     },
     "skills/Average": {
@@ -7102,7 +7188,9 @@
       "filenames": [
         "Dalimorphous"
       ],
-      "hashes": []
+      "hashes": [
+        "4ca91249"
+      ]
     },
     "statusEffects/Death Perception": {
       "catalog": "statusEffects",
@@ -7289,7 +7377,9 @@
       "filenames": [
         "Green Tongue"
       ],
-      "hashes": []
+      "hashes": [
+        "9003fe1a"
+      ]
     },
     "statusEffects/Hobola": {
       "catalog": "statusEffects",

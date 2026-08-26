@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.1
+// @version      1.2
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -449,16 +449,25 @@
                 'Paste a GitHub token for DALI issue submissions.',
                 '',
                 `Target repository: ${GITHUB_OWNER}/${GITHUB_REPO}`,
-                'Required repository permission: Issues — Read and write.',
-                'No Contents permission is required.',
+                '',
+                'For most public contributors:',
+                'GitHub → Settings → Developer settings',
+                '→ Personal access tokens → Tokens (classic)',
+                '→ Generate new token',
+                '→ enable public_repo',
+                '',
+                'Repository owners/collaborators may instead use a',
+                'fine-grained token with Issues: Read and write.',
+                '',
+                'This token is stored only in this userscript\'s GM storage.',
                 '',
                 current ? 'A token is currently stored. Leave blank to keep it unchanged.' : ''
             ].filter(Boolean).join('\n'),
             ''
         );
-
+    
         if (token === null) return;
-
+    
         const trimmed = token.trim();
         if (!trimmed) {
             if (!current) {
@@ -466,7 +475,7 @@
             }
             return;
         }
-
+    
         GM_setValue(GITHUB_TOKEN_KEY, trimmed);
         alert('GitHub issue-submission token stored in this userscript\'s GM storage.');
     }

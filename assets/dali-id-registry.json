@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 6,
+  "revision": 7,
   "sourceCounts": {
     "identity": 607,
-    "filename": 700,
-    "fnv": 359,
-    "total": 1059
+    "filename": 711,
+    "fnv": 364,
+    "total": 1075
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -163,6 +163,7 @@
         "86835869",
         "9302b9f1",
         "b14dc969",
+        "c2f251ef",
         "ebc4f37d",
         "f514d472",
         "fdc926b0"
@@ -1023,6 +1024,7 @@
         "Milk"
       ],
       "filenames": [
+        "25x25xMilk",
         "Milk"
       ],
       "hashes": [
@@ -1105,6 +1107,7 @@
         "Sweet & Sour"
       ],
       "filenames": [
+        "25x25xSweet ,a Sour",
         "Sweet & Sour"
       ],
       "hashes": [
@@ -1667,6 +1670,7 @@
         "Flashlight"
       ],
       "filenames": [
+        "25x25xFlashlight",
         "Flashlight"
       ],
       "hashes": [
@@ -1880,6 +1884,7 @@
         "I Love You Bracelet"
       ],
       "filenames": [
+        "25x25xI Love You Bracelet",
         "I Love You Bracelet"
       ],
       "hashes": [
@@ -4651,7 +4656,9 @@
       "filenames": [
         "Catfish"
       ],
-      "hashes": []
+      "hashes": [
+        "e9e539c4"
+      ]
     },
     "foodItems/Caulipop": {
       "catalog": "foodItems",
@@ -6227,9 +6234,11 @@
         "Buttery Nipple"
       ],
       "filenames": [
+        "25x25xButtery Nipple",
         "Buttery Nipple"
       ],
       "hashes": [
+        "59d1e6aa",
         "9e7ea535"
       ]
     },
@@ -6240,7 +6249,9 @@
         "shots",
         "Canadian Flag"
       ],
-      "filenames": [],
+      "filenames": [
+        "25x25xCanadian Flag"
+      ],
       "hashes": [
         "83c861cf",
         "f6496db5"
@@ -6253,7 +6264,9 @@
         "shots",
         "Five Star General"
       ],
-      "filenames": [],
+      "filenames": [
+        "25x25xFive Star General"
+      ],
       "hashes": [
         "06ad7ddd",
         "c1a160e9"
@@ -6266,7 +6279,10 @@
         "shots",
         "Lemon Drop"
       ],
-      "filenames": [],
+      "filenames": [
+        "25x25xLemon Drop",
+        "Lemon Drop"
+      ],
       "hashes": [
         "3609f79b",
         "eb841ff7"
@@ -6280,9 +6296,11 @@
         "Rainbow Road"
       ],
       "filenames": [
+        "25x25xRainbow Road",
         "Rainbow Road"
       ],
       "hashes": [
+        "55f5c698",
         "a2b89d33"
       ]
     },
@@ -6294,10 +6312,12 @@
         "The CMYK"
       ],
       "filenames": [
+        "25x25xThe CMYK",
         "The CMYK"
       ],
       "hashes": [
-        "039975f5"
+        "039975f5",
+        "1f968e97"
       ]
     },
     "skills/Average": {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.3
+// @version      1.4
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -22,6 +22,7 @@
     const GITHUB_OWNER = 'lvl11evelyn';
     const GITHUB_REPO = 'hw7-dali';
     const GITHUB_API_VERSION = '2026-03-10';
+    const GITHUB_ISSUE_BODY_LIMIT = 60000;
 
     const LOCAL_IDENTITY_REGISTER_EVENT = 'dali:register-local-identities';
     const LOCAL_IDENTITY_READY_EVENT = 'dali:local-identity-channel-ready';
@@ -547,34 +548,89 @@
         return identities;
     }
 
-    function sanitizeApprovalForGitHubSubmission(approval) {
-        const out = structuredCloneSafe(approval);
-        const source = out?.source;
+    function truncateForGitHub(value, maxLength = 100) {
+        const text = String(value || '').replace(/\s+/g, ' ').trim();
+        if (!text) return '';
+        if (text.length <= maxLength) return text;
+        return `${text.slice(0, Math.max(1, maxLength - 1))}…`;
+    }
 
-        if (!source || typeof source !== 'object') {
-            return out;
+    function compactEvidenceValue(values, maxLength = 100) {
+        const list = Array.isArray(values)
+            ? values.map(value => truncateForGitHub(value, maxLength)).filter(Boolean)
+            : [];
+
+        if (!list.length) {
+            return '';
         }
 
-        if (source.sourceType === 'data-image') {
-            delete source.src;
-            source.submittedSourceAuthority = `fnv:${String(source.fnvHash || '').toLowerCase()}`;
+        const primary = list[0];
+        return list.length > 1
+            ? truncateForGitHub(`${primary} (+${list.length - 1})`, maxLength)
+            : primary;
+    }
+
+    function compactApprovalForGitHubSubmission(approval) {
+        const source = approval?.source || {};
+        const identity = approval?.proposedIdentity || {};
+        const evidence = approval?.evidence || {};
+
+        const compact = {
+            src: source.sourceType === 'data-image'
+                ? {
+                    t: 'd',
+                    h: String(source.fnvHash || '').toLowerCase()
+                }
+                : {
+                    t: 'u',
+                    s: truncateForGitHub(source.src || '', 100),
+                    f: truncateForGitHub(source.normalizedFilename || source.filename || '', 100)
+                },
+            id: {
+                p: Array.isArray(identity.path) ? identity.path.join('/') : '',
+                c: identity.catalog || '',
+                n: identity.identity || ''
+            },
+            cf: Math.round((Number(approval?.confidence) || 0) * 1000) / 10,
+            ob: Number(approval?.observations) || 0,
+            ctx: {
+                p: compactEvidenceValue(evidence.pageHrefs, 100),
+                a: compactEvidenceValue(evidence.anchorHrefs, 100),
+                al: compactEvidenceValue(evidence.alt, 100),
+                ti: compactEvidenceValue(evidence.title, 100),
+                ar: compactEvidenceValue(evidence.ariaLabel, 100),
+                ct: compactEvidenceValue(evidence.containerText, 100),
+                cu: compactEvidenceValue(evidence.cues, 100)
+            }
+        };
+
+        for (const key of Object.keys(compact.ctx)) {
+            if (!compact.ctx[key]) {
+                delete compact.ctx[key];
+            }
         }
 
-        return out;
+        if (!Object.keys(compact.ctx).length) {
+            delete compact.ctx;
+        }
+
+        if (compact.src.t === 'u') {
+            if (!compact.src.s) delete compact.src.s;
+            if (!compact.src.f) delete compact.src.f;
+        }
+
+        return compact;
     }
 
     function githubSubmissionPayload(approvals) {
-        const sanitizedApprovals = approvals.map(sanitizeApprovalForGitHubSubmission);
-
         return {
             schema: 1,
             type: 'dali-canonical-identity-submission',
             submittedAt: Date.now(),
             source: 'HW DALI Local Approval Extension',
             repository: `${GITHUB_OWNER}/${GITHUB_REPO}`,
-            count: sanitizedApprovals.length,
-            associations: sanitizedApprovals,
-            registryMerge: registryMergeForApprovals(approvals)
+            count: approvals.length,
+            associations: approvals.map(compactApprovalForGitHubSubmission)
         };
     }
 
@@ -584,14 +640,54 @@
             '',
             'This issue was created by the HW DALI Local Approval Extension from locally approved identity associations.',
             '',
-            'Local approval is not canonical approval. The payload below is review evidence only; canonical authority changes only when a repository maintainer updates the canonical registry.',
+            'Local approval is not canonical approval. The compact payload below is review evidence only; canonical authority changes only when a repository maintainer updates the canonical registry.',
             '',
             `Associations: ${payload.count}`,
+            'Legend: src.t = u(url) or d(data-image), src.s = source string, src.f = filename, src.h = FNV hash, id.p = registry path, cf = confidence %, ob = observations, ctx values truncated to ~100 chars.',
             '',
             '```json',
-            JSON.stringify(payload, null, 2),
+            JSON.stringify(payload),
             '```'
         ].join('\n');
+    }
+
+    function buildGitHubSubmissionBatches(approvals) {
+        const batches = [];
+        let current = [];
+
+        for (const approval of approvals) {
+            const trial = [...current, approval];
+            const trialPayload = githubSubmissionPayload(trial);
+            const trialBody = githubIssueBody(trialPayload);
+
+            if (current.length && trialBody.length > GITHUB_ISSUE_BODY_LIMIT) {
+                const payload = githubSubmissionPayload(current);
+                batches.push({
+                    approvals: current,
+                    payload,
+                    body: githubIssueBody(payload)
+                });
+                current = [approval];
+                continue;
+            }
+
+            if (!current.length && trialBody.length > GITHUB_ISSUE_BODY_LIMIT) {
+                throw new Error('A single approved association exceeds the GitHub issue size limit.');
+            }
+
+            current = trial;
+        }
+
+        if (current.length) {
+            const payload = githubSubmissionPayload(current);
+            batches.push({
+                approvals: current,
+                payload,
+                body: githubIssueBody(payload)
+            });
+        }
+
+        return batches;
     }
 
     function githubRequest(options) {
@@ -656,45 +752,61 @@
             if (!token) return;
         }
 
+        const batches = buildGitHubSubmissionBatches(approvals);
+
         if (!confirm(
-            `Submit ${approvals.length} locally approved association${approvals.length === 1 ? '' : 's'} to ${GITHUB_OWNER}/${GITHUB_REPO} as a GitHub Issue?`
+            `Submit ${approvals.length} locally approved association${approvals.length === 1 ? '' : 's'} to ${GITHUB_OWNER}/${GITHUB_REPO} as ${batches.length} GitHub Issue${batches.length === 1 ? '' : 's'}?`
         )) {
             return;
         }
 
-        const payload = githubSubmissionPayload(approvals);
-        const title = `DALI identity submission — ${approvals.length} association${approvals.length === 1 ? '' : 's'}`;
-        const body = githubIssueBody(payload);
-
         try {
-            const issue = await githubRequest({
-                method: 'POST',
-                url: `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`,
-                headers: {
-                    'Accept': 'application/vnd.github+json',
-                    'Authorization': `Bearer ${token}`,
-                    'X-GitHub-Api-Version': GITHUB_API_VERSION,
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({ title, body })
-            });
-
-            if (!issue || !Number.isInteger(issue.number) || !issue.html_url) {
-                throw new Error('GitHub created an issue but returned no usable issue identity.');
-            }
-
+            const createdIssues = [];
             const submittedAt = Date.now();
-            for (const approval of approvals) {
-                state.submissions[approvalSubmissionKey(approval)] = {
-                    issueNumber: issue.number,
-                    issueUrl: issue.html_url,
-                    submittedAt
-                };
+
+            for (let index = 0; index < batches.length; index += 1) {
+                const batch = batches[index];
+                const title = batches.length === 1
+                    ? `DALI identity submission — ${batch.approvals.length} association${batch.approvals.length === 1 ? '' : 's'}`
+                    : `DALI identity submission ${index + 1}/${batches.length} — ${batch.approvals.length} association${batch.approvals.length === 1 ? '' : 's'}`;
+
+                const issue = await githubRequest({
+                    method: 'POST',
+                    url: `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`,
+                    headers: {
+                        'Accept': 'application/vnd.github+json',
+                        'Authorization': `Bearer ${token}`,
+                        'X-GitHub-Api-Version': GITHUB_API_VERSION,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({ title, body: batch.body })
+                });
+
+                if (!issue || !Number.isInteger(issue.number) || !issue.html_url) {
+                    throw new Error('GitHub created an issue but returned no usable issue identity.');
+                }
+
+                createdIssues.push(issue);
+
+                for (const approval of batch.approvals) {
+                    state.submissions[approvalSubmissionKey(approval)] = {
+                        issueNumber: issue.number,
+                        issueUrl: issue.html_url,
+                        submittedAt
+                    };
+                }
             }
+
             saveState();
 
-            alert(`DALI submission created as GitHub Issue #${issue.number}.\n\n${issue.html_url}`);
-            window.open(issue.html_url, '_blank', 'noopener,noreferrer');
+            const summary = createdIssues
+                .map(issue => `#${issue.number}: ${issue.html_url}`)
+                .join('\n');
+
+            alert(
+                `DALI submission created as ${createdIssues.length} GitHub Issue${createdIssues.length === 1 ? '' : 's'}.\n\n${summary}`
+            );
+            window.open(createdIssues[0].html_url, '_blank', 'noopener,noreferrer');
         } catch (error) {
             console.error('[DALI Approval] GitHub submission failed.', error);
             alert(

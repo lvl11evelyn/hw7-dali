@@ -209,7 +209,6 @@
             "Robo Hobo Butler": null,
             "Rusty Butler": null
         },
-        
         "Ingredients": {
             "Ice": null,
             "Red Bull": null,
@@ -228,7 +227,6 @@
             "Orange Juice": null,
             "Bath Salts": null
         },
-        
         "Misc": {
             "8 Ball": null,
             "Bowling Trophy": null,
@@ -311,7 +309,6 @@
             "Rather Large Ruby": null,
             "Sexy Mother Theresa Costume": null
         },
-        
         "Wearables": {
             "Extra Large Bowling Ball": null,
             "Bowling Shoes": null,
@@ -654,5 +651,13 @@
         "Warwolf": null,
         "Wonka Spirit": null,
         "Zombified": null
+    },
+    "shots": {
+        "Lemon Drop": "dali-svg://shot-lemon-drop",
+        "Buttery Nipple": "dali-svg://shot-buttery-nipple",
+        "Canadian Flag": "dali-svg://shot-canadian-flag",
+        "The CMYK": "dali-svg://shot-the-cmyk",
+        "Five Star General": "dali-svg://shot-five-star-general",
+        "Rainbow Road": "dali-svg://shot-rainbow-road"
     }
 }

@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 5,
+  "revision": 6,
   "sourceCounts": {
     "identity": 607,
     "filename": 700,
-    "fnv": 358,
-    "total": 1058
+    "fnv": 359,
+    "total": 1059
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -6058,7 +6058,8 @@
         "Golden Trolly"
       ],
       "hashes": [
-        "34e0a241"
+        "34e0a241",
+        "960bc49b"
       ]
     },
     "foodStorageItems/Trolly": {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.15
+// @version      2.16
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -34,6 +34,9 @@
     const ASSET_MAP_CACHE_KEY =
         'hw-dali-asset-map-cache-v1';
 
+    const ASSET_MAP_CACHE_TIME_KEY =
+        'hw-dali-asset-map-cache-fetched-at-v1';
+
     const ID_REGISTRY_URL =
         'https://raw.githubusercontent.com/lvl11evelyn/hw7-dali/main/assets/dali-id-registry.json';
 
@@ -64,6 +67,9 @@
     let EQUIPMENT_NAMES = [];
     let NORMALIZED_EQUIPMENT_NAMES = new Map();
     let DALI_OBSERVER = null;
+    let SCAN_FRAME = 0;
+    let FULL_SCAN_QUEUED = false;
+    const SCAN_ROOTS = new Set();
 
     /*
      * The authoritative identity index contains every named leaf in the
@@ -124,7 +130,18 @@
      * process self-contained SVG families while the remote map is arriving.
      */
 
-    async function refreshRemoteAssetMap() {
+    async function refreshRemoteAssetMap(force = false) {
+        if (!force) {
+            try {
+                const fetchedAt = Number(localStorage.getItem(ASSET_MAP_CACHE_TIME_KEY)) || 0;
+                if (fetchedAt > 0 && Date.now() - fetchedAt < REMOTE_AUX_TTL_MS) {
+                    return;
+                }
+            } catch {
+                // Continue with a network refresh when cache timing is unavailable.
+            }
+        }
+
         try {
             const assetMap = await fetchRemoteAssetMap();
 
@@ -136,7 +153,7 @@
                  * older catalog generation are reconsidered. Replaced images
                  * remain final and are not churned through the resolver again.
                  */
-                scan(document);
+                queueScan(document);
             }
         } catch (error) {
             if (REPLACEMENTS) {
@@ -239,6 +256,10 @@
             localStorage.setItem(
                 ASSET_MAP_CACHE_KEY,
                 JSON.stringify(assetMap)
+            );
+            localStorage.setItem(
+                ASSET_MAP_CACHE_TIME_KEY,
+                String(Date.now())
             );
         } catch (error) {
             console.warn('[DALI] Unable to cache asset map.', error);
@@ -483,7 +504,7 @@
             writeTimedCache(ID_REGISTRY_CACHE_KEY, registry);
 
             if (applyIdRegistry(registry)) {
-                scan(document);
+                queueScan(document);
             }
         } catch (error) {
             console.warn(
@@ -631,7 +652,6 @@
         REJECTION_REGISTRY = registry;
         REJECTION_REGISTRY_SIGNATURE = signature;
         REJECTION_INDEX = nextIndex;
-        CATALOG_GENERATION += 1;
 
         if (retired > 0) {
             console.info(
@@ -662,9 +682,7 @@
             validateRejectionRegistry(registry);
             writeTimedCache(REJECTION_REGISTRY_CACHE_KEY, registry);
 
-            if (applyRejectionRegistry(registry)) {
-                scan(document);
-            }
+            applyRejectionRegistry(registry);
         } catch (error) {
             console.warn(
                 '[DALI] Remote rejection registry rejected/unavailable; retaining last known-good copy.',
@@ -757,7 +775,7 @@
             writeTimedCache(SVG_CATALOG_CACHE_KEY, catalog);
 
             if (applySvgCatalog(catalog)) {
-                scan(document);
+                queueScan(document);
             }
         } catch (error) {
             console.warn(
@@ -1010,7 +1028,7 @@
         if (added > 0) {
             CATALOG_GENERATION += 1;
             prunePendingAgainstLocalIdentities();
-            scan(document);
+            queueScan(document);
 
             if (document.getElementById('dali-pending-review')) {
                 openPendingReview();
@@ -1528,7 +1546,7 @@
         delete LEARNING_STATE.rejections[key];
         saveLearningState();
         CATALOG_GENERATION += 1;
-        scan(document);
+        queueScan(document);
         dispatchPendingSnapshot();
         return true;
     }
@@ -2679,6 +2697,44 @@
 // INITIALIZATION / DYNAMIC CONTENT
 // ------------------------------------------------------------------------
 
+    function queueScan(root = document) {
+        if (!root) return;
+
+        if (root === document) {
+            FULL_SCAN_QUEUED = true;
+            SCAN_ROOTS.clear();
+        } else if (!FULL_SCAN_QUEUED) {
+            SCAN_ROOTS.add(root);
+        }
+
+        if (SCAN_FRAME) return;
+
+        SCAN_FRAME = requestAnimationFrame(() => {
+            SCAN_FRAME = 0;
+
+            if (FULL_SCAN_QUEUED) {
+                FULL_SCAN_QUEUED = false;
+                SCAN_ROOTS.clear();
+                scan(document);
+                return;
+            }
+
+            const roots = [...SCAN_ROOTS].filter(root => root?.isConnected !== false);
+            SCAN_ROOTS.clear();
+
+            const outerRoots = roots.filter(
+                root => !roots.some(other => other !== root && other?.contains?.(root))
+            );
+
+            for (const root of outerRoots) {
+                if (root.matches?.('img')) {
+                    processImage(root);
+                }
+                scan(root);
+            }
+        });
+    }
+
     function initializeDali() {
         if (DALI_OBSERVER) {
             return;
@@ -2691,11 +2747,7 @@
                         continue;
                     }
     
-                    if (node.matches('img')) {
-                        processImage(node);
-                    }
-    
-                    scan(node);
+                    queueScan(node);
                 }
             }
         });
@@ -2716,7 +2768,7 @@
         if (document.readyState === 'loading') {
             document.addEventListener(
                 'DOMContentLoaded',
-                () => scan(document),
+                () => queueScan(document),
                 { once: true }
             );
         }
@@ -3104,7 +3156,11 @@ function resolveReplacementPointer(pointer) {
         .trim()
         .toLowerCase();
 
-    const svg = SVG_CATALOG?.svgs?.[identity];
+    if (!SVG_CATALOG) {
+        return null;
+    }
+
+    const svg = SVG_CATALOG.svgs?.[identity];
 
     if (!svg) {
         console.warn(

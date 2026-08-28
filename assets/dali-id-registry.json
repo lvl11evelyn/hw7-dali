@@ -3,9 +3,9 @@
   "revision": 8,
   "sourceCounts": {
     "identity": 607,
-    "filename": 718,
+    "filename": 719,
     "fnv": 369,
-    "total": 1087
+    "total": 1088
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1172,6 +1172,9 @@
         "207191e6",
         "32fea929",
         "4217fcb3"
+      ],
+      "exactFilenames": [
+        "25x25xKings-Kiddie-Cup.gif.pagespeed.ic.27O_vQKR7t.png"
       ]
     },
     "backpackItems/MiningTools/Bomb": {

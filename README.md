@@ -103,6 +103,8 @@ It changes supported imagery only. It does not automate gameplay, navigation, co
 
 ## License
 
-MIT License.
+## License
+
+[MIT License.](LICENSE)
 
 Copyright © 2026 lvl11evelyn.

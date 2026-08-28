@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 7,
+  "revision": 8,
   "sourceCounts": {
     "identity": 607,
-    "filename": 711,
-    "fnv": 364,
-    "total": 1075
+    "filename": 718,
+    "fnv": 369,
+    "total": 1087
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1156,7 +1156,9 @@
         "Kings Kiddie Cup",
         "Nx38xKings Kiddie Cup"
       ],
-      "hashes": []
+      "hashes": [
+        "9ab0cb50"
+      ]
     },
     "backpackItems/King's Kiddie Cup+": {
       "catalog": "backpackItems",
@@ -1169,8 +1171,7 @@
       "hashes": [
         "207191e6",
         "32fea929",
-        "4217fcb3",
-        "9ab0cb50"
+        "4217fcb3"
       ]
     },
     "backpackItems/MiningTools/Bomb": {
@@ -3780,7 +3781,8 @@
         "Mithril Grocery Bag"
       ],
       "filenames": [
-        "Mithril Grocery Bag"
+        "Mithril Grocery Bag",
+        "xMithril Grocery Bag"
       ],
       "hashes": [
         "32102567"
@@ -3794,7 +3796,8 @@
         "Mystery Hat"
       ],
       "filenames": [
-        "Mystery Hat"
+        "Mystery Hat",
+        "xMystery Hat"
       ],
       "hashes": [
         "2c619b67"
@@ -4281,7 +4284,9 @@
       "filenames": [
         "Water Cannon"
       ],
-      "hashes": []
+      "hashes": [
+        "9f2aa005"
+      ]
     },
     "equipment/Water Pistol": {
       "catalog": "equipment",
@@ -5223,9 +5228,12 @@
         "Hangover Omelette"
       ],
       "filenames": [
-        "Hangover Omelette"
+        "Hangover Omelette",
+        "Nx20xHangover Omelette"
       ],
-      "hashes": []
+      "hashes": [
+        "2c9221cc"
+      ]
     },
     "foodItems/Hobo Stew": {
       "catalog": "foodItems",
@@ -5505,7 +5513,9 @@
       "filenames": [
         "Packet of Fries"
       ],
-      "hashes": []
+      "hashes": [
+        "3b177d4e"
+      ]
     },
     "foodItems/Pay Day": {
       "catalog": "foodItems",
@@ -6004,7 +6014,9 @@
       "filenames": [
         "Wonka Bar"
       ],
-      "hashes": []
+      "hashes": [
+        "1d423952"
+      ]
     },
     "foodItems/Wonka Quadra Candy Cane": {
       "catalog": "foodItems",
@@ -6028,7 +6040,9 @@
       "filenames": [
         "Wonka's Peppermint Spirits"
       ],
-      "hashes": []
+      "hashes": [
+        "29fd8d7e"
+      ]
     },
     "foodItems/Wonka-stripe Candy Cane": {
       "catalog": "foodItems",
@@ -6205,7 +6219,8 @@
         "Two-Headed Rat"
       ],
       "filenames": [
-        "120x80xtwoheaded"
+        "120x80xtwoheaded",
+        "34x24xtwoheaded 120"
       ],
       "hashes": [
         "e3653759"
@@ -6250,7 +6265,8 @@
         "Canadian Flag"
       ],
       "filenames": [
-        "25x25xCanadian Flag"
+        "25x25xCanadian Flag",
+        "Canadian Flag"
       ],
       "hashes": [
         "83c861cf",
@@ -8070,6 +8086,7 @@
         "Boozaholic 2",
         "Boozaholic 3",
         "Nx45xBoozaholic 3",
+        "xBoozaholic 1",
         "xBoozaholic 3"
       ],
       "hashes": []
@@ -8128,7 +8145,8 @@
       "filenames": [
         "Packin Sasquatch 1",
         "Packin Sasquatch 2",
-        "Packin Sasquatch 3"
+        "Packin Sasquatch 3",
+        "xPackin Sasquatch 3"
       ],
       "hashes": []
     },

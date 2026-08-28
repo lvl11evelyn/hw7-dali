@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.16
+// @version      2.18
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -94,6 +94,7 @@
     let ID_REGISTRY = null;
     let ID_REGISTRY_SIGNATURE = '';
     let ID_REGISTRY_READY = false;
+    let ID_EXACT_FILENAME_INDEX = new Map();
     let ID_FILENAME_INDEX = new Map();
     let ID_HASH_INDEX = new Map();
 
@@ -380,6 +381,7 @@
         let identityCount = 0;
         let filenameCount = 0;
         let fnvCount = 0;
+        const exactFilenames = new Map();
         const filenames = new Map();
         const hashes = new Map();
 
@@ -392,6 +394,10 @@
                 typeof entry.catalog !== 'string' || !entry.catalog ||
                 typeof entry.identity !== 'string' || !entry.identity ||
                 !Array.isArray(entry.path) || entry.path.length < 2 ||
+                (
+                    entry.exactFilenames !== undefined &&
+                    !Array.isArray(entry.exactFilenames)
+                ) ||
                 !Array.isArray(entry.filenames) ||
                 !Array.isArray(entry.hashes)
             ) {
@@ -399,6 +405,21 @@
             }
 
             identityCount += 1;
+
+            for (const filename of entry.exactFilenames || []) {
+                const key = String(filename || '').trim();
+                if (!key) {
+                    throw new Error(`Blank exact filename authority in ${registryKey}.`);
+                }
+
+                const existing = exactFilenames.get(key);
+                if (existing && existing !== registryKey) {
+                    throw new Error(`Conflicting exact filename authority: ${filename}.`);
+                }
+
+                exactFilenames.set(key, registryKey);
+                filenameCount += 1;
+            }
 
             for (const filename of entry.filenames) {
                 const key = normalizeIdentityKey(filename);
@@ -456,10 +477,15 @@
             return false;
         }
 
+        const exactFilenameIndex = new Map();
         const filenameIndex = new Map();
         const hashIndex = new Map();
 
         for (const [registryKey, entry] of Object.entries(registry.identities)) {
+            for (const filename of entry.exactFilenames || []) {
+                exactFilenameIndex.set(String(filename).trim(), registryKey);
+            }
+
             for (const filename of entry.filenames) {
                 filenameIndex.set(normalizeIdentityKey(filename), registryKey);
             }
@@ -471,6 +497,7 @@
 
         ID_REGISTRY = registry;
         ID_REGISTRY_SIGNATURE = signature;
+        ID_EXACT_FILENAME_INDEX = exactFilenameIndex;
         ID_FILENAME_INDEX = filenameIndex;
         ID_HASH_INDEX = hashIndex;
         ID_REGISTRY_READY = true;
@@ -850,16 +877,18 @@
             // Preserve undecoded filename.
         }
 
+        const exactFilename = filename;
         const normalizedFilename = normalizeAssetName(filename);
         const key = normalizeIdentityKey(normalizedFilename);
 
-        if (!key) return null;
+        if (!exactFilename && !key) return null;
 
         return {
             sourceType: 'url',
             key: `filename:${key}`,
             fnvHash: '',
             filename,
+            exactFilename,
             normalizedFilename
         };
     }
@@ -869,9 +898,15 @@
             return null;
         }
 
-        return descriptor.sourceType === 'data-image'
-            ? ID_HASH_INDEX.get(descriptor.fnvHash) || null
-            : ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename)) || null;
+        if (descriptor.sourceType === 'data-image') {
+            return ID_HASH_INDEX.get(descriptor.fnvHash) || null;
+        }
+
+        return (
+            ID_EXACT_FILENAME_INDEX.get(descriptor.exactFilename) ||
+            ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename)) ||
+            null
+        );
     }
 
     function localRuntimeKeyForDescriptor(descriptor) {
@@ -967,6 +1002,7 @@
                 key: `filename:${normalizedKey}`,
                 fnvHash: '',
                 filename: String(source.filename || ''),
+                exactFilename: String(source.filename || '').trim(),
                 normalizedFilename
             };
         } else {
@@ -1104,7 +1140,10 @@
 
         const registryKey = descriptor.sourceType === 'data-image'
             ? ID_HASH_INDEX.get(descriptor.fnvHash)
-            : ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename));
+            : (
+                ID_EXACT_FILENAME_INDEX.get(descriptor.exactFilename) ||
+                ID_FILENAME_INDEX.get(normalizeIdentityKey(descriptor.normalizedFilename))
+            );
 
         if (!registryKey) return null;
 
@@ -1396,6 +1435,7 @@
                     sourceType: descriptor.sourceType,
                     fnvHash: descriptor.fnvHash,
                     filename: descriptor.filename,
+                    exactFilename: descriptor.exactFilename || '',
                     normalizedFilename: descriptor.normalizedFilename,
                     src: nativeSrc
                 },
@@ -2694,11 +2734,60 @@
     }
 
 // ------------------------------------------------------------------------
+// RUNTIME EXCLUSIONS
+// ------------------------------------------------------------------------
+
+    function isRtBarRuntimeExclusionActive() {
+        const cmd = new URLSearchParams(window.location.search).get('cmd');
+
+        return (
+            cmd === 'mail' ||
+            cmd === 'gathering'
+        );
+    }
+
+    function isDaliRuntimeExcludedNode(node) {
+        if (!isRtBarRuntimeExclusionActive() || !node) {
+            return false;
+        }
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            return (
+                node.id === 'RTBar' ||
+                Boolean(node.closest?.('#RTBar'))
+            );
+        }
+
+        return Boolean(
+            node.parentElement?.closest?.('#RTBar')
+        );
+    }
+
+    function isDaliRuntimeExcludedImage(image) {
+        return Boolean(
+            image &&
+            isRtBarRuntimeExclusionActive() &&
+            image.closest?.('#RTBar')
+        );
+    }
+
+// ------------------------------------------------------------------------
 // INITIALIZATION / DYNAMIC CONTENT
 // ------------------------------------------------------------------------
 
     function queueScan(root = document) {
         if (!root) return;
+
+        /*
+         * Mail and Gathering continuously populate #RTBar with native emoji.
+         * Reject those roots before they enter DALI's scan queue.
+         */
+        if (
+            root !== document &&
+            isDaliRuntimeExcludedNode(root)
+        ) {
+            return;
+        }
 
         if (root === document) {
             FULL_SCAN_QUEUED = true;
@@ -2746,6 +2835,11 @@
                     if (node.nodeType !== Node.ELEMENT_NODE) {
                         continue;
                     }
+
+                    if (isDaliRuntimeExcludedNode(node)) {
+                        continue;
+                    }
+
     
                     queueScan(node);
                 }
@@ -2781,6 +2875,13 @@
 
     function scan(root) {
         if (!root?.querySelectorAll) {
+            return;
+        }
+
+        if (
+            root !== document &&
+            isDaliRuntimeExcludedNode(root)
+        ) {
             return;
         }
 
@@ -2848,7 +2949,10 @@
                 return;
             }
 
-        if (isDaliControlSurfaceImage(image)) {
+        if (
+            isDaliControlSurfaceImage(image) ||
+            isDaliRuntimeExcludedImage(image)
+        ) {
             return;
         }
 

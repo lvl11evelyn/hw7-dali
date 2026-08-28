@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.5
+// @version      1.6
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -870,44 +870,6 @@
         return identities;
     }
 
-    function submissionExportObject() {
-        const approvals = Object.values(state.approvals)
-            .filter(approval => validateProposal(approval))
-            .sort((a, b) => a.approvedAt - b.approvedAt);
-
-        return {
-            schema: 1,
-            type: 'dali-local-approved-associations',
-            exportedAt: Date.now(),
-            count: approvals.length,
-            associations: approvals,
-            registryMerge: registryMergeObject()
-        };
-    }
-
-    function exportApprovedAssociations() {
-        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-        downloadJson(
-            `dali-approved-local-associations-${stamp}.json`,
-            submissionExportObject()
-        );
-    }
-
-    function downloadJson(filename, value) {
-        const blob = new Blob(
-            [JSON.stringify(value, null, 2) + '\n'],
-            { type: 'application/json;charset=utf-8' }
-        );
-        const url = URL.createObjectURL(blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = filename;
-        (document.body || document.documentElement).appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 0);
-    }
-
     function showSummary() {
         const approvals = Object.values(state.approvals)
             .filter(approval => validateProposal(approval));
@@ -940,11 +902,6 @@
     }
 
     function installMenuCommands() {
-        GM_registerMenuCommand(
-            'Export approved associations',
-            exportApprovedAssociations
-        );
-
         GM_registerMenuCommand(
             'Show summary',
             showSummary

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.4
+// @version      1.5
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -447,7 +447,7 @@
         const current = getGitHubToken();
         const token = prompt(
             [
-                'Paste a GitHub token for DALI issue submissions.',
+                'Configure the GitHub token used for DALI issue submissions.',
                 '',
                 `Target repository: ${GITHUB_OWNER}/${GITHUB_REPO}`,
                 '',
@@ -462,37 +462,37 @@
                 '',
                 'This token is stored only in this userscript\'s GM storage.',
                 '',
-                current ? 'A token is currently stored. Leave blank to keep it unchanged.' : ''
-            ].filter(Boolean).join('\n'),
+                current
+                    ? 'A token is currently stored. Enter a new token to replace it, leave the field blank to remove it, or Cancel to keep it unchanged.'
+                    : 'Enter a token to store it, or Cancel/leave blank to make no change.'
+            ].join('\n'),
             ''
         );
-    
+
         if (token === null) return;
-    
+
         const trimmed = token.trim();
+
         if (!trimmed) {
             if (!current) {
-                alert('No token was stored.');
+                return;
             }
+
+            if (!confirm('Remove the stored GitHub issue-submission token?')) {
+                return;
+            }
+
+            GM_setValue(GITHUB_TOKEN_KEY, '');
+            alert('GitHub submission token removed.');
             return;
         }
-    
+
         GM_setValue(GITHUB_TOKEN_KEY, trimmed);
-        alert('GitHub issue-submission token stored in this userscript\'s GM storage.');
-    }
-
-    function clearGitHubToken() {
-        if (!getGitHubToken()) {
-            alert('No GitHub submission token is stored.');
-            return;
-        }
-
-        if (!confirm('Remove the stored GitHub issue-submission token?')) {
-            return;
-        }
-
-        GM_setValue(GITHUB_TOKEN_KEY, '');
-        alert('GitHub submission token removed.');
+        alert(
+            current
+                ? 'GitHub issue-submission token updated.'
+                : 'GitHub issue-submission token stored.'
+        );
     }
 
     function approvalSubmissionKey(approval) {
@@ -885,23 +885,6 @@
         };
     }
 
-    async function copyRegistryFragments() {
-        const text = JSON.stringify(registryMergeObject(), null, 2);
-
-        try {
-            await navigator.clipboard.writeText(text);
-        } catch {
-            const area = document.createElement('textarea');
-            area.value = text;
-            area.style.position = 'fixed';
-            area.style.opacity = '0';
-            (document.body || document.documentElement).appendChild(area);
-            area.select();
-            document.execCommand('copy');
-            area.remove();
-        }
-    }
-
     function exportApprovedAssociations() {
         const stamp = new Date().toISOString().replace(/[:.]/g, '-');
         downloadJson(
@@ -958,38 +941,29 @@
 
     function installMenuCommands() {
         GM_registerMenuCommand(
-            'DALI Approval: Export approved associations',
+            'Export approved associations',
             exportApprovedAssociations
         );
 
         GM_registerMenuCommand(
-            'DALI Approval: Copy registry-ready fragments',
-            copyRegistryFragments
-        );
-
-        GM_registerMenuCommand(
-            'DALI Approval: Show summary',
+            'Show summary',
             showSummary
         );
 
         GM_registerMenuCommand(
-            'DALI Approval: Submit approved associations to GitHub',
+            'Submit approved associations to GitHub',
             submitApprovedAssociationsToGitHub
         );
 
         GM_registerMenuCommand(
-            'DALI Approval: Configure GitHub submission token',
+            'Configure GitHub submission token',
             configureGitHubToken
         );
 
         GM_registerMenuCommand(
-            'DALI Approval: Clear GitHub submission token',
-            clearGitHubToken
-        );
-
-        GM_registerMenuCommand(
-            'DALI Approval: Clear local approvals',
+            'Clear local approvals',
             clearApprovals
         );
     }
+
 })();

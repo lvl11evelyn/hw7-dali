@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.19
+// @version      2.20
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2201,27 +2201,18 @@
 
     function installLearningMenuCommands() {
         GM_registerMenuCommand(
-            'DALI: Review pending associations',
+            'Review pending associations',
             openPendingReview
         );
 
         GM_registerMenuCommand(
-            'DALI: Export pending associations',
+            'Export pending associations',
             () => exportPendingAssociations()
         );
 
         GM_registerMenuCommand(
-            'DALI: Review rejected associations',
+            'Review rejected associations',
             openRejectedReview
-        );
-
-        GM_registerMenuCommand(
-            'DALI: Undo last rejection',
-            () => {
-                if (!undoLastRejection()) {
-                    alert('DALI has no local rejection to undo.');
-                }
-            }
         );
     }
 

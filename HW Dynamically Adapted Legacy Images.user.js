@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.21
+// @version      2.22
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2763,6 +2763,76 @@
         );
     }
 
+
+// ------------------------------------------------------------------------
+// MANUAL ASSET-MAP REFRESH CONTROL
+// ------------------------------------------------------------------------
+
+    function installAssetRefreshControl() {
+        const menu = document.querySelector(
+            'div.topbar-menu > ul'
+        );
+
+        if (!menu) {
+            return false;
+        }
+
+        if (menu.querySelector(
+            'li[data-dali-refresh-assets="1"]'
+        )) {
+            return true;
+        }
+
+        const item = document.createElement('li');
+        item.dataset.daliRefreshAssets = '1';
+
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = '↻ Imagery';
+
+        link.addEventListener('click', async event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (link.dataset.daliRefreshing === '1') {
+                return;
+            }
+
+            link.dataset.daliRefreshing = '1';
+
+            const originalText = link.textContent;
+            link.textContent = 'Refreshing…';
+
+            try {
+                await refreshRemoteAssetMap(true);
+
+                link.textContent = '✓ Success';
+
+                setTimeout(() => {
+                    link.textContent = originalText;
+                }, 1500);
+            } catch (error) {
+                console.error(
+                    'Manual asset refresh failed.',
+                    error
+                );
+
+                link.textContent = '✕ Failure';
+
+                setTimeout(() => {
+                    link.textContent = originalText;
+                }, 2000);
+            } finally {
+                delete link.dataset.daliRefreshing;
+            }
+        });
+
+        item.appendChild(link);
+        menu.appendChild(item);
+
+        return true;
+    }
+
 // ------------------------------------------------------------------------
 // INITIALIZATION / DYNAMIC CONTENT
 // ------------------------------------------------------------------------
@@ -2822,6 +2892,8 @@
         }
     
         DALI_OBSERVER = new MutationObserver(mutations => {
+            installAssetRefreshControl();
+
             for (const mutation of mutations) {
                 for (const node of mutation.addedNodes) {
                     if (node.nodeType !== Node.ELEMENT_NODE) {
@@ -2842,6 +2914,8 @@
             childList: true,
             subtree: true
         });
+
+        installAssetRefreshControl();
 
         scan(document);
 

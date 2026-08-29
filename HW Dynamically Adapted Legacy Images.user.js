@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.22
+// @version      2.23
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -249,6 +249,7 @@
         CATALOG_GENERATION += 1;
 
         buildLookupTables();
+        prunePendingAgainstReplacementPointers();
         return true;
     }
 
@@ -1390,6 +1391,47 @@
         };
     }
 
+    function canonicalizeRasterUrl(value, baseHref = location.href) {
+        const raw = String(value || '').trim();
+
+        if (
+            !raw ||
+            raw.startsWith('data:') ||
+            raw.startsWith('dali-svg://')
+        ) {
+            return '';
+        }
+
+        try {
+            const url = new URL(raw, baseHref);
+
+            /* Fragment identifiers do not change the fetched raster resource. */
+            url.hash = '';
+
+            return url.href;
+        } catch {
+            return '';
+        }
+    }
+
+    function isCurrentRasterReplacementSource(nativeSrc, entry) {
+        if (
+            !entry?.url ||
+            String(entry.url).startsWith('dali-svg://')
+        ) {
+            return false;
+        }
+
+        const sourceUrl = canonicalizeRasterUrl(nativeSrc);
+        const replacementUrl = canonicalizeRasterUrl(entry.url);
+
+        return Boolean(
+            sourceUrl &&
+            replacementUrl &&
+            sourceUrl === replacementUrl
+        );
+    }
+
     function recordPendingAssociation(image, entry) {
         if (!ID_REGISTRY_READY || !entry?.path) {
             return;
@@ -1397,6 +1439,15 @@
 
         const examination = getImageExamination(image);
         const nativeSrc = examination.src;
+
+        /*
+         * Learning has already normalized this object to one canonical asset
+         * identity. Compare only that identity's raster pointer; do not build
+         * or scan a global replacement index on the per-image hot path.
+         */
+        if (isCurrentRasterReplacementSource(nativeSrc, entry)) {
+            return;
+        }
 
         if (!nativeSrc || /^data:image\/svg\+xml/i.test(nativeSrc)) {
             return;
@@ -1490,6 +1541,28 @@
         }
 
         saveLearningState();
+    }
+
+    function prunePendingAgainstReplacementPointers() {
+        let changed = false;
+
+        for (const [key, proposal] of Object.entries(LEARNING_STATE.pending)) {
+            const src = proposal?.source?.src || '';
+            const path = proposal?.proposedIdentity?.path;
+
+            if (!src || !Array.isArray(path)) {
+                continue;
+            }
+
+            const entry = getCatalogEntryByPath(path);
+
+            if (entry && isCurrentRasterReplacementSource(src, entry)) {
+                delete LEARNING_STATE.pending[key];
+                changed = true;
+            }
+        }
+
+        if (changed) saveLearningState();
     }
 
     function prunePendingAgainstRegistry() {

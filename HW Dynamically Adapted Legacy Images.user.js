@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.25
+// @version      2.27
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2874,10 +2874,26 @@
             link.dataset.daliRefreshing = '1';
 
             const originalText = link.textContent;
-            link.textContent = 'Refreshing…';
+            const stateStartedAt = Date.now();
+            const minimumStateMs = 600;
+
+            link.textContent = '↻ Working';
+
+            const holdCurrentState = async () => {
+                const remaining = minimumStateMs - (Date.now() - stateStartedAt);
+
+                if (remaining > 0) {
+                    await new Promise(resolve => setTimeout(resolve, remaining));
+                }
+            };
 
             try {
-                await refreshRemoteAssetMap(true);
+                await Promise.all([
+                    refreshRemoteAssetMap(true),
+                    refreshRemoteSvgCatalog(true)
+                ]);
+
+                await holdCurrentState();
 
                 link.textContent = '✓ Success';
 
@@ -2889,6 +2905,8 @@
                     'Manual asset refresh failed.',
                     error
                 );
+
+                await holdCurrentState();
 
                 link.textContent = '✕ Failure';
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.24
+// @version      2.25
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -3045,7 +3045,15 @@
         };
 
         for (const [className, [catalogName, identity]] of Object.entries(menuAssets)) {
-            const replacementUrl = REPLACEMENTS[catalogName]?.[identity];
+            const replacementPointer = REPLACEMENTS[catalogName]?.[identity];
+
+            if (!replacementPointer) {
+                continue;
+            }
+
+            const replacementUrl = resolveReplacementPointer(
+                replacementPointer
+            );
 
             if (!replacementUrl) {
                 continue;
@@ -3061,11 +3069,20 @@
             icons.push(...root.querySelectorAll(selector));
 
             for (const icon of icons) {
-                if (icon.dataset.daliMenuAsset === identity) {
+                const appliedGeneration = Number.parseInt(
+                    icon.dataset.daliMenuGeneration || '-1',
+                    10
+                );
+
+                if (
+                    icon.dataset.daliMenuAsset === identity &&
+                    appliedGeneration === CATALOG_GENERATION
+                ) {
                     continue;
                 }
 
                 icon.dataset.daliMenuAsset = identity;
+                icon.dataset.daliMenuGeneration = String(CATALOG_GENERATION);
 
                 icon.style.setProperty(
                     'background-image',

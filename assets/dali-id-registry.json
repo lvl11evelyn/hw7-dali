@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 9,
+  "revision": 10,
   "sourceCounts": {
-    "identity": 621,
-    "filename": 722,
-    "fnv": 382,
-    "total": 1104
+    "identity": 622,
+    "filename": 724,
+    "fnv": 394,
+    "total": 1118
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -861,7 +861,10 @@
       "filenames": [
         "Care Package"
       ],
-      "hashes": []
+      "hashes": [
+        "26e98dd5",
+        "da4f6f01"
+      ]
     },
     "backpackItems/Hobo Grail (Depleted)": {
       "catalog": "backpackItems",
@@ -1845,7 +1848,9 @@
       "filenames": [
         "Harvard Degree"
       ],
-      "hashes": []
+      "hashes": [
+        "35f5fc54"
+      ]
     },
     "backpackItems/Misc/Hobalt Shard": {
       "catalog": "backpackItems",
@@ -2167,7 +2172,9 @@
       "filenames": [
         "Rather Large Ruby"
       ],
-      "hashes": []
+      "hashes": [
+        "31c3b303"
+      ]
     },
     "backpackItems/Misc/Red Ore": {
       "catalog": "backpackItems",
@@ -2872,6 +2879,18 @@
         "2d6369e8"
       ]
     },
+    "currencies/Food Stamps": {
+      "catalog": "currencies",
+      "identity": "Food Stamps",
+      "path": [
+        "currencies",
+        "Food Stamps"
+      ],
+      "filenames": [],
+      "hashes": [
+        "a6692429"
+      ]
+    },
     "currencies/Points": {
       "catalog": "currencies",
       "identity": "Points",
@@ -3177,7 +3196,9 @@
       "filenames": [
         "Championship Belt"
       ],
-      "hashes": []
+      "hashes": [
+        "6f36cfb8"
+      ]
     },
     "equipment/Chest Armor": {
       "catalog": "equipment",
@@ -3425,7 +3446,9 @@
       "filenames": [
         "Gold Folding Chair"
       ],
-      "hashes": []
+      "hashes": [
+        "9b2c96ef"
+      ]
     },
     "equipment/Gold Pickaxe": {
       "catalog": "equipment",
@@ -3816,7 +3839,9 @@
       "filenames": [
         "Nights Watch Cloak"
       ],
-      "hashes": []
+      "hashes": [
+        "7796ffa3"
+      ]
     },
     "equipment/Nippled Breastplate": {
       "catalog": "equipment",
@@ -4593,6 +4618,7 @@
         "Can of Coke"
       ],
       "hashes": [
+        "1aaea4bf",
         "a7302819"
       ]
     },
@@ -4636,7 +4662,8 @@
         "Candy Cigarette"
       ],
       "filenames": [
-        "Candy Cigarette"
+        "Candy Cigarette",
+        "Nx20xCandy Cigarette"
       ],
       "hashes": [
         "4a65c4c4"
@@ -4719,6 +4746,7 @@
         "Chocolate Ice Cream"
       ],
       "hashes": [
+        "a82d3279",
         "f5a5a55f"
       ]
     },
@@ -5384,7 +5412,9 @@
       "filenames": [
         "Meat Pie"
       ],
-      "hashes": []
+      "hashes": [
+        "4ef70f12"
+      ]
     },
     "foodItems/Military Rations": {
       "catalog": "foodItems",
@@ -5554,7 +5584,9 @@
       "filenames": [
         "Piece of Bread"
       ],
-      "hashes": []
+      "hashes": [
+        "8e89856e"
+      ]
     },
     "foodItems/Piece of Pizza": {
       "catalog": "foodItems",
@@ -5588,6 +5620,7 @@
         "Polypop"
       ],
       "filenames": [
+        "Nx20xPolypop",
         "Polypop"
       ],
       "hashes": [
@@ -8183,6 +8216,30 @@
       ],
       "hashes": []
     },
+    "uiElements/Delete (Post/Reply)": {
+      "catalog": "uiElements",
+      "identity": "Delete (Post/Reply)",
+      "path": [
+        "uiElements",
+        "Delete (Post/Reply)"
+      ],
+      "filenames": [],
+      "hashes": [
+        "543bf681"
+      ]
+    },
+    "uiElements/Edit (Post/Reply)": {
+      "catalog": "uiElements",
+      "identity": "Edit (Post/Reply)",
+      "path": [
+        "uiElements",
+        "Edit (Post/Reply)"
+      ],
+      "filenames": [],
+      "hashes": [
+        "437c80f7"
+      ]
+    },
     "uiElements/Fight! (Green/active)": {
       "catalog": "uiElements",
       "identity": "Fight! (Green/active)",
@@ -8208,28 +8265,40 @@
         "b6336d49"
       ]
     },
-    "uiElements/Edit (Post/Reply)": {
+    "uiElements/Link (Thread/Reply)": {
       "catalog": "uiElements",
-      "identity": "Edit (Post/Reply)",
+      "identity": "Link (Thread/Reply)",
       "path": [
         "uiElements",
-        "Edit (Post/Reply)"
+        "Link (Thread/Reply)"
       ],
       "filenames": [],
       "hashes": [
-        "437c80f7"
+        "cdb8c7c8"
       ]
     },
-    "uiElements/Delete (Post/Reply)": {
+    "uiElements/Not Online (Message Board Status)": {
       "catalog": "uiElements",
-      "identity": "Delete (Post/Reply)",
+      "identity": "Not Online (Message Board Status)",
       "path": [
         "uiElements",
-        "Delete (Post/Reply)"
+        "Not Online (Message Board Status)"
       ],
       "filenames": [],
       "hashes": [
-        "543bf681"
+        "3f8739f2"
+      ]
+    },
+    "uiElements/Online (Message Board Status)": {
+      "catalog": "uiElements",
+      "identity": "Online (Message Board Status)",
+      "path": [
+        "uiElements",
+        "Online (Message Board Status)"
+      ],
+      "filenames": [],
+      "hashes": [
+        "a8332795"
       ]
     },
     "uiElements/Quote (Post/Reply)": {
@@ -8244,42 +8313,16 @@
         "fe7445d2"
       ]
     },
-    "uiElements/Toggle Lock (Thread)": {
+    "uiElements/Recently Online (Message Board Status)": {
       "catalog": "uiElements",
-      "identity": "Toggle Lock (Thread)",
+      "identity": "Recently Online (Message Board Status)",
       "path": [
         "uiElements",
-        "Toggle Lock (Thread)"
+        "Recently Online (Message Board Status)"
       ],
       "filenames": [],
       "hashes": [
-        "65189642"
-      ]
-    },
-    "uiElements/Link (Thread/Reply)": {
-      "catalog": "uiElements",
-      "identity": "Link (Thread/Reply)",
-      "path": [
-        "uiElements",
-        "Link (Thread/Reply)"
-      ],
-      "filenames": [],
-      "hashes": [
-        "cdb8c7c8"
-      ]
-    },
-    "uiElements/Watch (Thread)": {
-      "catalog": "uiElements",
-      "identity": "Watch (Thread)",
-      "path": [
-        "uiElements",
-        "Watch (Thread)"
-      ],
-      "filenames": [
-        "watch"
-      ],
-      "hashes": [
-        "e3db8336"
+        "fecc28ff"
       ]
     },
     "uiElements/Stop Watching (Thread)": {
@@ -8296,40 +8339,28 @@
         "647340af"
       ]
     },
-    "uiElements/Not Online (Message Board Status)": {
+    "uiElements/Toggle Lock (Thread)": {
       "catalog": "uiElements",
-      "identity": "Not Online (Message Board Status)",
+      "identity": "Toggle Lock (Thread)",
       "path": [
         "uiElements",
-        "Not Online (Message Board Status)"
+        "Toggle Lock (Thread)"
       ],
       "filenames": [],
       "hashes": [
-        "3f8739f2"
+        "65189642"
       ]
     },
-    "uiElements/Recently Online (Message Board Status)": {
+    "uiElements/Vote Down (Frowning Face Emoji)": {
       "catalog": "uiElements",
-      "identity": "Recently Online (Message Board Status)",
+      "identity": "Vote Down (Frowning Face Emoji)",
       "path": [
         "uiElements",
-        "Recently Online (Message Board Status)"
+        "Vote Down (Frowning Face Emoji)"
       ],
       "filenames": [],
       "hashes": [
-        "fecc28ff"
-      ]
-    },
-    "uiElements/Online (Message Board Status)": {
-      "catalog": "uiElements",
-      "identity": "Online (Message Board Status)",
-      "path": [
-        "uiElements",
-        "Online (Message Board Status)"
-      ],
-      "filenames": [],
-      "hashes": [
-        "a8332795"
+        "1c23f13c"
       ]
     },
     "uiElements/Vote Up (Smiling Face Emoji)": {
@@ -8344,16 +8375,18 @@
         "84947074"
       ]
     },
-    "uiElements/Vote Down (Frowning Face Emoji)": {
+    "uiElements/Watch (Thread)": {
       "catalog": "uiElements",
-      "identity": "Vote Down (Frowning Face Emoji)",
+      "identity": "Watch (Thread)",
       "path": [
         "uiElements",
-        "Vote Down (Frowning Face Emoji)"
+        "Watch (Thread)"
       ],
-      "filenames": [],
+      "filenames": [
+        "watch"
+      ],
       "hashes": [
-        "1c23f13c"
+        "e3db8336"
       ]
     }
   }

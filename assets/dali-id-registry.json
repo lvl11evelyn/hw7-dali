@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 10,
+  "revision": 11,
   "sourceCounts": {
-    "identity": 622,
+    "identity": 625,
     "filename": 724,
-    "fnv": 394,
-    "total": 1118
+    "fnv": 397,
+    "total": 1121
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -8265,6 +8265,30 @@
         "b6336d49"
       ]
     },
+    "uiElements/Gray Neutral": {
+      "catalog": "uiElements",
+      "identity": "Gray Neutral",
+      "path": [
+        "uiElements",
+        "Gray Neutral"
+      ],
+      "filenames": [],
+      "hashes": [
+        "52e48d34"
+      ]
+    },
+    "uiElements/Green Up": {
+      "catalog": "uiElements",
+      "identity": "Green Up",
+      "path": [
+        "uiElements",
+        "Green Up"
+      ],
+      "filenames": [],
+      "hashes": [
+        "e70483b1"
+      ]
+    },
     "uiElements/Link (Thread/Reply)": {
       "catalog": "uiElements",
       "identity": "Link (Thread/Reply)",
@@ -8323,6 +8347,18 @@
       "filenames": [],
       "hashes": [
         "fecc28ff"
+      ]
+    },
+    "uiElements/Red Down": {
+      "catalog": "uiElements",
+      "identity": "Red Down",
+      "path": [
+        "uiElements",
+        "Red Down"
+      ],
+      "filenames": [],
+      "hashes": [
+        "912e8d7c"
       ]
     },
     "uiElements/Stop Watching (Thread)": {

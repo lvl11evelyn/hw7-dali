@@ -659,5 +659,10 @@
         "The CMYK": "dali-svg://shot-the-cmyk",
         "Five Star General": "dali-svg://shot-five-star-general",
         "Rainbow Road": "dali-svg://shot-rainbow-road"
+    },
+    "uiElements": {
+        "Green Up": "dali-svg://green-up",
+        "Red Down": "dali-svg://red-down",
+        "Gray Neutral": "dali-svg://gray-neutral"
     }
 }

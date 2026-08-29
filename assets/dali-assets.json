@@ -139,8 +139,8 @@
     "Special Sunglasses": "https://i.imgur.com/V54X14b.png"
   },
   "backpackItems": {
-    "Unusually Large Backpack": "https://i.imgur.com/Xz1OXw6.png",
-    "School ID": "https://i.imgur.com/yvNMRD7.png",
+    "Unusually Large Backpack": "dali-svg://unusually-large-backpack",
+    "School ID": "dali-svg://school-id",
     "Care Package": "https://i.imgur.com/2JKw0ca.png",
     "Cardboard Box": "dali-svg://cardboard-box",
     "Hobo Grail (Depleted)": "dali-svg://hobo-grail-depleted",
@@ -374,7 +374,7 @@
     "Half a Sandwich Naan": null,
     "Discarded Taco Naan": null,
     "Wonka Bar": null,
-    "Single-Single": "https://i.imgur.com/97BFVLX.png",
+    "Single-Single": "dali-svg://single-single",
     "Wonka-stripe Candy Cane": null,
     "Rainbow Drop": null,
     "Roast Beef": null,

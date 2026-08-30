@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.27
+// @version      2.28
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2838,7 +2838,7 @@
 
 
 // ------------------------------------------------------------------------
-// MANUAL ASSET-MAP REFRESH CONTROL
+// MANUAL CANON REFRESH CONTROL
 // ------------------------------------------------------------------------
 
     function installAssetRefreshControl() {
@@ -2890,7 +2890,9 @@
             try {
                 await Promise.all([
                     refreshRemoteAssetMap(true),
-                    refreshRemoteSvgCatalog(true)
+                    refreshRemoteIdRegistry(true),
+                    refreshRemoteSvgCatalog(true),
+                    refreshRemoteRejectionRegistry(true)
                 ]);
 
                 await holdCurrentState();

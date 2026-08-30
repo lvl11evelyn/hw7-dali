@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 13,
+  "revision": 14,
   "sourceCounts": {
     "identity": 625,
-    "filename": 727,
-    "fnv": 397,
-    "total": 1124
+    "filename": 741,
+    "fnv": 404,
+    "total": 1145
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1369,7 +1369,8 @@
         "Bar of Soap"
       ],
       "filenames": [
-        "Bar of Soap"
+        "Bar of Soap",
+        "xBar of Soap"
       ],
       "hashes": [
         "563bca02",
@@ -1414,10 +1415,12 @@
       ],
       "filenames": [
         "25x25xBlack Ore",
-        "Black Ore"
+        "Black Ore",
+        "xBlack Ore"
       ],
       "hashes": [
         "5d8303af",
+        "cdb3375b",
         "eb64f555"
       ]
     },
@@ -1541,10 +1544,12 @@
       ],
       "filenames": [
         "Crystal Skull",
-        "Nx30xCrystal Skull"
+        "Nx30xCrystal Skull",
+        "xCrystal Skull"
       ],
       "hashes": [
-        "cfb6bf9a"
+        "cfb6bf9a",
+        "e678918b"
       ]
     },
     "backpackItems/Misc/Disappearing Ink": {
@@ -1572,7 +1577,8 @@
       ],
       "filenames": [
         "25x25xEmpty Keg",
-        "Empty Keg"
+        "Empty Keg",
+        "xEmpty Keg"
       ],
       "hashes": [
         "5066d626",
@@ -1648,7 +1654,8 @@
       ],
       "filenames": [
         "25x25xFancy Rims",
-        "Fancy Rims"
+        "Fancy Rims",
+        "xFancy Rims"
       ],
       "hashes": [
         "05f6f049",
@@ -1846,10 +1853,12 @@
         "Harvard Degree"
       ],
       "filenames": [
-        "Harvard Degree"
+        "Harvard Degree",
+        "xHarvard Degree"
       ],
       "hashes": [
-        "35f5fc54"
+        "35f5fc54",
+        "719d9ba8"
       ]
     },
     "backpackItems/Misc/Hobalt Shard": {
@@ -1970,6 +1979,7 @@
         "Ming Vase"
       ],
       "hashes": [
+        "104afd9d",
         "9c654443"
       ]
     },
@@ -2091,7 +2101,9 @@
       "filenames": [
         "Plasma Screen TV"
       ],
-      "hashes": []
+      "hashes": [
+        "5ddea51a"
+      ]
     },
     "backpackItems/Misc/Prize-Winning Yorkshire Terrier": {
       "catalog": "backpackItems",
@@ -2119,7 +2131,8 @@
         "Purple Heart"
       ],
       "filenames": [
-        "Purple Heart"
+        "Purple Heart",
+        "xPurple Heart"
       ],
       "hashes": [
         "810dab32",
@@ -4989,7 +5002,9 @@
       "filenames": [
         "Fish Sticks"
       ],
-      "hashes": []
+      "hashes": [
+        "e68d8d33"
+      ]
     },
     "foodItems/Fizzy Falling Soda": {
       "catalog": "foodItems",
@@ -5067,7 +5082,8 @@
         "Freeze-Packed Dippin Dots"
       ],
       "filenames": [
-        "Freeze Packed Dippin Dots"
+        "Freeze Packed Dippin Dots",
+        "xFreeze Packed Dippin Dots"
       ],
       "hashes": []
     },
@@ -5195,7 +5211,8 @@
         "Gummi Spaghetti Monster"
       ],
       "filenames": [
-        "Gummi Spaghetti Monster"
+        "Gummi Spaghetti Monster",
+        "xGummi Spaghetti Monster"
       ],
       "hashes": []
     },
@@ -5425,6 +5442,7 @@
       ],
       "filenames": [
         "Military Rations",
+        "Nx20xMilitary Rations",
         "xMilitary Rations"
       ],
       "hashes": [
@@ -5506,9 +5524,12 @@
         "Octopus"
       ],
       "filenames": [
+        "Nx20xOctopus",
         "Octopus"
       ],
-      "hashes": []
+      "hashes": [
+        "de8f6959"
+      ]
     },
     "foodItems/Okra": {
       "catalog": "foodItems",
@@ -5968,6 +5989,7 @@
         "Texas Fajita Soup"
       ],
       "filenames": [
+        "Nx20xTexas Fajita Soup",
         "Texas Fajita Soup"
       ],
       "hashes": [
@@ -6317,7 +6339,8 @@
         "Five Star General"
       ],
       "filenames": [
-        "25x25xFive Star General"
+        "25x25xFive Star General",
+        "Five Star General"
       ],
       "hashes": [
         "06ad7ddd",
@@ -8123,6 +8146,7 @@
         "Boozaholic 3",
         "Nx45xBoozaholic 3",
         "xBoozaholic 1",
+        "xBoozaholic 2",
         "xBoozaholic 3"
       ],
       "hashes": []

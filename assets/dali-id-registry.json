@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 14,
+  "revision": 15,
   "sourceCounts": {
     "identity": 625,
-    "filename": 741,
-    "fnv": 404,
-    "total": 1145
+    "filename": 742,
+    "fnv": 416,
+    "total": 1158
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1282,7 +1282,8 @@
         "8 Ball"
       ],
       "hashes": [
-        "a27f53c2"
+        "a27f53c2",
+        "c6d61c17"
       ]
     },
     "backpackItems/Misc/Abandoned Motor": {
@@ -1549,7 +1550,8 @@
       ],
       "hashes": [
         "cfb6bf9a",
-        "e678918b"
+        "e678918b",
+        "fdf98c54"
       ]
     },
     "backpackItems/Misc/Disappearing Ink": {
@@ -1659,7 +1661,8 @@
       ],
       "hashes": [
         "05f6f049",
-        "13cf1e9e"
+        "13cf1e9e",
+        "5b921a63"
       ]
     },
     "backpackItems/Misc/Flaming Bag of Something Awful": {
@@ -1853,10 +1856,12 @@
         "Harvard Degree"
       ],
       "filenames": [
+        "25x25xHarvard Degree",
         "Harvard Degree",
         "xHarvard Degree"
       ],
       "hashes": [
+        "1ba8d972",
         "35f5fc54",
         "719d9ba8"
       ]
@@ -1980,6 +1985,7 @@
       ],
       "hashes": [
         "104afd9d",
+        "1d9d1c19",
         "9c654443"
       ]
     },
@@ -2102,6 +2108,7 @@
         "Plasma Screen TV"
       ],
       "hashes": [
+        "46f6d6e3",
         "5ddea51a"
       ]
     },
@@ -2186,7 +2193,8 @@
         "Rather Large Ruby"
       ],
       "hashes": [
-        "31c3b303"
+        "31c3b303",
+        "763931df"
       ]
     },
     "backpackItems/Misc/Red Ore": {
@@ -2285,6 +2293,7 @@
       ],
       "hashes": [
         "127ec95f",
+        "b8aedd5d",
         "ff2c0a0e"
       ]
     },
@@ -2998,7 +3007,9 @@
       "filenames": [
         "Animal Style Blade"
       ],
-      "hashes": []
+      "hashes": [
+        "82f874e6"
+      ]
     },
     "equipment/Another Hobo": {
       "catalog": "equipment",
@@ -3497,7 +3508,9 @@
       "filenames": [
         "Goofy Paper Hat"
       ],
-      "hashes": []
+      "hashes": [
+        "58849b16"
+      ]
     },
     "equipment/Green Lantern Ring": {
       "catalog": "equipment",
@@ -5226,7 +5239,9 @@
       "filenames": [
         "Half Eaten Burger"
       ],
-      "hashes": []
+      "hashes": [
+        "4fe30f48"
+      ]
     },
     "foodItems/Half a Donut": {
       "catalog": "foodItems",
@@ -6178,7 +6193,9 @@
       "filenames": [
         "Golden Rat"
       ],
-      "hashes": []
+      "hashes": [
+        "0fca91a0"
+      ]
     },
     "rats/Gumshoe Rat": {
       "catalog": "rats",

@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 15,
+  "revision": 16,
   "sourceCounts": {
     "identity": 625,
-    "filename": 742,
-    "fnv": 416,
-    "total": 1158
+    "filename": 743,
+    "fnv": 417,
+    "total": 1160
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -8289,7 +8289,9 @@
         "Fight! (Green/active)"
       ],
       "filenames": [],
-      "hashes": [],
+      "hashes": [
+        "aefba71e"
+      ],
       "exactFilenames": [
         "xfight.gif.pagespeed.ic.FbiRfIHknF.png"
       ]
@@ -8304,6 +8306,9 @@
       "filenames": [],
       "hashes": [
         "b6336d49"
+      ],
+      "exactFilenames": [
+        "xfight2.gif.pagespeed.ic.JM-z1DY72M.png"
       ]
     },
     "uiElements/Gray Neutral": {

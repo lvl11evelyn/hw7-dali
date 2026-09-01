@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.28
+// @version      2.29
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -894,6 +894,39 @@
         };
     }
 
+    function isNativeHoboWarsImageSource(src) {
+        const value = String(src || '').trim();
+
+        if (!value) {
+            return false;
+        }
+
+        /*
+         * Native HoboWars imagery is either emitted as a base64 payload or
+         * served from a HoboWars host beneath /images/.
+         *
+         * DALI-generated SVG data URLs are deliberately excluded here.
+         */
+        if (/^data:image\/[a-z0-9.+-]+;base64,/i.test(value)) {
+            return true;
+        }
+
+        try {
+            const url = new URL(value, location.href);
+            const hostname = String(url.hostname || '').toLowerCase();
+            const isHoboWarsHost =
+                hostname === 'hobowars.com' ||
+                hostname.endsWith('.hobowars.com');
+
+            return (
+                isHoboWarsHost &&
+                url.pathname.startsWith('/images/')
+            );
+        } catch (error) {
+            return false;
+        }
+    }
+
     function canonicalRegistryKeyForDescriptor(descriptor) {
         if (!descriptor || !ID_REGISTRY_READY || !ID_REGISTRY) {
             return null;
@@ -1156,7 +1189,7 @@
     }
 
     function processDeterministicRegistryImage(image) {
-        const src = image.getAttribute('src') || '';
+        const src = getImageExamination(image).src;
         const hit = lookupRegistryEntryForSource(src);
 
         if (!hit?.registryEntry) {
@@ -3134,13 +3167,32 @@
         }
 
         const src = image.getAttribute('src') || '';
+        const examination = IMAGE_EXAMINATIONS.get(image);
+        const originalSrc = examination?.src || src;
+
+        /*
+         * HARD SCOPE BOUNDARY
+         *
+         * DALI adapts native HoboWars imagery only.
+         *
+         * Eligible native sources are:
+         *   1. base64 image payloads supplied by HoboWars; or
+         *   2. HoboWars-hosted files beneath /images/.
+         *
+         * External, user-supplied, and module-supplied imagery is never
+         * examined, learned, resolved, or replaced, even if its semantic
+         * identity overlaps a canonical DALI asset.
+         */
+        if (!isNativeHoboWarsImageSource(originalSrc)) {
+            return;
+        }
 
         /*
          * Message-board icons are HoboWars emoji. Many are animated, and
          * filename identities such as money.gif can collide with DALI's
          * ordinary catalogs. Preserve the entire emoji namespace untouched.
          */
-        if (/\/mb_icons\//i.test(src)) {
+        if (/\/mb_icons\//i.test(originalSrc)) {
             return;
         }
 

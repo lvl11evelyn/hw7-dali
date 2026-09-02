@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.29
+// @version      2.30
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -15,6 +15,264 @@
 // @grant        GM_registerMenuCommand
 // @connect      raw.githubusercontent.com
 // ==/UserScript==
+
+/*
+ * Shared HoboWars settings-provider coordinator.
+ *
+ * Every participating userscript carries this small coordinator. Providers
+ * communicate only through same-origin DOM markers/events and localStorage;
+ * no userscript sandbox needs a reference to another script's functions.
+ */
+function HW_registerSharedSettingsProvider(panel, provider) {
+    'use strict';
+
+    if (!(panel instanceof HTMLElement) || !provider) return;
+
+    const ACTIVE_KEY = 'hw.sharedSettings.activeProvider.v1';
+    const REGISTER_EVENT = 'hw:settings-provider-registered';
+    const COORDINATOR_ATTR = 'data-hw-settings-coordinator';
+    const PROVIDER_SELECTOR = '[data-hw-settings-provider]';
+    const TAB_WIDTH = 25;
+
+    panel.dataset.hwSettingsProvider = String(provider.id || '');
+    panel.dataset.hwSettingsLabel = String(provider.label || provider.id || '');
+    panel.dataset.hwSettingsOrder = String(Number(provider.order) || 999);
+    panel.hidden = false;
+
+    if (!document.getElementById('hw-shared-settings-styles')) {
+        const style = document.createElement('style');
+        style.id = 'hw-shared-settings-styles';
+        style.textContent = `
+            .hw-settings-shared-shell {
+                --hw-settings-tab-width: ${TAB_WIDTH}px;
+                position: relative;
+                float: right;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) var(--hw-settings-tab-width);
+                align-items: start;
+                width: 472px;
+                max-width: calc(100% - 307px);
+                margin: 0 0 18px 5px;
+                box-sizing: border-box;
+                color: #111;
+                font-family: Arial, sans-serif;
+                font-size: 13px;
+            }
+            .hw-settings-shared-shell::after {
+                content: '';
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                right: calc(var(--hw-settings-tab-width) - 1px);
+                bottom: 0;
+                width: 1px;
+                background: #c9c9c9;
+                pointer-events: none;
+            }
+            .hw-settings-shared-body {
+                position: relative;
+                z-index: 1;
+                min-width: 0;
+            }
+            .hw-settings-shared-body > [data-hw-settings-provider] {
+                float: none !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+                border-radius: 5px 0 5px 5px !important;
+            }
+            .hw-settings-shared-body > [data-hw-settings-provider][hidden] {
+                display: none !important;
+            }
+            .hw-settings-shared-tabs {
+                position: relative;
+                z-index: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                min-width: 0;
+                gap: 5px;
+                padding-top: 16px;
+            }
+            .hw-settings-tab {
+                position: relative;
+                z-index: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100px;
+                min-height: 100px;
+                margin: 0;
+                padding: 7px 5px;
+                box-sizing: border-box;
+                border: 1px solid #7f7f7f;
+                border-radius: 0 10px 10px 0;
+                background: #c3c3c3;
+                color: #111;
+                font: inherit;
+                text-align: center;
+                text-decoration: underline;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                cursor: pointer;
+            }
+            .hw-settings-tab:not(.hw-settings-tab-active):hover {
+                border-color: #007a2d;
+                background: #f4fff8;
+            }
+            .hw-settings-tab.hw-settings-tab-active {
+                z-index: 3;
+                border: 1px solid #c9c9c9;
+                border-left-color: #f3f3f3;
+                background: #f3f3f3;
+                font-weight: bold;
+                text-decoration: none;
+                cursor: default;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    const readProviders = () => {
+        const seen = new Set();
+        return [...document.querySelectorAll(PROVIDER_SELECTOR)]
+            .filter(node => {
+                const id = node.dataset.hwSettingsProvider || '';
+                if (!id || seen.has(id)) return false;
+                seen.add(id);
+                return true;
+            })
+            .sort((a, b) => {
+                const orderDelta =
+                    (Number(a.dataset.hwSettingsOrder) || 999) -
+                    (Number(b.dataset.hwSettingsOrder) || 999);
+                return orderDelta ||
+                    (a.dataset.hwSettingsProvider || '').localeCompare(
+                        b.dataset.hwSettingsProvider || ''
+                    );
+            });
+    };
+
+    const syncShellGeometry = shell => {
+        if (!shell) return;
+        shell.classList.remove('hw-settings-shared-stacked');
+    };
+
+    const coordinate = () => {
+        const providers = readProviders();
+        let shell = document.querySelector('.hw-settings-shared-shell');
+
+        if (providers.length < 2) {
+            if (shell) {
+                const parent = shell.parentNode;
+                const reference = shell;
+                for (const providerPanel of providers) {
+                    parent?.insertBefore(providerPanel, reference);
+                    providerPanel.hidden = false;
+                    providerPanel.style.removeProperty('display');
+                }
+                shell.remove();
+            } else if (providers[0]) {
+                providers[0].hidden = false;
+                providers[0].style.removeProperty('display');
+            }
+            return;
+        }
+
+        if (!shell) {
+            const anchor = providers[0];
+            shell = document.createElement('section');
+            shell.className = 'hw-settings-shared-shell';
+            shell.setAttribute('aria-label', 'HoboWars settings');
+
+            const body = document.createElement('div');
+            body.className = 'hw-settings-shared-body';
+
+            const tabs = document.createElement('div');
+            tabs.className = 'hw-settings-shared-tabs';
+            tabs.setAttribute('role', 'tablist');
+            tabs.setAttribute('aria-label', 'Settings providers');
+            tabs.setAttribute('aria-orientation', 'vertical');
+
+            shell.append(body, tabs);
+            anchor.parentNode?.insertBefore(shell, anchor);
+        }
+
+        const body = shell.querySelector('.hw-settings-shared-body');
+        const tabs = shell.querySelector('.hw-settings-shared-tabs');
+        if (!body || !tabs) return;
+
+        for (const providerPanel of providers) body.appendChild(providerPanel);
+
+        let activeId = '';
+        try {
+            activeId = localStorage.getItem(ACTIVE_KEY) || '';
+        } catch {
+            activeId = '';
+        }
+
+        if (!providers.some(item => item.dataset.hwSettingsProvider === activeId)) {
+            activeId = providers[0].dataset.hwSettingsProvider;
+            try {
+                localStorage.setItem(ACTIVE_KEY, activeId);
+            } catch {
+                // Deterministic in-memory fallback still applies.
+            }
+        }
+
+        tabs.replaceChildren();
+
+        for (const providerPanel of providers) {
+            const id = providerPanel.dataset.hwSettingsProvider;
+            const label = providerPanel.dataset.hwSettingsLabel || id;
+            const active = id === activeId;
+
+            providerPanel.hidden = !active;
+            providerPanel.style.setProperty(
+                'display',
+                active ? 'block' : 'none',
+                'important'
+            );
+            providerPanel.setAttribute('role', 'tabpanel');
+            providerPanel.setAttribute('aria-hidden', String(!active));
+
+            const tab = document.createElement('button');
+            tab.type = 'button';
+            tab.className = 'hw-settings-tab';
+            tab.classList.toggle('hw-settings-tab-active', active);
+            tab.textContent = label;
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('aria-selected', String(active));
+
+            tab.addEventListener('click', () => {
+                try {
+                    localStorage.setItem(ACTIVE_KEY, id);
+                } catch {
+                    // The current click can still be reflected in this page.
+                }
+                coordinate();
+            });
+
+            tabs.appendChild(tab);
+        }
+
+        syncShellGeometry(shell);
+    };
+
+    const root = document.documentElement;
+    if (!root.hasAttribute(COORDINATOR_ATTR)) {
+        root.setAttribute(COORDINATOR_ATTR, `${provider.id}:${Date.now()}`);
+        document.addEventListener(REGISTER_EVENT, coordinate);
+        window.addEventListener('resize', () => {
+            syncShellGeometry(document.querySelector('.hw-settings-shared-shell'));
+        }, { passive: true });
+    }
+
+    coordinate();
+    document.dispatchEvent(new Event(REGISTER_EVENT));
+}
 
 // ============================================================================
 // DALI - DYNAMICALLY ADAPTED LEGACY IMAGES
@@ -2320,6 +2578,210 @@
             'Review Rejected Proposals',
             openRejectedReview
         );
+    }
+
+    function installDaliPreferencesProvider() {
+        const run = () => {
+            const url = new URL(location.href);
+            if (!url.pathname.endsWith('/game/game.php')) return;
+            if (url.searchParams.get('cmd') !== 'preferences') return;
+
+            const allowedKeys = new Set(['sr', 'cmd']);
+            if ([...url.searchParams.keys()].some(key => !allowedKeys.has(key))) return;
+
+            const content = document.querySelector('.content-area');
+            if (!content || document.getElementById('dali-preferences-panel')) return;
+
+            const style = document.createElement('style');
+            style.id = 'dali-preferences-styles';
+            style.textContent = `
+                #dali-preferences-panel {
+                    float: right;
+                    width: min(440px, 48%);
+                    margin: 0 0 18px 12px;
+                    padding: 10px 12px 12px;
+                    box-sizing: border-box;
+                    border: 1px solid #c7c7c7;
+                    border-radius: 5px;
+                    background: #f3f3f3;
+                    color: #111;
+                    font: 13px Arial, sans-serif;
+                }
+                #dali-preferences-panel .dali-settings-title-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: center;
+                    gap: 4px;
+                    margin-bottom: 3px;
+                }
+                #dali-preferences-panel .dali-settings-title {
+                    font-size: 20px;
+                    font-weight: bold;
+                    letter-spacing: .5px;
+                }
+                #dali-preferences-panel .dali-settings-version {
+                    color: #888;
+                    font-size: 10px;
+                }
+                #dali-preferences-panel .dali-settings-subtitle {
+                    margin-bottom: 10px;
+                    text-align: center;
+                    color: #666;
+                    font-size: 11px;
+                }
+                #dali-preferences-panel .dali-settings-summary {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 6px;
+                    margin-bottom: 10px;
+                }
+                #dali-preferences-panel .dali-settings-count {
+                    padding: 6px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    background: #fff;
+                    text-align: center;
+                    font-size: 11px;
+                }
+                #dali-preferences-panel .dali-settings-count strong {
+                    display: block;
+                    margin-top: 2px;
+                    font-size: 16px;
+                }
+                #dali-preferences-panel .dali-settings-actions {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 7px;
+                }
+                #dali-preferences-panel .dali-settings-actions button {
+                    min-height: 31px;
+                    padding: 5px 7px;
+                    cursor: pointer;
+                }
+                #dali-preferences-panel .dali-settings-actions button:disabled {
+                    cursor: default;
+                    opacity: .5;
+                }
+                #dali-preferences-panel .dali-settings-status {
+                    min-height: 14px;
+                    margin-top: 8px;
+                    text-align: center;
+                    color: #666;
+                    font-size: 10px;
+                }
+                #dali-preferences-panel .dali-settings-boundary {
+                    margin-top: 8px;
+                    padding-top: 7px;
+                    border-top: 1px solid #ccc;
+                    text-align: center;
+                    color: #777;
+                    font-size: 10px;
+                }
+            `;
+            document.head.appendChild(style);
+
+            const panel = document.createElement('section');
+            panel.id = 'dali-preferences-panel';
+
+            const titleRow = document.createElement('div');
+            titleRow.className = 'dali-settings-title-row';
+
+            const title = document.createElement('div');
+            title.className = 'dali-settings-title';
+            title.textContent = 'DALI Images';
+
+            const version = document.createElement('span');
+            version.className = 'dali-settings-version';
+            version.textContent = 'v2.30';
+
+            titleRow.append(title, version);
+
+            const subtitle = document.createElement('div');
+            subtitle.className = 'dali-settings-subtitle';
+            subtitle.textContent = 'Association Review & Export';
+
+            const summary = document.createElement('div');
+            summary.className = 'dali-settings-summary';
+
+            const pendingCount = document.createElement('div');
+            pendingCount.className = 'dali-settings-count';
+
+            const rejectedCount = document.createElement('div');
+            rejectedCount.className = 'dali-settings-count';
+
+            summary.append(pendingCount, rejectedCount);
+
+            const actions = document.createElement('div');
+            actions.className = 'dali-settings-actions';
+
+            const reviewPending = document.createElement('button');
+            reviewPending.type = 'button';
+            reviewPending.textContent = 'Review Proposals';
+            reviewPending.addEventListener('click', openPendingReview);
+
+            const exportPending = document.createElement('button');
+            exportPending.type = 'button';
+            exportPending.textContent = 'Export Proposals';
+            exportPending.addEventListener('click', () => {
+                exportPendingAssociations();
+                status.textContent = 'Proposal export requested.';
+            });
+
+            const reviewRejected = document.createElement('button');
+            reviewRejected.type = 'button';
+            reviewRejected.textContent = 'Review Rejected';
+            reviewRejected.addEventListener('click', openRejectedReview);
+
+            const undo = document.createElement('button');
+            undo.type = 'button';
+            undo.textContent = 'Undo Last Rejection';
+
+            actions.append(reviewPending, exportPending, reviewRejected, undo);
+
+            const status = document.createElement('div');
+            status.className = 'dali-settings-status';
+
+            const boundary = document.createElement('div');
+            boundary.className = 'dali-settings-boundary';
+            boundary.textContent = 'DALI remains restricted to native base64 imagery and HoboWars-hosted /images/ sources.';
+
+            const syncCounts = () => {
+                const pending = Object.keys(LEARNING_STATE.pending || {}).length;
+                const rejected = Object.keys(LEARNING_STATE.rejections || {}).length;
+                pendingCount.innerHTML = `Pending<strong>${pending.toLocaleString()}</strong>`;
+                rejectedCount.innerHTML = `Rejected<strong>${rejected.toLocaleString()}</strong>`;
+                reviewPending.disabled = pending === 0;
+                exportPending.disabled = pending === 0;
+                reviewRejected.disabled = rejected === 0;
+                undo.disabled = rejected === 0;
+            };
+
+            undo.addEventListener('click', () => {
+                const restored = undoLastRejection();
+                status.textContent = restored
+                    ? 'The latest rejection was restored to Pending.'
+                    : 'There is no rejection to restore.';
+                syncCounts();
+            });
+
+            panel.append(titleRow, subtitle, summary, actions, status, boundary);
+            content.insertBefore(panel, content.firstChild);
+
+            HW_registerSharedSettingsProvider(panel, {
+                id: 'images',
+                label: 'Images',
+                order: 40
+            });
+
+            syncCounts();
+            document.addEventListener(PENDING_SNAPSHOT_EVENT, syncCounts);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', run, { once: true });
+        } else {
+            run();
+        }
     }
 
     function buildLookupTables() {
@@ -5216,6 +5678,7 @@ function barSvg(x, y, scale = 1) {
 
     installLocalIdentityBridge();
     installLearningMenuCommands();
+    installDaliPreferencesProvider();
     initializeDali();
 
     refreshRemoteAssetMap();

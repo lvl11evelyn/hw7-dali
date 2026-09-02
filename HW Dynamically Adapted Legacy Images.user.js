@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.30
+// @version      2.31
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -81,6 +81,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
                 margin: 0 !important;
                 box-sizing: border-box !important;
                 border-radius: 5px 0 5px 5px !important;
+                min-height: 450px;
             }
             .hw-settings-shared-body > [data-hw-settings-provider][hidden] {
                 display: none !important;

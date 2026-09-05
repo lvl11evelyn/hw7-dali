@@ -215,7 +215,7 @@
       "Cola": null,
       "Celery": null,
       "Dry Ice": null,
-      "Fire": null,
+      "Fire": "dali-svg://fire",
       "Hair of the Dog": null,
       "Milk": null,
       "Tabasco": null,

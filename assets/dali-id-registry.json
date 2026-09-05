@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 16,
+  "revision": 17,
   "sourceCounts": {
     "identity": 625,
     "filename": 743,
@@ -1159,9 +1159,7 @@
         "Kings Kiddie Cup",
         "Nx38xKings Kiddie Cup"
       ],
-      "hashes": [
-        "9ab0cb50"
-      ]
+      "hashes": []
     },
     "backpackItems/King's Kiddie Cup+": {
       "catalog": "backpackItems",
@@ -1172,6 +1170,7 @@
       ],
       "filenames": [],
       "hashes": [
+        "9ab0cb50",
         "207191e6",
         "32fea929",
         "4217fcb3"

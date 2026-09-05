@@ -210,7 +210,7 @@
       "Rusty Butler": null
     },
     "Ingredients": {
-      "Ice": null,
+      "Ice": "dali-svg://ice",
       "Red Bull": null,
       "Cola": null,
       "Celery": null,

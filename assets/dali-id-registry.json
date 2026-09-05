@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 17,
+  "revision": 18,
   "sourceCounts": {
     "identity": 625,
-    "filename": 743,
+    "filename": 744,
     "fnv": 417,
-    "total": 1160
+    "total": 1161
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -1176,7 +1176,8 @@
         "4217fcb3"
       ],
       "exactFilenames": [
-        "25x25xKings-Kiddie-Cup.gif.pagespeed.ic.27O_vQKR7t.png"
+        "25x25xKings-Kiddie-Cup.gif.pagespeed.ic.27O_vQKR7t.png",
+        "Nx38xKings-Kiddie-Cup.gif.pagespeed.ic.182Ws0FENE.png"
       ]
     },
     "backpackItems/MiningTools/Bomb": {

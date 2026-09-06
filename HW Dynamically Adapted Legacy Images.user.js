@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.31
+// @version      2.32
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2633,16 +2633,20 @@ function HW_registerSharedSettingsProvider(panel, provider) {
                 #dali-preferences-panel .dali-settings-summary {
                     display: grid;
                     grid-template-columns: repeat(2, minmax(0, 1fr));
+                    justify-items: center;
                     gap: 6px;
-                    margin-bottom: 10px;
+                    padding-bottom: 3px;
+                    margin-bottom: 3px;
+                    border-bottom: 1px solid #666;
                 }
                 #dali-preferences-panel .dali-settings-count {
-                    padding: 6px;
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
+                    max-width: 100px;
+                    padding: 4px 18px;
+                    border: 2px outset #ccc;
+                    border-radius: 4px;
                     background: #fff;
                     text-align: center;
-                    font-size: 11px;
+                    font-size: 13px;
                 }
                 #dali-preferences-panel .dali-settings-count strong {
                     display: block;
@@ -2650,18 +2654,24 @@ function HW_registerSharedSettingsProvider(panel, provider) {
                     font-size: 16px;
                 }
                 #dali-preferences-panel .dali-settings-actions {
-                    display: grid;
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
                     gap: 7px;
                 }
                 #dali-preferences-panel .dali-settings-actions button {
-                    min-height: 31px;
-                    padding: 5px 7px;
+                    min-height: 20px;
+                    width: calc(25% - 14px);
+                    min-width: 85px;
+                    max-width: 125px;
                     cursor: pointer;
                 }
                 #dali-preferences-panel .dali-settings-actions button:disabled {
                     cursor: default;
                     opacity: .5;
+                }
+                #dali-preferences-panel .dali-refresh-assets {
+                    grid-column: 1 / -1;
                 }
                 #dali-preferences-panel .dali-settings-status {
                     min-height: 14px;
@@ -2737,7 +2747,21 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             undo.type = 'button';
             undo.textContent = 'Undo Last Rejection';
 
-            actions.append(reviewPending, exportPending, reviewRejected, undo);
+            const refreshAssets = document.createElement('button');
+            refreshAssets.type = 'button';
+            refreshAssets.className = 'dali-refresh-assets';
+            refreshAssets.textContent = '↻ Imagery';
+            refreshAssets.addEventListener('click', () => {
+                runManualAssetRefresh(refreshAssets);
+            });
+
+            actions.append(
+                reviewPending,
+                exportPending,
+                reviewRejected,
+                undo,
+                refreshAssets
+            );
 
             const status = document.createElement('div');
             status.className = 'dali-settings-status';
@@ -3337,43 +3361,19 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 // MANUAL CANON REFRESH CONTROL
 // ------------------------------------------------------------------------
 
-    function installAssetRefreshControl() {
-        const menu = document.querySelector(
-            'div.topbar-menu > ul'
-        );
-
-        if (!menu) {
-            return false;
-        }
-
-        if (menu.querySelector(
-            'li[data-dali-refresh-assets="1"]'
-        )) {
-            return true;
-        }
-
-        const item = document.createElement('li');
-        item.dataset.daliRefreshAssets = '1';
-
-        const link = document.createElement('a');
-        link.href = '#';
-        link.textContent = '↻ Imagery';
-
-        link.addEventListener('click', async event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (link.dataset.daliRefreshing === '1') {
+    async function runManualAssetRefresh(control) {
+            if (!control || control.dataset.daliRefreshing === '1') {
                 return;
             }
 
-            link.dataset.daliRefreshing = '1';
+            control.dataset.daliRefreshing = '1';
+            control.disabled = true;
 
-            const originalText = link.textContent;
+            const originalText = control.textContent;
             const stateStartedAt = Date.now();
             const minimumStateMs = 600;
 
-            link.textContent = '↻ Working';
+            control.textContent = '↻ Working';
 
             const holdCurrentState = async () => {
                 const remaining = minimumStateMs - (Date.now() - stateStartedAt);
@@ -3393,10 +3393,10 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
                 await holdCurrentState();
 
-                link.textContent = '✓ Success';
+                control.textContent = '✓ Success';
 
                 setTimeout(() => {
-                    link.textContent = originalText;
+                    control.textContent = originalText;
                 }, 1500);
             } catch (error) {
                 console.error(
@@ -3406,20 +3406,15 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
                 await holdCurrentState();
 
-                link.textContent = '✕ Failure';
+                control.textContent = '✕ Failure';
 
                 setTimeout(() => {
-                    link.textContent = originalText;
+                    control.textContent = originalText;
                 }, 2000);
             } finally {
-                delete link.dataset.daliRefreshing;
+                delete control.dataset.daliRefreshing;
+                control.disabled = false;
             }
-        });
-
-        item.appendChild(link);
-        menu.appendChild(item);
-
-        return true;
     }
 
 // ------------------------------------------------------------------------
@@ -3481,8 +3476,6 @@ function HW_registerSharedSettingsProvider(panel, provider) {
         }
     
         DALI_OBSERVER = new MutationObserver(mutations => {
-            installAssetRefreshControl();
-
             for (const mutation of mutations) {
                 for (const node of mutation.addedNodes) {
                     if (node.nodeType !== Node.ELEMENT_NODE) {
@@ -3503,8 +3496,6 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             childList: true,
             subtree: true
         });
-
-        installAssetRefreshControl();
 
         scan(document);
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.34
+// @version      2.35
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -2473,7 +2473,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
         const panel = document.createElement('div');
         Object.assign(panel.style, {
-            maxWidth: '900px',
+            maxWidth: '1100px',
             margin: '0 auto',
             background: '#f4f4f4',
             color: '#111',
@@ -2525,6 +2525,28 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             const heading = document.createElement('div');
             heading.innerHTML = `<strong>${escapeHtml(identity)}</strong>`;
             card.appendChild(heading);
+
+            const comparison = document.createElement('div');
+            Object.assign(comparison.style, {
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '12px',
+                margin: '10px 0'
+            });
+
+            comparison.append(
+                makePendingPreviewBox(
+                    'Native source',
+                    resolvePendingNativePreviewSource(rejection),
+                    'Native source unavailable'
+                ),
+                makePendingPreviewBox(
+                    'Proposed DALI replacement',
+                    resolvePendingReplacementPreviewSource(rejection),
+                    'No replacement currently mapped'
+                )
+            );
+            card.appendChild(comparison);
 
             const sourceSummary = document.createElement('code');
             const parts = [];
@@ -3084,7 +3106,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
     function isDaliControlSurfaceImage(image) {
         return Boolean(
-            image?.closest?.('#dali-pending-review, #dali-rejection-review')
+            image?.closest?.('#dali-pending-review, #dali-rejected-review')
         );
     }
 

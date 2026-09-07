@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW DALI Local Approval Extension
 // @namespace    https://www.hobowars.com/
-// @version      1.6
+// @version      1.5
 // @description  Optional local approval workflow for DALI pending identity associations. Stores only local user authority and cannot modify DALI's canonical remote registry.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -33,6 +33,7 @@
 
     let state = loadState();
     let pendingByToken = new Map();
+    let rejectedByToken = new Map();
     let desiredFocusToken = '';
     let reviewKeyHandler = null;
 
@@ -53,7 +54,8 @@
         return {
             schema: 1,
             approvals: {},
-            submissions: {}
+            submissions: {},
+            rejectionSubmissions: {}
         };
     }
 
@@ -71,6 +73,13 @@
             ) {
                 if (!parsed.submissions || typeof parsed.submissions !== 'object' || Array.isArray(parsed.submissions)) {
                     parsed.submissions = {};
+                }
+                if (
+                    !parsed.rejectionSubmissions ||
+                    typeof parsed.rejectionSubmissions !== 'object' ||
+                    Array.isArray(parsed.rejectionSubmissions)
+                ) {
+                    parsed.rejectionSubmissions = {};
                 }
                 return parsed;
             }
@@ -157,6 +166,23 @@
         }
 
         pendingByToken = next;
+
+        const nextRejected = new Map();
+
+        for (const item of Array.isArray(payload.rejections) ? payload.rejections : []) {
+            if (
+                !item ||
+                typeof item.token !== 'string' ||
+                !item.token ||
+                !validateRejection(item.rejection)
+            ) {
+                continue;
+            }
+
+            nextRejected.set(item.token, item.rejection);
+        }
+
+        rejectedByToken = nextRejected;
     }
 
     function approvalKey(proposal) {
@@ -210,6 +236,14 @@
         }
 
         return false;
+    }
+
+    function validateRejection(rejection) {
+        return Boolean(
+            validateProposal(rejection) &&
+            Number.isFinite(Number(rejection.rejectedAt)) &&
+            Number(rejection.rejectedAt) > 0
+        );
     }
 
     function approvePending(token) {
@@ -447,7 +481,7 @@
         const current = getGitHubToken();
         const token = prompt(
             [
-                'Configure the GitHub token used for DALI issue submissions.',
+                'Paste a GitHub token for DALI issue submissions.',
                 '',
                 `Target repository: ${GITHUB_OWNER}/${GITHUB_REPO}`,
                 '',
@@ -462,37 +496,37 @@
                 '',
                 'This token is stored only in this userscript\'s GM storage.',
                 '',
-                current
-                    ? 'A token is currently stored. Enter a new token to replace it, leave the field blank to remove it, or Cancel to keep it unchanged.'
-                    : 'Enter a token to store it, or Cancel/leave blank to make no change.'
-            ].join('\n'),
+                current ? 'A token is currently stored. Leave blank to keep it unchanged.' : ''
+            ].filter(Boolean).join('\n'),
             ''
         );
-
+    
         if (token === null) return;
-
+    
         const trimmed = token.trim();
-
         if (!trimmed) {
             if (!current) {
-                return;
+                alert('No token was stored.');
             }
+            return;
+        }
+    
+        GM_setValue(GITHUB_TOKEN_KEY, trimmed);
+        alert('GitHub issue-submission token stored in this userscript\'s GM storage.');
+    }
 
-            if (!confirm('Remove the stored GitHub issue-submission token?')) {
-                return;
-            }
-
-            GM_setValue(GITHUB_TOKEN_KEY, '');
-            alert('GitHub submission token removed.');
+    function clearGitHubToken() {
+        if (!getGitHubToken()) {
+            alert('No GitHub submission token is stored.');
             return;
         }
 
-        GM_setValue(GITHUB_TOKEN_KEY, trimmed);
-        alert(
-            current
-                ? 'GitHub issue-submission token updated.'
-                : 'GitHub issue-submission token stored.'
-        );
+        if (!confirm('Remove the stored GitHub issue-submission token?')) {
+            return;
+        }
+
+        GM_setValue(GITHUB_TOKEN_KEY, '');
+        alert('GitHub submission token removed.');
     }
 
     function approvalSubmissionKey(approval) {
@@ -504,6 +538,17 @@
             .filter(approval => validateProposal(approval))
             .filter(approval => !state.submissions[approvalSubmissionKey(approval)])
             .sort((a, b) => a.approvedAt - b.approvedAt);
+    }
+
+    function rejectionSubmissionKey(rejection) {
+        return approvalKey(rejection);
+    }
+
+    function unsubmittedRejections() {
+        return [...rejectedByToken.values()]
+            .filter(rejection => validateRejection(rejection))
+            .filter(rejection => !state.rejectionSubmissions[rejectionSubmissionKey(rejection)])
+            .sort((a, b) => a.rejectedAt - b.rejectedAt);
     }
 
     function registryMergeForApprovals(approvals) {
@@ -622,6 +667,14 @@
         return compact;
     }
 
+    function compactRejectionForGitHubSubmission(rejection) {
+        return {
+            ...compactApprovalForGitHubSubmission(rejection),
+            ra: Number(rejection.rejectedAt) || 0,
+            ce: Boolean(rejection.canonicalEligible)
+        };
+    }
+
     function githubSubmissionPayload(approvals) {
         return {
             schema: 1,
@@ -644,6 +697,35 @@
             '',
             `Associations: ${payload.count}`,
             'Legend: src.t = u(url) or d(data-image), src.s = source string, src.f = filename, src.h = FNV hash, id.p = registry path, cf = confidence %, ob = observations, ctx values truncated to ~100 chars.',
+            '',
+            '```json',
+            JSON.stringify(payload),
+            '```'
+        ].join('\n');
+    }
+
+    function githubRejectionSubmissionPayload(rejections) {
+        return {
+            schema: 1,
+            type: 'dali-canonical-rejection-submission',
+            submittedAt: Date.now(),
+            source: 'HW DALI Local Approval Extension',
+            repository: `${GITHUB_OWNER}/${GITHUB_REPO}`,
+            count: rejections.length,
+            associations: rejections.map(compactRejectionForGitHubSubmission)
+        };
+    }
+
+    function githubRejectionIssueBody(payload) {
+        return [
+            '## DALI rejection submission',
+            '',
+            'This issue was created by the HW DALI Local Approval Extension from locally rejected identity associations.',
+            '',
+            'Local rejection is not canonical rejection. The compact payload below is review evidence only; canonical authority changes only when a repository maintainer updates the canonical rejection registry.',
+            '',
+            `Rejected associations: ${payload.count}`,
+            'Legend: src.t = u(url) or d(data-image), src.s = source string, src.f = filename, src.h = FNV hash, id.p = registry path, cf = confidence %, ob = observations, ra = rejected timestamp, ce = canonically eligible, ctx values truncated to ~100 chars.',
             '',
             '```json',
             JSON.stringify(payload),
@@ -684,6 +766,45 @@
                 approvals: current,
                 payload,
                 body: githubIssueBody(payload)
+            });
+        }
+
+        return batches;
+    }
+
+    function buildGitHubRejectionSubmissionBatches(rejections) {
+        const batches = [];
+        let current = [];
+
+        for (const rejection of rejections) {
+            const trial = [...current, rejection];
+            const trialPayload = githubRejectionSubmissionPayload(trial);
+            const trialBody = githubRejectionIssueBody(trialPayload);
+
+            if (current.length && trialBody.length > GITHUB_ISSUE_BODY_LIMIT) {
+                const payload = githubRejectionSubmissionPayload(current);
+                batches.push({
+                    rejections: current,
+                    payload,
+                    body: githubRejectionIssueBody(payload)
+                });
+                current = [rejection];
+                continue;
+            }
+
+            if (!current.length && trialBody.length > GITHUB_ISSUE_BODY_LIMIT) {
+                throw new Error('A single rejected association exceeds the GitHub issue size limit.');
+            }
+
+            current = trial;
+        }
+
+        if (current.length) {
+            const payload = githubRejectionSubmissionPayload(current);
+            batches.push({
+                rejections: current,
+                payload,
+                body: githubRejectionIssueBody(payload)
             });
         }
 
@@ -821,6 +942,93 @@
         }
     }
 
+    async function submitRejectedAssociationsToGitHub() {
+        requestPendingSnapshot();
+        await new Promise(resolve => queueMicrotask(resolve));
+
+        const rejections = unsubmittedRejections();
+
+        if (!rejections.length) {
+            alert('There are no unsubmitted locally rejected associations.');
+            return;
+        }
+
+        let token = getGitHubToken();
+        if (!token) {
+            configureGitHubToken();
+            token = getGitHubToken();
+            if (!token) return;
+        }
+
+        const batches = buildGitHubRejectionSubmissionBatches(rejections);
+
+        if (!confirm(
+            `Submit ${rejections.length} locally rejected association${rejections.length === 1 ? '' : 's'} to ${GITHUB_OWNER}/${GITHUB_REPO} as ${batches.length} separate rejection GitHub Issue${batches.length === 1 ? '' : 's'}?`
+        )) {
+            return;
+        }
+
+        try {
+            const createdIssues = [];
+            const submittedAt = Date.now();
+
+            for (let index = 0; index < batches.length; index += 1) {
+                const batch = batches[index];
+                const title = batches.length === 1
+                    ? `DALI rejection submission — ${batch.rejections.length} association${batch.rejections.length === 1 ? '' : 's'}`
+                    : `DALI rejection submission ${index + 1}/${batches.length} — ${batch.rejections.length} association${batch.rejections.length === 1 ? '' : 's'}`;
+
+                const issue = await githubRequest({
+                    method: 'POST',
+                    url: `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`,
+                    headers: {
+                        'Accept': 'application/vnd.github+json',
+                        'Authorization': `Bearer ${token}`,
+                        'X-GitHub-Api-Version': GITHUB_API_VERSION,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({ title, body: batch.body })
+                });
+
+                if (!issue || !Number.isInteger(issue.number) || !issue.html_url) {
+                    throw new Error('GitHub created a rejection issue but returned no usable issue identity.');
+                }
+
+                createdIssues.push(issue);
+
+                for (const rejection of batch.rejections) {
+                    state.rejectionSubmissions[rejectionSubmissionKey(rejection)] = {
+                        issueNumber: issue.number,
+                        issueUrl: issue.html_url,
+                        submittedAt
+                    };
+                }
+            }
+
+            saveState();
+
+            const summary = createdIssues
+                .map(issue => `#${issue.number}: ${issue.html_url}`)
+                .join('\n');
+
+            alert(
+                `DALI rejection submission created as ${createdIssues.length} GitHub Issue${createdIssues.length === 1 ? '' : 's'}.\n\n${summary}`
+            );
+            window.open(createdIssues[0].html_url, '_blank', 'noopener,noreferrer');
+        } catch (error) {
+            console.error('[DALI Approval] GitHub rejection submission failed.', error);
+            alert(
+                [
+                    'DALI GitHub rejection submission failed.',
+                    '',
+                    error.message,
+                    '',
+                    'Local rejections were not changed or discarded.'
+                ].join('\n')
+            );
+        }
+    }
+
     function registryMergeObject() {
         const grouped = new Map();
 
@@ -870,11 +1078,69 @@
         return identities;
     }
 
+    function submissionExportObject() {
+        const approvals = Object.values(state.approvals)
+            .filter(approval => validateProposal(approval))
+            .sort((a, b) => a.approvedAt - b.approvedAt);
+
+        return {
+            schema: 1,
+            type: 'dali-local-approved-associations',
+            exportedAt: Date.now(),
+            count: approvals.length,
+            associations: approvals,
+            registryMerge: registryMergeObject()
+        };
+    }
+
+    async function copyRegistryFragments() {
+        const text = JSON.stringify(registryMergeObject(), null, 2);
+
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const area = document.createElement('textarea');
+            area.value = text;
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            (document.body || document.documentElement).appendChild(area);
+            area.select();
+            document.execCommand('copy');
+            area.remove();
+        }
+    }
+
+    function exportApprovedAssociations() {
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+        downloadJson(
+            `dali-approved-local-associations-${stamp}.json`,
+            submissionExportObject()
+        );
+    }
+
+    function downloadJson(filename, value) {
+        const blob = new Blob(
+            [JSON.stringify(value, null, 2) + '\n'],
+            { type: 'application/json;charset=utf-8' }
+        );
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = filename;
+        (document.body || document.documentElement).appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
     function showSummary() {
         const approvals = Object.values(state.approvals)
             .filter(approval => validateProposal(approval));
         const registryEntries = Object.keys(registryMergeObject()).length;
         const unsubmitted = unsubmittedApprovals().length;
+        const rejections = [...rejectedByToken.values()]
+            .filter(rejection => validateRejection(rejection));
+        const unsubmittedRejected = unsubmittedRejections().length;
 
         alert([
             'DALI Local Approval Extension',
@@ -882,6 +1148,8 @@
             `Locally approved associations: ${approvals.length}`,
             `Registry identities represented: ${registryEntries}`,
             `Unsubmitted approvals: ${unsubmitted}`,
+            `Locally rejected associations: ${rejections.length}`,
+            `Unsubmitted rejections: ${unsubmittedRejected}`,
             '',
             'These approvals are local runtime authority only.',
             'They do not modify DALI\'s canonical remote registry.'
@@ -893,7 +1161,8 @@
             return;
         }
 
-        state = newState();
+        state.approvals = {};
+        state.submissions = {};
         saveState();
 
         alert(
@@ -903,24 +1172,43 @@
 
     function installMenuCommands() {
         GM_registerMenuCommand(
-            'Show summary',
+            'DALI Approval: Export approved associations',
+            exportApprovedAssociations
+        );
+
+        GM_registerMenuCommand(
+            'DALI Approval: Copy registry-ready fragments',
+            copyRegistryFragments
+        );
+
+        GM_registerMenuCommand(
+            'DALI Approval: Show summary',
             showSummary
         );
 
         GM_registerMenuCommand(
-            'Submit approved associations to GitHub',
+            'DALI Approval: Submit approved associations to GitHub',
             submitApprovedAssociationsToGitHub
         );
 
         GM_registerMenuCommand(
-            'Configure GitHub submission token',
+            'DALI Approval: Submit rejected associations to GitHub',
+            submitRejectedAssociationsToGitHub
+        );
+
+        GM_registerMenuCommand(
+            'DALI Approval: Configure GitHub submission token',
             configureGitHubToken
         );
 
         GM_registerMenuCommand(
-            'Clear local approvals',
+            'DALI Approval: Clear GitHub submission token',
+            clearGitHubToken
+        );
+
+        GM_registerMenuCommand(
+            'DALI Approval: Clear local approvals',
             clearApprovals
         );
     }
-
 })();

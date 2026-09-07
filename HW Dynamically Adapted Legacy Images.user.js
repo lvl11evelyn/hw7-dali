@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.32
+// @version      2.34
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -12,7 +12,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
-// @grant        GM_registerMenuCommand
+// @grant        GM_info
 // @connect      raw.githubusercontent.com
 // ==/UserScript==
 
@@ -281,6 +281,8 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
 (() => {
     'use strict';
+
+    const SCRIPT_VERSION = GM_info.script.version;
 
 
 // ------------------------------------------------------------------------
@@ -1989,6 +1991,10 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             associations: Object.entries(LEARNING_STATE.pending).map(([key, proposal]) => ({
                 token: pendingToken(key),
                 proposal
+            })),
+            rejections: Object.entries(LEARNING_STATE.rejections).map(([key, rejection]) => ({
+                token: pendingToken(key),
+                rejection
             }))
         };
     }
@@ -2564,23 +2570,6 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             .replace(/'/g, '&#039;');
     }
 
-    function installLearningMenuCommands() {
-        GM_registerMenuCommand(
-            'Review Proposals',
-            openPendingReview
-        );
-
-        GM_registerMenuCommand(
-            'Export Proposals',
-            () => exportPendingAssociations()
-        );
-
-        GM_registerMenuCommand(
-            'Review Rejected Proposals',
-            openRejectedReview
-        );
-    }
-
     function installDaliPreferencesProvider() {
         const run = () => {
             const url = new URL(location.href);
@@ -2703,7 +2692,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
             const version = document.createElement('span');
             version.className = 'dali-settings-version';
-            version.textContent = 'v2.30';
+            version.textContent = `v${SCRIPT_VERSION}`;
 
             titleRow.append(title, version);
 
@@ -5669,7 +5658,6 @@ function barSvg(x, y, scale = 1) {
     }
 
     installLocalIdentityBridge();
-    installLearningMenuCommands();
     installDaliPreferencesProvider();
     initializeDali();
 

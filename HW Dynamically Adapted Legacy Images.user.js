@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.35
+// @version      2.36
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -1516,6 +1516,19 @@ function HW_registerSharedSettingsProvider(panel, provider) {
         return `${descriptor.key}\u0000${entry.path.join('/')}`;
     }
 
+    function isInferenceAssociationRejected(descriptor, entry) {
+        if (!descriptor || !entry?.path) {
+            return false;
+        }
+
+        const key = proposalKey(descriptor, entry);
+
+        return Boolean(
+            LEARNING_STATE.rejections[key] ||
+            isCanonicallyRejected(descriptor, entry)
+        );
+    }
+
     function compactText(value, limit = 350) {
         return String(value || '')
             .replace(/\s+/g, ' ')
@@ -1760,12 +1773,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 
         const key = proposalKey(descriptor, entry);
 
-        /* Users may reject locally, but never approve locally. */
-        if (LEARNING_STATE.rejections[key]) {
-            return;
-        }
-
-        if (isCanonicallyRejected(descriptor, entry)) {
+        if (isInferenceAssociationRejected(descriptor, entry)) {
             return;
         }
 
@@ -3242,6 +3250,20 @@ function HW_registerSharedSettingsProvider(panel, provider) {
         }
 
         if (!options?.skipLearning) {
+            const descriptor = describeNativeSource(
+                getImageExamination(image).src
+            );
+
+            /*
+             * Local and canonical rejection are both pair-level vetoes on
+             * inference itself, not merely on proposal recording. Leave the
+             * native image untouched whenever this source-to-identity pairing
+             * has been rejected by either authority.
+             */
+            if (isInferenceAssociationRejected(descriptor, entry)) {
+                return false;
+            }
+
             recordPendingAssociation(image, entry);
         }
     

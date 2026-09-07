@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.36
+// @version      2.37
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -3354,39 +3354,34 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 // RUNTIME EXCLUSIONS
 // ------------------------------------------------------------------------
 
-    function isRtBarRuntimeExclusionActive() {
-        const cmd = new URLSearchParams(window.location.search).get('cmd');
+    function rtBarExcludedContentArea(node) {
+        if (!node) {
+            return null;
+        }
 
-        return (
-            cmd === 'mail' ||
-            cmd === 'gathering' ||
-            cmd === 'network'
-        );
+        const element = node.nodeType === Node.ELEMENT_NODE
+            ? node
+            : node.parentElement;
+
+        if (!element) {
+            return null;
+        }
+
+        const contentArea = element.matches?.('div.content-area')
+            ? element
+            : element.closest?.('div.content-area');
+
+        return contentArea?.querySelector?.('#rtBar')
+            ? contentArea
+            : null;
     }
 
     function isDaliRuntimeExcludedNode(node) {
-        if (!isRtBarRuntimeExclusionActive() || !node) {
-            return false;
-        }
-
-        if (node.nodeType === Node.ELEMENT_NODE) {
-            return (
-                node.id === 'RTBar' ||
-                Boolean(node.closest?.('#RTBar'))
-            );
-        }
-
-        return Boolean(
-            node.parentElement?.closest?.('#RTBar')
-        );
+        return Boolean(rtBarExcludedContentArea(node));
     }
 
     function isDaliRuntimeExcludedImage(image) {
-        return Boolean(
-            image &&
-            isRtBarRuntimeExclusionActive() &&
-            image.closest?.('#RTBar')
-        );
+        return Boolean(rtBarExcludedContentArea(image));
     }
 
 
@@ -3457,17 +3452,6 @@ function HW_registerSharedSettingsProvider(panel, provider) {
     function queueScan(root = document) {
         if (!root) return;
 
-        /*
-         * Mail and Gathering continuously populate #RTBar with native emoji.
-         * Reject those roots before they enter DALI's scan queue.
-         */
-        if (
-            root !== document &&
-            isDaliRuntimeExcludedNode(root)
-        ) {
-            return;
-        }
-
         if (root === document) {
             FULL_SCAN_QUEUED = true;
             SCAN_ROOTS.clear();
@@ -3515,11 +3499,6 @@ function HW_registerSharedSettingsProvider(panel, provider) {
                         continue;
                     }
 
-                    if (isDaliRuntimeExcludedNode(node)) {
-                        continue;
-                    }
-
-    
                     queueScan(node);
                 }
             }
@@ -3557,14 +3536,15 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             return;
         }
 
+        /* CSS-background menu assets are independent of the #rtBar guard. */
+        replaceBmenuIcons(root);
+
         if (
             root !== document &&
             isDaliRuntimeExcludedNode(root)
         ) {
             return;
         }
-
-        replaceBmenuIcons(root);
 
         for (const image of root.querySelectorAll('img')) {
             processImage(image);

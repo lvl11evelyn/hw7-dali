@@ -211,7 +211,7 @@
     },
     "Ingredients": {
       "Ice": "dali-svg://ice",
-      "Red Bull": null,
+      "Red Bull": "dali-svg://red-bull",
       "Cola": null,
       "Celery": null,
       "Dry Ice": "dali-svg://dry-ice",

@@ -1,9 +1,105 @@
-
 {
   "schema": 1,
-  "revision": 0,
+  "revision": 1,
   "sourceCounts": {
-    "rejections": 0
+    "rejections": 7
   },
-  "rejections": {}
+  "rejections": {
+    "fnv:1992bd50": [
+      {
+        "catalog": "backpackItems",
+        "identity": "City Map",
+        "path": [
+          "backpackItems",
+          "Adventure Items",
+          "City Map"
+        ],
+        "confidence": 0.8,
+        "observations": 1,
+        "rejectedAt": 1787853392197
+      }
+    ],
+    "fnv:3dd7e5f4": [
+      {
+        "catalog": "backpackItems",
+        "identity": "City Map",
+        "path": [
+          "backpackItems",
+          "Adventure Items",
+          "City Map"
+        ],
+        "confidence": 0.81,
+        "observations": 2,
+        "rejectedAt": 1787853389875
+      }
+    ],
+    "fnv:62e356bf": [
+      {
+        "catalog": "backpackItems",
+        "identity": "City Map",
+        "path": [
+          "backpackItems",
+          "Adventure Items",
+          "City Map"
+        ],
+        "confidence": 0.8,
+        "observations": 1,
+        "rejectedAt": 1787853391822
+      }
+    ],
+    "fnv:758a69cd": [
+      {
+        "catalog": "currencies",
+        "identity": "Cans",
+        "path": [
+          "currencies",
+          "Cans"
+        ],
+        "confidence": 0.9990000000000001,
+        "observations": 81,
+        "rejectedAt": 1787853346942
+      }
+    ],
+    "fnv:841ee357": [
+      {
+        "catalog": "backpackItems",
+        "identity": "City Map",
+        "path": [
+          "backpackItems",
+          "Adventure Items",
+          "City Map"
+        ],
+        "confidence": 0.8,
+        "observations": 1,
+        "rejectedAt": 1787853392547
+      }
+    ],
+    "fnv:a447460e": [
+      {
+        "catalog": "currencies",
+        "identity": "Cans",
+        "path": [
+          "currencies",
+          "Cans"
+        ],
+        "confidence": 0.9990000000000001,
+        "observations": 99,
+        "rejectedAt": 1787979904248
+      }
+    ],
+    "fnv:d99a7f67": [
+      {
+        "catalog": "backpackItems",
+        "identity": "City Map",
+        "path": [
+          "backpackItems",
+          "Adventure Items",
+          "City Map"
+        ],
+        "confidence": 0.81,
+        "observations": 2,
+        "rejectedAt": 1787853390423
+      }
+    ]
+  }
 }

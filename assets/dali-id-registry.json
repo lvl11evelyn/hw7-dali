@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 19,
+  "revision": 20,
   "sourceCounts": {
-    "identity": 629,
-    "filename": 779,
-    "fnv": 506,
-    "total": 1285
+    "identity": 648,
+    "filename": 785,
+    "fnv": 522,
+    "total": 1307
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -8489,6 +8489,150 @@
       ],
       "hashes": []
     },
+    "uiElements/:) emotion": {
+      "catalog": "uiElements",
+      "identity": ":) emotion",
+      "path": [
+        "uiElements",
+        ":) emotion"
+      ],
+      "filenames": [],
+      "hashes": [
+        "31e111cd"
+      ]
+    },
+    "uiElements/:hobo: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":hobo: emoticon",
+      "path": [
+        "uiElements",
+        ":hobo: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "9979e8a5"
+      ]
+    },
+    "uiElements/:idk: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":idk: emoticon",
+      "path": [
+        "uiElements",
+        ":idk: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "d19971a6"
+      ]
+    },
+    "uiElements/:king: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":king: emoticon",
+      "path": [
+        "uiElements",
+        ":king: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "0a4028cb"
+      ]
+    },
+    "uiElements/:lol: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":lol: emoticon",
+      "path": [
+        "uiElements",
+        ":lol: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "2dae706a"
+      ]
+    },
+    "uiElements/:oopsie: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":oopsie: emoticon",
+      "path": [
+        "uiElements",
+        ":oopsie: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "c5ce480b"
+      ]
+    },
+    "uiElements/:P emoticon": {
+      "catalog": "uiElements",
+      "identity": ":P emoticon",
+      "path": [
+        "uiElements",
+        ":P emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "6eeb3d8f"
+      ]
+    },
+    "uiElements/:rock: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":rock: emoticon",
+      "path": [
+        "uiElements",
+        ":rock: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "184e350d"
+      ]
+    },
+    "uiElements/:rofl: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":rofl: emoticon",
+      "path": [
+        "uiElements",
+        ":rofl: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "f7e3648a"
+      ]
+    },
+    "uiElements/:yes: emoticon": {
+      "catalog": "uiElements",
+      "identity": ":yes: emoticon",
+      "path": [
+        "uiElements",
+        ":yes: emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "fbe32892"
+      ]
+    },
+    "uiElements/♂️ image": {
+      "catalog": "uiElements",
+      "identity": "♂️ image",
+      "path": [
+        "uiElements",
+        "♂️ image"
+      ],
+      "filenames": [],
+      "hashes": [
+        "6a8aa614"
+      ]
+    },
+    "uiElements/🚫 image": {
+      "catalog": "uiElements",
+      "identity": "🚫 image",
+      "path": [
+        "uiElements",
+        "🚫 image"
+      ],
+      "filenames": [],
+      "hashes": [
+        "9daf0ac5"
+      ]
+    },
     "uiElements/Delete (Post/Reply)": {
       "catalog": "uiElements",
       "identity": "Delete (Post/Reply)",
@@ -8499,6 +8643,19 @@
       "filenames": [],
       "hashes": [
         "543bf681"
+      ]
+    },
+    "uiElements/East Side Flag": {
+      "catalog": "uiElements",
+      "identity": "East Side Flag",
+      "path": [
+        "uiElements",
+        "East Side Flag"
+      ],
+      "filenames": [],
+      "hashes": [],
+      "exactFilenames": [
+        "Nx20xFlag-East.gif.pagespeed.ic.KEylg3mpfO.png"
       ]
     },
     "uiElements/Edit (Post/Reply)": {
@@ -8550,7 +8707,9 @@
         "uiElements",
         "Gray Neutral"
       ],
-      "filenames": [],
+      "filenames": [
+        "arrow03"
+      ],
       "hashes": [
         "52e48d34"
       ],
@@ -8565,7 +8724,9 @@
         "uiElements",
         "Green Up"
       ],
-      "filenames": [],
+      "filenames": [
+        "arrow01"
+      ],
       "hashes": [
         "e70483b1"
       ],
@@ -8585,6 +8746,18 @@
         "cdb8c7c8"
       ]
     },
+    "uiElements/North Side Flag": {
+      "catalog": "uiElements",
+      "identity": "North Side Flag",
+      "path": [
+        "uiElements",
+        "North Side Flag"
+      ],
+      "filenames": [],
+      "hashes": [
+        "9ca76097"
+      ]
+    },
     "uiElements/Not Online (Message Board Status)": {
       "catalog": "uiElements",
       "identity": "Not Online (Message Board Status)",
@@ -8597,6 +8770,18 @@
         "3f8739f2"
       ]
     },
+    "uiElements/O.O emoticon": {
+      "catalog": "uiElements",
+      "identity": "O.O emoticon",
+      "path": [
+        "uiElements",
+        "O.O emoticon"
+      ],
+      "filenames": [],
+      "hashes": [
+        "68dec828"
+      ]
+    },
     "uiElements/Online (Message Board Status)": {
       "catalog": "uiElements",
       "identity": "Online (Message Board Status)",
@@ -8607,6 +8792,18 @@
       "filenames": [],
       "hashes": [
         "a8332795"
+      ]
+    },
+    "uiElements/Original Sender UI image": {
+      "catalog": "uiElements",
+      "identity": "Original Sender UI image",
+      "path": [
+        "uiElements",
+        "Original Sender UI image"
+      ],
+      "filenames": [],
+      "hashes": [
+        "62c23b8a"
       ]
     },
     "uiElements/Quote (Post/Reply)": {
@@ -8640,12 +8837,39 @@
         "uiElements",
         "Red Down"
       ],
-      "filenames": [],
+      "filenames": [
+        "arrow02"
+      ],
       "hashes": [
         "912e8d7c"
       ],
       "exactFilenames": [
         "arrow02.gif.pagespeed.ce.FGZyHLvo2E.gif"
+      ]
+    },
+    "uiElements/Send Message UI image": {
+      "catalog": "uiElements",
+      "identity": "Send Message UI image",
+      "path": [
+        "uiElements",
+        "Send Message UI image"
+      ],
+      "filenames": [],
+      "hashes": [
+        "48dafc5a"
+      ]
+    },
+    "uiElements/South Side Flag": {
+      "catalog": "uiElements",
+      "identity": "South Side Flag",
+      "path": [
+        "uiElements",
+        "South Side Flag"
+      ],
+      "filenames": [],
+      "hashes": [],
+      "exactFilenames": [
+        "Nx20xFlag-South.gif.pagespeed.ic.B73eMkPEAi.png"
       ]
     },
     "uiElements/Stop Watching (Thread)": {
@@ -8710,6 +8934,19 @@
       ],
       "hashes": [
         "e3db8336"
+      ]
+    },
+    "uiElements/West Side Flag": {
+      "catalog": "uiElements",
+      "identity": "West Side Flag",
+      "path": [
+        "uiElements",
+        "West Side Flag"
+      ],
+      "filenames": [],
+      "hashes": [],
+      "exactFilenames": [
+        "Nx20xFlag-West.gif.pagespeed.ic.5ZdM9Semhf.png"
       ]
     }
   }

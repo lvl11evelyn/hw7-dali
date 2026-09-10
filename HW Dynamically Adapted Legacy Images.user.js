@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HW Dynamically Adapted Legacy Images
 // @namespace    https://www.hobowars.com/
-// @version      2.37
+// @version      2.38
 // @description  DALI seeks out native, legacy images in the Hobowars domain and substitutes them while retaining their dimensions for a crisper, more contemporary aesthetic.
 // @author       lvl11evelyn / HW1 (2924238)
 // @match        *://hobowars.com/*
@@ -3354,7 +3354,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
 // RUNTIME EXCLUSIONS
 // ------------------------------------------------------------------------
 
-    function rtBarExcludedContentArea(node) {
+    function containingContentArea(node) {
         if (!node) {
             return null;
         }
@@ -3367,21 +3367,37 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             return null;
         }
 
-        const contentArea = element.matches?.('div.content-area')
+        return element.matches?.('div.content-area')
             ? element
             : element.closest?.('div.content-area');
+    }
+
+    function rtBarExcludedContentArea(node) {
+        const contentArea = containingContentArea(node);
 
         return contentArea?.querySelector?.('#rtBar')
             ? contentArea
             : null;
     }
 
+    function newsArchiveExcludedContentArea(node) {
+        return /\?sr=\d+&cmd=gnews(?:&|$)/i.test(location.search)
+            ? containingContentArea(node)
+            : null;
+    }
+
     function isDaliRuntimeExcludedNode(node) {
-        return Boolean(rtBarExcludedContentArea(node));
+        return Boolean(
+            rtBarExcludedContentArea(node) ||
+            newsArchiveExcludedContentArea(node)
+        );
     }
 
     function isDaliRuntimeExcludedImage(image) {
-        return Boolean(rtBarExcludedContentArea(image));
+        return Boolean(
+            rtBarExcludedContentArea(image) ||
+            newsArchiveExcludedContentArea(image)
+        );
     }
 
 
@@ -3536,7 +3552,7 @@ function HW_registerSharedSettingsProvider(panel, provider) {
             return;
         }
 
-        /* CSS-background menu assets are independent of the #rtBar guard. */
+        /* CSS-background menu assets are independent of content-area guards. */
         replaceBmenuIcons(root);
 
         if (

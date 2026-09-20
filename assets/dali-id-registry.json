@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "revision": 20,
+  "revision": 22,
   "sourceCounts": {
-    "identity": 648,
-    "filename": 785,
-    "fnv": 522,
-    "total": 1307
+    "identity": 649,
+    "filename": 775,
+    "fnv": 523,
+    "total": 1298
   },
   "identities": {
     "backpackItems/Adventure Items/Address Book": {
@@ -3567,12 +3567,25 @@
         "Gold Ring"
       ],
       "filenames": [
-        "Gold Ring",
-        "Gold Ring with Diamond"
+        "Gold Ring"
       ],
       "hashes": [
         "a014a476",
         "bef0fffe"
+      ]
+    },
+    "equipment/Gold Ring with Diamond": {
+      "catalog": "equipment",
+      "identity": "Gold Ring with Diamond",
+      "path": [
+        "equipment",
+        "Gold Ring with Diamond"
+      ],
+      "filenames": [
+        "Gold Ring with Diamond"
+      ],
+      "hashes": [
+        "bb1e98f2"
       ]
     },
     "equipment/Golden Rod": {
